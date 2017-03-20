@@ -5,11 +5,11 @@ Post tweets to Discord Webhook. It can be filtered by tracking keywords or by fo
 
 A preview of the bot in action:
 
-[YouTube](https://www.youtube.com/watch?v=LHCIzj7dNMA)
+[YouTube](https://www.youtube.com/watch?v=LHCIzj7dNMA)  
 [mirror](https://my.mixtape.moe/vmempn.mp4)
 
 TODOs:
 
 properly handle rate limit error (discord webhook).   
-format quoted twitter links.
+format quoted twitter links.  
 if image exist send image link to discord.
