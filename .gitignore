@@ -137,3 +137,5 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+*.xml
+.idea/discord-twitter-bot.iml
