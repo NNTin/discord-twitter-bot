@@ -14,7 +14,7 @@ Post tweets to Discord Webhook. It can be filtered by tracking keywords or by fo
 - [x] handle tweets in on_status()
 - [ ] utilize on_connect(), on_event(), on_direct_message(), etc.
 - [ ] twitter handle to twitter id converter
-- [ ] extract twitter IDs from [rokxx's dota 2 twitter list](https://twitter.com/rokxx/lists/dota-2/members)
+- [x] extract twitter IDs from [rokxx's dota 2 twitter list](https://twitter.com/rokxx/lists/dota-2/members)
 ### Make it easier to use
 - [ ] config file with config.example instead of secret.py
 - [ ] discord-twitter-bot Wiki
