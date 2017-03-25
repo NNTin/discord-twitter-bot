@@ -2,43 +2,42 @@
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler, Stream
 from discordWebhooks import Webhook, Attachment, Field
-import calendar, time, secret
+import calendar, time, secret, random
 
 followedTwitterIDs = ['3065618342']
+colors = ['#7f0000', '#535900', '#40d9ff', '#8c7399', '#d97b6c', '#f2ff40', '#8fb6bf', '#502d59', '#66504d', '#89b359', '#00aaff', '#d600e6', '#401100', '#44ff00', '#1a2b33', '#ff00aa', '#ff8c40', '#17330d', '#0066bf', '#33001b', '#b39886', '#bfffd0', '#163a59', '#8c235b', '#8c5e00', '#00733d', '#000c59', '#ffbfd9', '#4c3300', '#36d98d', '#3d3df2', '#590018', '#f2c200', '#264d40', '#c8bfff', '#f23d6d', '#d9c36c', '#2db3aa', '#b380ff', '#ff0022', '#333226', '#005c73', '#7c29a6']
 
 #This is a basic listener that just prints received tweets to stdout.
 class StdOutListener(StreamListener):
     def on_status(self, status):
         """Called when a new status arrives"""
         try:
-            sendIt = False
-            #todo: write url expansion
-
             data = status._json
+
+            sendIt = False
+
             wh = Webhook(url=secret.WEBHOOK_URL, username="Chirp",
                          icon_url="http://cdn.dota2.com/apps/dota2/images/heroes/rattletrap_lg.png")
             if data['user']['id_str'] in followedTwitterIDs or data['user']['id_str'] not in followedTwitterIDs: #filter out random people replying to Dota 2 personalities
-
+                text = data['text']
+                print(text)
+                for url in data['entities']['urls']:
+                    if url['expanded_url'] == None:
+                        continue
+                    text = text.replace(url['url'], "[%s](%s)" %(url['display_url'],url['expanded_url']))
+                print(text)
                 at = Attachment(author_name=data['user']['screen_name'],
-                                author_icon=data['user']['profile_image_url'].replace('\\', ''),
-                                color="#ffffff", pretext=(data['text']).replace('\\', ''),
+                                author_icon=data['user']['profile_image_url'],
+                                color=random.choice(colors), pretext=text,
                                 title_link="https://twitter.com/" + data['user']['screen_name'] + "/status/" + str(data['id_str']),
                                 footer="Tweet created at",
                                 footer_icon="https://cdn1.iconfinder.com/data/icons/iconza-circle-social/64/697029-twitter-512.png",
                                 ts=calendar.timegm(time.strptime(data['created_at'], '%a %b %d %H:%M:%S +0000 %Y')))
                 wh.addAttachment(at)
 
-
             print(data)
 
-            #if(data['retweeted']):
-            if ('retweeted_status' in data):
-
-
-                template = 'This tweet was retweeted. Original by {name}'
-                print(template.format(name=data['retweeted_status']['user']['screen_name']))
-
-            #if(data['is_quote_status']): #disabling this block for the moment
+            #if ('retweeted_status' in data): #not reliable. Twitter data is not consistent.
             if ('quoted_status' in data):
                 field = Field(data['quoted_status']['user']['screen_name'], data['quoted_status']['text'])
                 at.addField(field)
@@ -50,20 +49,22 @@ class StdOutListener(StreamListener):
 
 
 
-                print(data)
-                template = 'The tweet is quoting the user {name} with the message {message}'
-                print(template.format(name=data['quoted_status']['user']['screen_name'], message=data['quoted_status']['text']))
+                #print(data)
+                #template = 'The tweet is quoting the user {name} with the message {message}'
+                #print(template.format(name=data['quoted_status']['user']['screen_name'], message=data['quoted_status']['text']))
 
-
-
-
-            if (sendIt or True):
+            if (sendIt and False):
                 wh.post()
 
         except:
             print('@@@@@@@@@@@@@@@@@@@@@@')
             print(data)
             print(type(data))
+
+
+
+
+
         return True
 
 
