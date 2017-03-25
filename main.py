@@ -20,12 +20,10 @@ class StdOutListener(StreamListener):
                          icon_url="http://cdn.dota2.com/apps/dota2/images/heroes/rattletrap_lg.png")
             if data['user']['id_str'] in followedTwitterIDs or data['user']['id_str'] not in followedTwitterIDs: #filter out random people replying to Dota 2 personalities
                 text = data['text']
-                print(text)
                 for url in data['entities']['urls']:
                     if url['expanded_url'] == None:
                         continue
                     text = text.replace(url['url'], "[%s](%s)" %(url['display_url'],url['expanded_url']))
-                print(text)
                 at = Attachment(author_name=data['user']['screen_name'],
                                 author_icon=data['user']['profile_image_url'],
                                 color=random.choice(colors), pretext=text,
@@ -35,25 +33,29 @@ class StdOutListener(StreamListener):
                                 ts=calendar.timegm(time.strptime(data['created_at'], '%a %b %d %H:%M:%S +0000 %Y')))
                 wh.addAttachment(at)
 
-            print(data)
 
             #if ('retweeted_status' in data): #not reliable. Twitter data is not consistent.
             if ('quoted_status' in data):
-                field = Field(data['quoted_status']['user']['screen_name'], data['quoted_status']['text'])
+
+                print(data)
+
+                text = data['quoted_status']['text']
+                for url in data['quoted_status']['entities']['urls']:
+                    if url['expanded_url'] == None:
+                        continue
+                    text = text.replace(url['url'], "[%s](%s)" % (url['display_url'], url['expanded_url']))
+
+
+                field = Field(data['quoted_status']['user']['screen_name'], text)
                 at.addField(field)
 
-                #field = (Field('test', '[LJKLJKLKJ](http://google.com)'))
-                #at.addField(field)
 
                 sendIt = True
 
 
 
-                #print(data)
-                #template = 'The tweet is quoting the user {name} with the message {message}'
-                #print(template.format(name=data['quoted_status']['user']['screen_name'], message=data['quoted_status']['text']))
 
-            if (sendIt and False):
+            if (sendIt):
                 wh.post()
 
         except:
