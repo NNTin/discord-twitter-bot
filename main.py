@@ -11,22 +11,57 @@ class StdOutListener(StreamListener):
     def on_status(self, status):
         """Called when a new status arrives"""
         try:
+            sendIt = False
+            #todo: write url expansion
+
             data = status._json
-            print(data)
+            wh = Webhook(url=secret.WEBHOOK_URL, username="Chirp",
+                         icon_url="http://cdn.dota2.com/apps/dota2/images/heroes/rattletrap_lg.png")
             if data['user']['id_str'] in followedTwitterIDs or data['user']['id_str'] not in followedTwitterIDs: #filter out random people replying to Dota 2 personalities
 
-                wh = Webhook(url=secret.WEBHOOK_URL, username="Chirp",
-                             icon_url="http://cdn.dota2.com/apps/dota2/images/heroes/rattletrap_lg.png")
                 at = Attachment(author_name=data['user']['screen_name'],
                                 author_icon=data['user']['profile_image_url'].replace('\\', ''),
-                                color="#ffffff", pretext=data['text'].replace('\\', ''),
+                                color="#ffffff", pretext=(data['text']).replace('\\', ''),
                                 title_link="https://twitter.com/" + data['user']['screen_name'] + "/status/" + str(data['id_str']),
                                 footer="Tweet created at",
                                 footer_icon="https://cdn1.iconfinder.com/data/icons/iconza-circle-social/64/697029-twitter-512.png",
                                 ts=calendar.timegm(time.strptime(data['created_at'], '%a %b %d %H:%M:%S +0000 %Y')))
                 wh.addAttachment(at)
+
+
+            print(data)
+
+            #if(data['retweeted']):
+            if ('retweeted_status' in data):
+
+
+                template = 'This tweet was retweeted. Original by {name}'
+                print(template.format(name=data['retweeted_status']['user']['screen_name']))
+
+            #if(data['is_quote_status']): #disabling this block for the moment
+            if ('quoted_status' in data):
+                field = Field(data['quoted_status']['user']['screen_name'], data['quoted_status']['text'])
+                at.addField(field)
+
+                #field = (Field('test', '[LJKLJKLKJ](http://google.com)'))
+                #at.addField(field)
+
+                sendIt = True
+
+
+
+                print(data)
+                template = 'The tweet is quoting the user {name} with the message {message}'
+                print(template.format(name=data['quoted_status']['user']['screen_name'], message=data['quoted_status']['text']))
+
+
+
+
+            if (sendIt or True):
                 wh.post()
+
         except:
+            print('@@@@@@@@@@@@@@@@@@@@@@')
             print(data)
             print(type(data))
         return True
