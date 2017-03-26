@@ -14,11 +14,14 @@ class StdOutListener(StreamListener):
         try:
             data = status._json
 
+
+
+
             sendIt = False
 
             wh = Webhook(url=secret.WEBHOOK_URL, username="Chirp",
                          icon_url="http://cdn.dota2.com/apps/dota2/images/heroes/rattletrap_lg.png")
-            if data['user']['id_str'] in followedTwitterIDs: #filter out random people replying to Dota 2 personalities
+            if data['user']['id_str'] in followedTwitterIDs: #filter out random people replying to Dota 2 personalities #TODO: renable it
             #if True:
                 print(data)
                 text = data['text']
@@ -26,9 +29,21 @@ class StdOutListener(StreamListener):
                     if url['expanded_url'] == None:
                         continue
                     text = text.replace(url['url'], "[%s](%s)" %(url['display_url'],url['expanded_url']))
+
+                for userMention in data['entities']['user_mentions']:
+                    text = text.replace('@%s' %userMention['screen_name'], '[@%s](http://twitter.com/%s)' %(userMention['screen_name'],userMention['screen_name']))
+
+                media_url = ''
+                if 'extended_tweet' in data:
+                    for media in data['extended_tweet']['entities']['media']:
+                        print(media['media_url'])
+                        media_url = media['media_url']
+
+
                 at = Attachment(author_name=data['user']['screen_name'],
                                 author_icon=data['user']['profile_image_url'],
                                 color=random.choice(colors), pretext=text,
+                                image_url=media_url,
                                 title_link="https://twitter.com/" + data['user']['screen_name'] + "/status/" + str(data['id_str']),
                                 footer="Tweet created at",
                                 footer_icon="https://cdn1.iconfinder.com/data/icons/iconza-circle-social/64/697029-twitter-512.png",
@@ -36,22 +51,27 @@ class StdOutListener(StreamListener):
                 wh.addAttachment(at)
 
 
-            #if ('retweeted_status' in data): #not reliable. Twitter data is not consistent.
-            if ('quoted_status' in data):
+
+                #if ('retweeted_status' in data): #not reliable. Twitter data is not consistent.
+                if ('quoted_status' in data):
 
 
-                text = data['quoted_status']['text']
-                for url in data['quoted_status']['entities']['urls']:
-                    if url['expanded_url'] == None:
-                        continue
-                    text = text.replace(url['url'], "[%s](%s)" % (url['display_url'], url['expanded_url']))
+                    text = data['quoted_status']['text']
+                    for url in data['quoted_status']['entities']['urls']:
+                        if url['expanded_url'] == None:
+                            continue
+                        text = text.replace(url['url'], "[%s](%s)" % (url['display_url'], url['expanded_url']))
+
+                    for userMention in data['quoted_status']['entities']['user_mentions']:
+                        text = text.replace('@%s' %userMention['screen_name'], '[@%s](http://twitter.com/%s)' %(userMention['screen_name'],userMention['screen_name']))
 
 
-                field = Field(data['quoted_status']['user']['screen_name'], text)
-                at.addField(field)
+
+                    field = Field(data['quoted_status']['user']['screen_name'], text)
+                    at.addField(field)
 
 
-                sendIt = True
+                    sendIt = True
 
 
 
@@ -137,7 +157,7 @@ if __name__ == '__main__':
     #stream.filter(track=['soccer', 'basketball'])
     while True:
         try:
-            stream.filter(follow=followedTwitterIDs)
+            stream.filter(follow=followedTwitterIDs)           #TODO: reenable it
             #stream.filter(track=['soccer', 'basketball'])
         except:
             time.sleep(5)

@@ -2,13 +2,13 @@
 Post tweets to Discord Webhook. It can be filtered by tracking keywords or by following twitter users.
 
 ## Preview
-![](http://i.imgur.com/gy4dz9L.png)
+![](https://i.imgur.com/a4Sf3vE.png)
 
 ## TODOs
 ### Neater formatting on discord text channel
 - [x] If is_quote_status: add Field containing the quoted status
 - [x] If retweeted: identify it as a retweet
-- [ ] If picture(s) provided: send pictures in into text channel
+- [x] If picture(s) provided: send pictures in into text channel
 ### Core
 - [x] use [default on_data()](https://github.com/tweepy/tweepy/blob/master/tweepy/streaming.py#L45)
 - [x] handle tweets in on_status()
