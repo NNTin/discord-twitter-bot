@@ -21,11 +21,7 @@ class StdOutListener(StreamListener):
 
             wh = Webhook(url=secret.WEBHOOK_URL, username="Chirp",
                          icon_url="http://cdn.dota2.com/apps/dota2/images/heroes/rattletrap_lg.png")
-            if data['user']['id_str'] in followedTwitterIDs: #filter out random people replying to Dota 2 personalities #TODO: renable it
-            #if True:
-                print(data)
-
-
+            if data['user']['id_str'] in followedTwitterIDs: #filter out tweets from people replying to dota 2 personalities
 
                 text = ''
                 if 'extended_tweet' in data:
@@ -45,14 +41,11 @@ class StdOutListener(StreamListener):
                 if 'extended_tweet' in data:
                     for media in data['extended_tweet']['entities']['media']:
                         if media['type'] == 'photo':
-                            print('path1')
-                            print(media['media_url'])
                             media_url = media['media_url']
 
                 if 'media' in data['entities']:
                     for media in data['entities']['media']:
                         if media['type'] == 'photo':
-                            print('path2')
                             media_url = media['media_url']
 
 
@@ -68,6 +61,9 @@ class StdOutListener(StreamListener):
                                 footer="Tweet created at",
                                 footer_icon="https://cdn1.iconfinder.com/data/icons/iconza-circle-social/64/697029-twitter-512.png",
                                 ts=calendar.timegm(time.strptime(data['created_at'], '%a %b %d %H:%M:%S +0000 %Y')))
+
+                print(data['user']['screen_name'], 'says: ', text)
+
                 wh.addAttachment(at)
 
 
@@ -167,7 +163,7 @@ class StdOutListener(StreamListener):
 
 
 if __name__ == '__main__':
-
+    print('Starting bot....')
     l = StdOutListener()
     auth = OAuthHandler(secret.CONSUMER_KEY, secret.CONSUMER_SECRET)
     auth.set_access_token(secret.ACCESS_TOKEN, secret.ACCESS_TOKEN_SECRET)
