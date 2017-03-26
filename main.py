@@ -24,7 +24,15 @@ class StdOutListener(StreamListener):
             if data['user']['id_str'] in followedTwitterIDs: #filter out random people replying to Dota 2 personalities #TODO: renable it
             #if True:
                 print(data)
-                text = data['text']
+
+
+
+                text = ''
+                if 'extended_tweet' in data:
+                    text = data['extended_tweet']['full_text']
+                else:
+                    text = data['text']
+
                 for url in data['entities']['urls']:
                     if url['expanded_url'] == None:
                         continue
@@ -36,8 +44,20 @@ class StdOutListener(StreamListener):
                 media_url = ''
                 if 'extended_tweet' in data:
                     for media in data['extended_tweet']['entities']['media']:
-                        print(media['media_url'])
-                        media_url = media['media_url']
+                        if media['type'] == 'photo':
+                            print('path1')
+                            print(media['media_url'])
+                            media_url = media['media_url']
+
+                if 'media' in data['entities']:
+                    for media in data['entities']['media']:
+                        if media['type'] == 'photo':
+                            print('path2')
+                            media_url = media['media_url']
+
+
+
+
 
 
                 at = Attachment(author_name=data['user']['screen_name'],
