@@ -20,6 +20,6 @@ config.set('TwitterUsers', 'followedTwitterIDs', input('Give me the twitter IDs(
 
 
 # Writing our configuration file to 'example.cfg'
-with open('test.ini', 'w') as configfile:
+with open('config.ini', 'w') as configfile:
     config.write(configfile)
 
