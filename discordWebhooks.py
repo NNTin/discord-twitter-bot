@@ -82,6 +82,8 @@ class Webhook():
             except:
                 #raise Exception("Error on post : " + str(result))
                 print('Unhandled Error! Look into this')
+                print(str(result))
+                print(type(result))
                 print(result)
         #else:
         #    raise Exception("Error on post : " + str(result))
