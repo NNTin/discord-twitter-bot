@@ -1,23 +1,17 @@
 # discord-twitter-bot
-Post tweets to Discord Webhook. It can be filtered by tracking keywords or by following twitter users.
+Post tweets to Discord Webhook of certain twitter users.  
+Got questions? [Join the bot's discord server!](https://discord.gg/Dkg79tc)
 
 ## Preview
 ![](https://i.imgur.com/a4Sf3vE.png)
 
-## TODOs
-### Neater formatting on discord text channel
-- [x] If is_quote_status: add Field containing the quoted status
-- [x] If retweeted: identify it as a retweet
-- [x] If picture(s) provided: send pictures in into text channel
-### Core
-- [x] use [default on_data()](https://github.com/tweepy/tweepy/blob/master/tweepy/streaming.py#L45)
-- [x] handle tweets in on_status()
-- [ ] twitter id converter (in the meantime use [this](http://gettwitterid.com/))
-- [x] extract twitter IDs from dota 2 personalities
-### Make it easier to use
-- [x] config file with config.example instead of secret.py
-- [ ] discord-twitter-bot Wiki
-- [x] setupBot.py file for easier setting up
+## Setup 
+* The bot is written in Python3 and requires tweepy.   
+* Create a config.ini file by executing setupBot.py.  
+* There it will ask for Twitter API keys&secret as well as access token&secret. You can get it [here](https://apps.twitter.com/).  
+* You need a Discord Webhook URL. See [this intro](https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks) for a detailed explanation.  
+* Lastly it will ask for Twitter IDs. Use [this site](http://gettwitterid.com/).  
+* Finally you can just start main.py and it will start posting in your Discord channel when there are new tweets.
 
 ## Credits
 Derpolino for providing the [discord-webhook-python](https://github.com/Derpolino/discord-webhooks-python) code.
