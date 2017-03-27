@@ -21,4 +21,4 @@ Post tweets to Discord Webhook. It can be filtered by tracking keywords or by fo
 
 ## Credits
 Derpolino for providing the [discord-webhook-python](https://github.com/Derpolino/discord-webhooks-python) code.
-Rokxx for providing the [dota 2 twitter list]((https://twitter.com/rokxx/lists/dota-2/members))
+Rokxx for providing the [dota 2 twitter list](https://twitter.com/rokxx/lists/dota-2/members)
