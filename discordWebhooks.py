@@ -78,7 +78,11 @@ class Webhook():
             try:
                 jsonResult = json.loads(result)
                 if jsonResult['message'] == 'You are being rate limited.':
-                    print('Rate limited!')
+                    print(jsonResult)
+                    wait = int(jsonResult['retry_after'])
+                    wait = wait/1000 + 0.1
+                    time.sleep(wait)
+                    self.post()
             except:
                 #raise Exception("Error on post : " + str(result))
                 print('Unhandled Error! Look into this')
