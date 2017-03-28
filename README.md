@@ -6,11 +6,11 @@ Got questions? [Join the bot's discord server!](https://discord.gg/Dkg79tc)
 [<img src="/img/gif.gif?raw=true" width="840px">](https://discord.gg/Dkg79tc)
 
 ## Setup 
-* The bot is written in Python3 and requires tweepy.   
+* The bot is written in Python3 and requires tweepy.
 * Create a data.json file by executing setupBot.py.
 * There it will ask for Twitter API keys&secret as well as access token&secret. You can get it [here](https://apps.twitter.com/).
-* You need a Discord Webhook URL. See [this intro](https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks) for a detailed explanation.  
-* Lastly it will ask for Twitter IDs. Use [this site](http://gettwitterid.com/).  
+* You need a Discord Webhook URL. See [this intro](https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks) for a detailed explanation.
+* Lastly it will ask for Twitter **IDs** or a Twitter **List** URL depending on the setupBot.py file you chose.
 * Finally you can just start main.py and it will start posting in your Discord channel when there are new tweets.
 
 ## Credits

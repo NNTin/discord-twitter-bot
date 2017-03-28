@@ -11,6 +11,7 @@ print('---\n\nSetting up Discord!')
 amount = int(input('How many twitterlists do you want to track? '))
 
 print('---\n\nYou can post the same content in multiple text channels by separating the webhook URLs with a comma ,')
+print('Get the twitter IDs from here: http://gettwitterid.com/')
 print('You can follow multiple twitter users by separating the twitter IDs with a comma ,')
 
 for i in range(amount):
@@ -24,6 +25,5 @@ data['twitter_ids'] = []
 for element in data['Discord']:
     data['twitter_ids'].extend(x for x in element['twitter_ids'] if x not in data['twitter_ids'])
 
-
-with open('data.txt', 'w') as outfile:
+with open('data.json', 'w') as outfile:
     json.dump(data, outfile)
