@@ -63,7 +63,7 @@ class StdOutListener(StreamListener):
                                         color=random.choice(colors), pretext=text,
                                         image_url=media_url,
                                         title_link="https://twitter.com/" + data['user']['screen_name'] + "/status/" + str(data['id_str']),
-                                        footer="Tweet created at",
+                                        footer="Tweet created on",
                                         footer_icon="https://cdn1.iconfinder.com/data/icons/iconza-circle-social/64/697029-twitter-512.png",
                                         ts=calendar.timegm(time.strptime(data['created_at'], '%a %b %d %H:%M:%S +0000 %Y')))
 
