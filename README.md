@@ -3,7 +3,7 @@ Post tweets to Discord Webhook of certain twitter users.
 Got questions? [Join the bot's discord server!](https://discord.gg/Dkg79tc)
 
 ## Preview
-![](https://i.imgur.com/a4Sf3vE.png)
+<img src="/img/gif.gif?raw=true" width="840px">
 
 ## Setup 
 * The bot is written in Python3 and requires tweepy.   
