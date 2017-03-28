@@ -1,25 +1,29 @@
-import configparser
+import json
 
-config = configparser.RawConfigParser()
-
-config.add_section('Twitter')
-config.add_section('Discord')
-config.add_section('TwitterUsers')
-
+data = {'Twitter': {}, 'Discord': []}
 print('Setting up Twitter!')
-config.set('Twitter', 'CONSUMER_KEY', input('Give Consumer Key: '))
-config.set('Twitter', 'CONSUMER_SECRET', input('Give Consumer Secret: '))
-config.set('Twitter', 'ACCESS_TOKEN', input('Give Access Token: '))
-config.set('Twitter', 'ACCESS_TOKEN_SECRET', input('Give Access Token Secret: '))
+data['Twitter']['consumer_key'] = input('Give Consumer Key: ')
+data['Twitter']['consumer_secret'] = input('Give Consumer Secret: ')
+data['Twitter']['access_token'] = input('Give Access Token: ')
+data['Twitter']['access_token_secret'] = input('Give Access Token Secret: ')
 
-print('Setting up Discord!')
-config.set('Discord', 'WEBHOOK_URL', input('Give Webhook URL: '))
+print('---\n\nSetting up Discord!')
+amount = int(input('How many twitterlists do you want to track? '))
 
-print('Setting up followed Twitter Users')
-config.set('TwitterUsers', 'followedTwitterIDs', input('Give me the twitter IDs(!). Separate multiple Twitter IDs via commata, do not use spaces: '))
+print('---\n\nYou can post the same content in multiple text channels by separating the webhook URLs with a comma ,')
+print('You can follow multiple twitter users by separating the twitter IDs with a comma ,')
+
+for i in range(amount):
+    webhook_url = input('Give webhook URL: ').split(',')
+    twitter_ids = input('Give twitter IDs: ').split(',')
+    data['Discord'].append({'webhook_urls': webhook_url, 'twitter_ids': twitter_ids})
+    print('---')
+
+data['twitter_ids'] = []
+
+for element in data['Discord']:
+    data['twitter_ids'].extend(x for x in element['twitter_ids'] if x not in data['twitter_ids'])
 
 
-# Writing our configuration file to 'example.cfg'
-with open('config.ini', 'w') as configfile:
-    config.write(configfile)
-
+with open('data.txt', 'w') as outfile:
+    json.dump(data, outfile)

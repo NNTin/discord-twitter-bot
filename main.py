@@ -1,8 +1,10 @@
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler, Stream
 from discordWebhooks import Webhook, Attachment, Field
-import calendar, time, random, configparser
+import calendar, time, random, configparser, json
 
+#todo: add other games
+#todo: make bot use default icon and username
 
 #This is a basic listener that just prints received tweets to stdout.
 class StdOutListener(StreamListener):
@@ -18,86 +20,81 @@ class StdOutListener(StreamListener):
         try:
             data = status._json
 
+            with open('data.json') as data_file:
+                dataDiscords = json.load(data_file)
+
+            for dataDiscord in dataDiscords['Discord']:
+
+                if data['user']['id_str'] in dataDiscord[
+                    'twitter_ids']:  # filter out tweets from people replying to dota 2 personalities
+
+                    for wh_url in dataDiscord['webhook_urls']:
+
+                        wh = Webhook(url=wh_url)
+
+                        text = ''
+                        if 'extended_tweet' in data:
+                            text = data['extended_tweet']['full_text']
+                        else:
+                            text = data['text']
+
+                        for url in data['entities']['urls']:
+                            if url['expanded_url'] == None:
+                                continue
+                            text = text.replace(url['url'], "[%s](%s)" %(url['display_url'],url['expanded_url']))
+
+                        for userMention in data['entities']['user_mentions']:
+                            text = text.replace('@%s' %userMention['screen_name'], '[@%s](http://twitter.com/%s)' %(userMention['screen_name'],userMention['screen_name']))
+
+                        media_url = ''
+                        if 'extended_tweet' in data:
+                            for media in data['extended_tweet']['entities']['media']:
+                                if media['type'] == 'photo':
+                                    media_url = media['media_url']
+
+                        if 'media' in data['entities']:
+                            for media in data['entities']['media']:
+                                if media['type'] == 'photo':
+                                    media_url = media['media_url']
 
 
-            config = configparser.ConfigParser()
-            config.read(filenames='config.ini')
+                        at = Attachment(author_name=data['user']['screen_name'],
+                                        author_icon=data['user']['profile_image_url'],
+                                        color=random.choice(colors), pretext=text,
+                                        image_url=media_url,
+                                        title_link="https://twitter.com/" + data['user']['screen_name'] + "/status/" + str(data['id_str']),
+                                        footer="Tweet created at",
+                                        footer_icon="https://cdn1.iconfinder.com/data/icons/iconza-circle-social/64/697029-twitter-512.png",
+                                        ts=calendar.timegm(time.strptime(data['created_at'], '%a %b %d %H:%M:%S +0000 %Y')))
 
-            wh = Webhook(url=config['Discord']['webhook_url'], username="Chirp",
-                         icon_url="http://cdn.dota2.com/apps/dota2/images/heroes/rattletrap_lg.png")
+                        print(data['user']['screen_name'], ' twittered.')
 
-
-
-            if data['user']['id_str'] in config['TwitterUsers']['followedtwitterids'].split(','): #filter out tweets from people replying to dota 2 personalities
-
-                text = ''
-                if 'extended_tweet' in data:
-                    text = data['extended_tweet']['full_text']
-                else:
-                    text = data['text']
-
-                for url in data['entities']['urls']:
-                    if url['expanded_url'] == None:
-                        continue
-                    text = text.replace(url['url'], "[%s](%s)" %(url['display_url'],url['expanded_url']))
-
-                for userMention in data['entities']['user_mentions']:
-                    text = text.replace('@%s' %userMention['screen_name'], '[@%s](http://twitter.com/%s)' %(userMention['screen_name'],userMention['screen_name']))
-
-                media_url = ''
-                if 'extended_tweet' in data:
-                    for media in data['extended_tweet']['entities']['media']:
-                        if media['type'] == 'photo':
-                            media_url = media['media_url']
-
-                if 'media' in data['entities']:
-                    for media in data['entities']['media']:
-                        if media['type'] == 'photo':
-                            media_url = media['media_url']
+                        wh.addAttachment(at)
 
 
-                at = Attachment(author_name=data['user']['screen_name'],
-                                author_icon=data['user']['profile_image_url'],
-                                color=random.choice(colors), pretext=text,
-                                image_url=media_url,
-                                title_link="https://twitter.com/" + data['user']['screen_name'] + "/status/" + str(data['id_str']),
-                                footer="Tweet created at",
-                                footer_icon="https://cdn1.iconfinder.com/data/icons/iconza-circle-social/64/697029-twitter-512.png",
-                                ts=calendar.timegm(time.strptime(data['created_at'], '%a %b %d %H:%M:%S +0000 %Y')))
-
-                print(data['user']['screen_name'], ' twittered.')
-
-                wh.addAttachment(at)
+                        if ('quoted_status' in data):
 
 
-                if ('quoted_status' in data):
+                            text = data['quoted_status']['text']
+                            for url in data['quoted_status']['entities']['urls']:
+                                if url['expanded_url'] == None:
+                                    continue
+                                text = text.replace(url['url'], "[%s](%s)" % (url['display_url'], url['expanded_url']))
 
-
-                    text = data['quoted_status']['text']
-                    for url in data['quoted_status']['entities']['urls']:
-                        if url['expanded_url'] == None:
-                            continue
-                        text = text.replace(url['url'], "[%s](%s)" % (url['display_url'], url['expanded_url']))
-
-                    for userMention in data['quoted_status']['entities']['user_mentions']:
-                        text = text.replace('@%s' %userMention['screen_name'], '[@%s](http://twitter.com/%s)' %(userMention['screen_name'],userMention['screen_name']))
+                            for userMention in data['quoted_status']['entities']['user_mentions']:
+                                text = text.replace('@%s' %userMention['screen_name'], '[@%s](http://twitter.com/%s)' %(userMention['screen_name'],userMention['screen_name']))
 
 
 
-                    field = Field(data['quoted_status']['user']['screen_name'], text)
-                    at.addField(field)
+                            field = Field(data['quoted_status']['user']['screen_name'], text)
+                            at.addField(field)
 
-
-            wh.post()
+                        wh.post()
 
         except:
             print('@@@@@@@@@@@@@@@@@@@@@@')
             print(data)
             print(type(data))
-
-
-
-
 
         return True
 
@@ -160,25 +157,17 @@ class StdOutListener(StreamListener):
 if __name__ == '__main__':
     print('Starting bot....')
 
-    config = configparser.ConfigParser()
-    config.read(filenames='config.ini')
+    with open('data.json') as data_file:
+        data = json.load(data_file)
 
+    l = StdOutListener()
+    auth = OAuthHandler(data['Twitter']['consumer_key'], data['Twitter']['consumer_secret'])
+    auth.set_access_token(data['Twitter']['access_token'], data['Twitter']['access_token_secret'])
+    stream = Stream(auth, l)
 
-    if config.sections() == []:
-        print('config.ini is empty, run setupBot.py')
-    else:
-
-        l = StdOutListener()
-        auth = OAuthHandler(config['Twitter']['consumer_key'], config['Twitter']['consumer_secret'])
-        auth.set_access_token(config['Twitter']['access_token'], config['Twitter']['access_token_secret'])
-        stream = Stream(auth, l)
-
-        #This line filter Twitter Streams to capture data by the keywords: 'python', 'javascript', 'ruby'
-        #stream.filter(track=['soccer', 'basketball'])
-        while True:
-            try:
-                stream.filter(follow=config['TwitterUsers']['followedtwitterids'].split(','))
-                #stream.filter(track=['soccer', 'basketball'])
-            except:
-                time.sleep(5)
-                print('restarting')
+    while True:
+        try:
+            stream.filter(follow=data['twitter_ids'])
+        except:
+            time.sleep(5)
+            print('restarting')

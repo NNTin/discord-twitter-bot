@@ -83,12 +83,18 @@ class Webhook():
                     wait = wait/1000 + 0.1
                     time.sleep(wait)
                     self.post()
+                else:
+                    print(str(result))
+                    print(type(result))
+                    print(result)
+                    print(jsonResult)
             except:
                 #raise Exception("Error on post : " + str(result))
                 print('Unhandled Error! Look into this')
                 print(str(result))
                 print(type(result))
                 print(result)
+                print(jsonResult)
         #else:
         #    raise Exception("Error on post : " + str(result))
 
