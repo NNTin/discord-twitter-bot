@@ -48,9 +48,10 @@ class StdOutListener(StreamListener):
 
                         media_url = ''
                         if 'extended_tweet' in data:
-                            for media in data['extended_tweet']['entities']['media']:
-                                if media['type'] == 'photo':
-                                    media_url = media['media_url']
+                            if 'media' in data['extended_tweet']['entities']:
+                                for media in data['extended_tweet']['entities']['media']:
+                                    if media['type'] == 'photo':
+                                        media_url = media['media_url']
 
                         if 'media' in data['entities']:
                             for media in data['entities']['media']:
