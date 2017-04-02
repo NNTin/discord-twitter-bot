@@ -1,12 +1,9 @@
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler, Stream
 from discordWebhooks import Webhook, Attachment, Field
-import calendar, time, random, configparser, json
+import calendar, time, random, json
+from time import gmtime, strftime
 
-#todo: add other games
-#todo: make bot use default icon and username
-
-#This is a basic listener that just prints received tweets to stdout.
 class StdOutListener(StreamListener):
     def on_status(self, status):
         """Called when a new status arrives"""
@@ -20,13 +17,13 @@ class StdOutListener(StreamListener):
         try:
             data = status._json
 
+
             with open('data.json') as data_file:
                 dataDiscords = json.load(data_file)
 
             for dataDiscord in dataDiscords['Discord']:
 
-                if data['user']['id_str'] in dataDiscord[
-                    'twitter_ids']:  # filter out tweets from people replying to dota 2 personalities
+                if data['user']['id_str'] in dataDiscord['twitter_ids']:  # filter out tweets from people replying to dota 2 personalities
 
                     for wh_url in dataDiscord['webhook_urls']:
 
@@ -68,7 +65,8 @@ class StdOutListener(StreamListener):
                                         footer_icon="https://cdn1.iconfinder.com/data/icons/iconza-circle-social/64/697029-twitter-512.png",
                                         ts=calendar.timegm(time.strptime(data['created_at'], '%a %b %d %H:%M:%S +0000 %Y')))
 
-                        print(data['user']['screen_name'], ' twittered.')
+
+                        print(strftime("[%Y-%m-%d %H:%M:%S]", gmtime()), data['user']['screen_name'], 'twittered.')
 
                         wh.addAttachment(at)
 
@@ -98,34 +96,6 @@ class StdOutListener(StreamListener):
             print(type(data))
 
         return True
-
-
-    def on_delete(self, status_id, user_id):
-        """Called when a delete notice arrives for a status"""
-        print('on_delete')
-        print(status_id)
-        print(user_id)
-        return
-
-    def on_event(self, status):
-        """Called when a new event arrives"""
-        print('on_event')
-        print(status)
-        return
-
-    def on_direct_message(self, status):
-        """Called when a new direct message arrives"""
-        print('on_direct_message')
-        print(status)
-        return
-
-    def on_friends(self, friends):
-        """Called when a friends list arrives.
-        friends is a list that contains user_id
-        """
-        print('on_friends')
-        print(friends)
-        return
 
     def on_limit(self, track):
         """Called when a limitation notice arrives"""
