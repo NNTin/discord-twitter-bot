@@ -34,7 +34,7 @@ class StdOutListener(StreamListener):
             if 'IncludeReplyToUser' in dataDiscord:     #other Twitter user tweeting to your followed Twitter user
                 if dataDiscord['IncludeReplyToUser'] == False:
                     if data['user']['id_str'] not in dataDiscord['twitter_ids']:
-                        print('Random Twitter user tweeted to your followed twitter users')
+                        #print('Random Twitter user tweeted to your followed twitter users')
                         continue
             else:   #if not specified: default behavior is not to include
                 if data['user']['id_str'] not in dataDiscord['twitter_ids']:
@@ -46,13 +46,13 @@ class StdOutListener(StreamListener):
                         if data['in_reply_to_user_id'] is not None:
                             if data['in_reply_to_user_id'] not in dataDiscord['twitter_ids']:
                                 if 'retweeted_status' not in data:
-                                    print('Your followed twitter users tweeted to someone else')
+                                    #print('Your followed twitter users tweeted to someone else')
                                     continue
 
             if 'IncludeRetweet' in dataDiscord:         #retweets...
                 if dataDiscord['IncludeRetweet'] == False:
                     if 'retweeted_status' in data:
-                        print('This is a retweeted status')
+                        #print('This is a retweeted status')
                         continue
 
 
