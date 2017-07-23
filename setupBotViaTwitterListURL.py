@@ -1,5 +1,12 @@
 import json, tweepy, re
 
+def get_bool(prompt):
+    while True:
+        try:
+           return {"true":True,"false":False}[input(prompt).lower()]
+        except KeyError:
+           print("Invalid input please enter True or False!")
+
 data = {'Twitter': {}, 'Discord': []}
 print('Setting up Twitter!')
 
@@ -38,7 +45,17 @@ for i in range(amount):
 
     print('Added %s Twitter users to the webhook URL' % len(twitter_ids))
 
-    data['Discord'].append({'webhook_urls': webhook_url, 'twitter_ids': twitter_ids})
+    includeReplyToUser = get_bool(
+        'Include reply tweets from other Twitter users? (Random Twitter user is replying to your followed Twitter user) (true/false)')
+    includeUserReply = get_bool(
+        'Include reply tweets to other Twitter users? (Your followed Twitter user is replying to random non-followed Twitter users.) (true/false)')
+    includeRetweet = get_bool(
+        'Include Retweets? (true/false)')
+
+    data['Discord'].append(
+        {'webhook_urls': webhook_url, 'twitter_ids': twitter_ids, 'IncludeReplyToUser': includeReplyToUser,
+         "IncludeUserReply": includeUserReply, "IncludeRetweet":includeRetweet})
+
     print('---')
 
 data['twitter_ids'] = []

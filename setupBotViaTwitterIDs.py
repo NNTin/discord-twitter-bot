@@ -1,5 +1,12 @@
 import json
 
+def get_bool(prompt):
+    while True:
+        try:
+           return {"true":True,"false":False}[input(prompt).lower()]
+        except KeyError:
+           print("Invalid input please enter True or False!")
+
 data = {'Twitter': {}, 'Discord': []}
 print('Setting up Twitter!')
 data['Twitter']['consumer_key'] = input('Give Consumer Key: ')
@@ -17,7 +24,13 @@ print('You can follow multiple twitter users by separating the twitter IDs with 
 for i in range(amount):
     webhook_url = input('Give webhook URL: ').split(',')
     twitter_ids = input('Give twitter IDs: ').split(',')
-    data['Discord'].append({'webhook_urls': webhook_url, 'twitter_ids': twitter_ids})
+    includeReplyToUser = get_bool('Include reply tweets from other Twitter users? (Random Twitter user is replying to your followed Twitter user) (true/false)')
+    includeUserReply = get_bool('Include reply tweets to other Twitter users? (Your followed Twitter user is replying to random Twitter users.) (true/false)')
+    includeRetweet = get_bool('Include Retweets? (true/false)')
+
+    data['Discord'].append(
+        {'webhook_urls': webhook_url, 'twitter_ids': twitter_ids, 'IncludeReplyToUser': includeReplyToUser,
+         "IncludeUserReply": includeUserReply, "IncludeRetweet": includeRetweet})
     print('---')
 
 data['twitter_ids'] = []
@@ -25,5 +38,9 @@ data['twitter_ids'] = []
 for element in data['Discord']:
     data['twitter_ids'].extend(x for x in element['twitter_ids'] if x not in data['twitter_ids'])
 
+
 with open('data.json', 'w') as outfile:
     json.dump(data, outfile)
+
+
+

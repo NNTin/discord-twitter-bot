@@ -1,10 +1,18 @@
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler, Stream
+from tweepy.api import API
 from discordWebhooks import Webhook, Attachment, Field
 import calendar, time, random, json
 from time import gmtime, strftime
 
+#todo: fix & < and > see: https://api.slack.com/docs/message-formatting
+
+
 class StdOutListener(StreamListener):
+    def __init__(self, api=None):
+        self.api = api or API()
+
+
     def on_status(self, status):
         """Called when a new status arrives"""
 
@@ -14,86 +22,105 @@ class StdOutListener(StreamListener):
                   '#ffbfd9', '#4c3300', '#36d98d', '#3d3df2', '#590018', '#f2c200', '#264d40', '#c8bfff', '#f23d6d',
                   '#d9c36c', '#2db3aa', '#b380ff', '#ff0022', '#333226', '#005c73', '#7c29a6']
 
-        try:
-            data = status._json
+        data = status._json
+        print(data)
+
+        with open('data.json') as data_file:
+            dataD = json.load(data_file)
+
+        for dataDiscord in dataD['Discord']:
 
 
-            with open('data.json') as data_file:
-                dataDiscords = json.load(data_file)
+            if 'IncludeReplyToUser' in dataDiscord:     #other Twitter user tweeting to your followed Twitter user
+                if dataDiscord['IncludeReplyToUser'] == False:
+                    if data['user']['id_str'] not in dataDiscord['twitter_ids']:
+                        print('Random Twitter user tweeted to your followed twitter users')
+                        continue
+            else:   #if not specified: default behavior is not to include
+                if data['user']['id_str'] not in dataDiscord['twitter_ids']:
+                    continue
 
-            for dataDiscord in dataDiscords['Discord']:
-
-                if data['user']['id_str'] in dataDiscord['twitter_ids']:  # filter out tweets from people replying to dota 2 personalities
-
-                    for wh_url in dataDiscord['webhook_urls']:
-
-                        wh = Webhook(url=wh_url)
-
-                        text = ''
-                        if 'extended_tweet' in data:
-                            text = data['extended_tweet']['full_text']
-                        else:
-                            text = data['text']
-
-                        for url in data['entities']['urls']:
-                            if url['expanded_url'] == None:
-                                continue
-                            text = text.replace(url['url'], "[%s](%s)" %(url['display_url'],url['expanded_url']))
-
-                        for userMention in data['entities']['user_mentions']:
-                            text = text.replace('@%s' %userMention['screen_name'], '[@%s](http://twitter.com/%s)' %(userMention['screen_name'],userMention['screen_name']))
-
-                        media_url = ''
-                        if 'extended_tweet' in data:
-                            if 'media' in data['extended_tweet']['entities']:
-                                for media in data['extended_tweet']['entities']['media']:
-                                    if media['type'] == 'photo':
-                                        media_url = media['media_url']
-
-                        if 'media' in data['entities']:
-                            for media in data['entities']['media']:
-                                if media['type'] == 'photo':
-                                    media_url = media['media_url']
-
-
-                        at = Attachment(author_name=data['user']['screen_name'],
-                                        author_icon=data['user']['profile_image_url'],
-                                        color=random.choice(colors), pretext=text,
-                                        image_url=media_url,
-                                        title_link="https://twitter.com/" + data['user']['screen_name'] + "/status/" + str(data['id_str']),
-                                        footer="Tweet created on",
-                                        footer_icon="https://cdn1.iconfinder.com/data/icons/iconza-circle-social/64/697029-twitter-512.png",
-                                        ts=calendar.timegm(time.strptime(data['created_at'], '%a %b %d %H:%M:%S +0000 %Y')))
-
-
-                        print(strftime("[%Y-%m-%d %H:%M:%S]", gmtime()), data['user']['screen_name'], 'twittered.')
-
-                        wh.addAttachment(at)
-
-
-                        if ('quoted_status' in data):
-
-
-                            text = data['quoted_status']['text']
-                            for url in data['quoted_status']['entities']['urls']:
-                                if url['expanded_url'] == None:
+            if 'IncludeUserReply' in dataDiscord:       #your followed Twitter users tweeting to random Twitter users (relevant if you only want status updates/opt out of conversations)
+                if dataDiscord['IncludeUserReply'] == False:
+                    if data['user']['id_str'] in dataDiscord['twitter_ids']:
+                        if data['in_reply_to_user_id'] is not None:
+                            if data['in_reply_to_user_id'] not in dataDiscord['twitter_ids']:
+                                if 'retweeted_status' not in data:
+                                    print('Your followed twitter users tweeted to someone else')
                                     continue
-                                text = text.replace(url['url'], "[%s](%s)" % (url['display_url'], url['expanded_url']))
 
-                            for userMention in data['quoted_status']['entities']['user_mentions']:
-                                text = text.replace('@%s' %userMention['screen_name'], '[@%s](http://twitter.com/%s)' %(userMention['screen_name'],userMention['screen_name']))
+            if 'IncludeRetweet' in dataDiscord:         #retweets...
+                if dataDiscord['IncludeRetweet'] == False:
+                    if 'retweeted_status' in data:
+                        print('This is a retweeted status')
+                        continue
 
 
 
-                            field = Field(data['quoted_status']['user']['screen_name'], text)
-                            at.addField(field)
+            for wh_url in dataDiscord['webhook_urls']:
 
-                        wh.post()
 
-        except:
-            print('@@@@@@@@@@@@@@@@@@@@@@')
-            print(data)
-            print(type(data))
+                wh = Webhook(url=wh_url)
+
+                text = ''
+                if 'extended_tweet' in data:
+                    text = data['extended_tweet']['full_text']
+                else:
+                    text = data['text']
+
+                for url in data['entities']['urls']:
+                    if url['expanded_url'] == None:
+                        continue
+                    text = text.replace(url['url'], "[%s](%s)" %(url['display_url'],url['expanded_url']))
+
+                for userMention in data['entities']['user_mentions']:
+                    text = text.replace('@%s' %userMention['screen_name'], '[@%s](http://twitter.com/%s)' %(userMention['screen_name'],userMention['screen_name']))
+
+                media_url = ''
+                if 'extended_tweet' in data:
+                    if 'media' in data['extended_tweet']['entities']:
+                        for media in data['extended_tweet']['entities']['media']:
+                            if media['type'] == 'photo':
+                                media_url = media['media_url']
+
+                if 'media' in data['entities']:
+                    for media in data['entities']['media']:
+                        if media['type'] == 'photo':
+                            media_url = media['media_url']
+
+
+                at = Attachment(author_name=data['user']['screen_name'],
+                                author_icon=data['user']['profile_image_url'],
+                                color=random.choice(colors), pretext=text,
+                                image_url=media_url,
+                                title_link="https://twitter.com/" + data['user']['screen_name'] + "/status/" + str(data['id_str']),
+                                footer="Tweet created on",
+                                footer_icon="https://cdn1.iconfinder.com/data/icons/iconza-circle-social/64/697029-twitter-512.png",
+                                ts=calendar.timegm(time.strptime(data['created_at'], '%a %b %d %H:%M:%S +0000 %Y')))
+
+
+                print(strftime("[%Y-%m-%d %H:%M:%S]", gmtime()), data['user']['screen_name'], 'twittered.')
+
+                wh.addAttachment(at)
+
+
+                if ('quoted_status' in data):
+
+
+                    text = data['quoted_status']['text']
+                    for url in data['quoted_status']['entities']['urls']:
+                        if url['expanded_url'] == None:
+                            continue
+                        text = text.replace(url['url'], "[%s](%s)" % (url['display_url'], url['expanded_url']))
+
+                    for userMention in data['quoted_status']['entities']['user_mentions']:
+                        text = text.replace('@%s' %userMention['screen_name'], '[@%s](http://twitter.com/%s)' %(userMention['screen_name'],userMention['screen_name']))
+
+
+
+                    field = Field(data['quoted_status']['user']['screen_name'], text)
+                    at.addField(field)
+                wh.post()
 
         return True
 
@@ -126,18 +153,24 @@ class StdOutListener(StreamListener):
 
 
 if __name__ == '__main__':
-    print('Starting bot....')
+    print('Bot started.')
 
     with open('data.json') as data_file:
         data = json.load(data_file)
+        data_file.close()
 
     l = StdOutListener()
     auth = OAuthHandler(data['Twitter']['consumer_key'], data['Twitter']['consumer_secret'])
     auth.set_access_token(data['Twitter']['access_token'], data['Twitter']['access_token_secret'])
     stream = Stream(auth, l)
 
+
+
+
+
     while True:
         try:
+            print('Twitter stream started.')
             stream.filter(follow=data['twitter_ids'])
         except:
             time.sleep(5)
