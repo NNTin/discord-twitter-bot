@@ -23,7 +23,7 @@ class StdOutListener(StreamListener):
                   '#d9c36c', '#2db3aa', '#b380ff', '#ff0022', '#333226', '#005c73', '#7c29a6']
 
         data = status._json
-        print(data)
+        #print(data)
 
         with open('data.json') as data_file:
             dataD = json.load(data_file)
