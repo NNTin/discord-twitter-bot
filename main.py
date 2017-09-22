@@ -4,8 +4,9 @@ from tweepy.api import API
 from discordWebhooks import Webhook, Attachment, Field
 import calendar, time, random, json
 from time import gmtime, strftime
+import HTMLParser
 
-#todo: fix & < and > see: https://api.slack.com/docs/message-formatting
+html = HTMLParser.HTMLParser()
 
 
 class StdOutListener(StreamListener):
@@ -88,6 +89,7 @@ class StdOutListener(StreamListener):
                         if media['type'] == 'photo':
                             media_url = media['media_url']
 
+                text = html.unescape(text)
 
                 at = Attachment(author_name=data['user']['screen_name'],
                                 author_icon=data['user']['profile_image_url'],
