@@ -4,8 +4,8 @@ from tweepy.api import API
 from discordWebhooks import Webhook, Attachment, Field
 import calendar, time, random, json
 from time import gmtime, strftime
+import html
 
-#todo: fix & < and > see: https://api.slack.com/docs/message-formatting
 
 
 class StdOutListener(StreamListener):
@@ -88,7 +88,7 @@ class StdOutListener(StreamListener):
                         if media['type'] == 'photo':
                             media_url = media['media_url']
 
-
+                text = html.unescape(text)
                 at = Attachment(author_name=data['user']['screen_name'],
                                 author_icon=data['user']['profile_image_url'],
                                 color=random.choice(colors), pretext=text,
@@ -116,8 +116,7 @@ class StdOutListener(StreamListener):
                     for userMention in data['quoted_status']['entities']['user_mentions']:
                         text = text.replace('@%s' %userMention['screen_name'], '[@%s](http://twitter.com/%s)' %(userMention['screen_name'],userMention['screen_name']))
 
-
-
+                    text = html.unescape(text)
                     field = Field(data['quoted_status']['user']['screen_name'], text)
                     at.addField(field)
                 wh.post()
