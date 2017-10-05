@@ -74,7 +74,7 @@ class StdOutListener(StreamListener):
                     text = text.replace(url['url'], "[%s](%s)" %(url['display_url'],url['expanded_url']))
 
                 for userMention in data['entities']['user_mentions']:
-                    text = text.replace('@%s' %userMention['screen_name'], '[@%s](http://twitter.com/%s)' %(userMention['screen_name'],userMention['screen_name']))
+                    text = text.replace('@%s' %userMention['screen_name'], '[@%s](https://twitter.com/%s)' %(userMention['screen_name'],userMention['screen_name']))
 
                 media_url = ''
                 media_type = ''
@@ -111,7 +111,7 @@ class StdOutListener(StreamListener):
                             media_type = 'gif'
 
                 if post_as_url:
-                    text_variant = '[@%s](http://twitter.com/%s) tweeted (with %s) at %s: %s' %(data['user']['screen_name'], data['user']['screen_name'], media_type, datetime.strptime(data['created_at'], '%a %b %d %H:%M:%S +0000 %Y').isoformat(' '), "https://twitter.com/" + data['user']['screen_name'] + "/status/" + str(data['id_str']))
+                    text_variant = '[@%s](https://twitter.com/%s) tweeted (with %s) at %s: %s' %(data['user']['screen_name'], data['user']['screen_name'], media_type, datetime.strptime(data['created_at'], '%a %b %d %H:%M:%S +0000 %Y').isoformat(' '), "https://twitter.com/" + data['user']['screen_name'] + "/status/" + str(data['id_str']))
                     wh = Webhook(url=wh_url, content=text_variant, username = username, icon_url=icon_url)
                     wh.post()
                     continue
@@ -147,7 +147,7 @@ class StdOutListener(StreamListener):
                         text = text.replace(url['url'], "[%s](%s)" % (url['display_url'], url['expanded_url']))
 
                     for userMention in data['quoted_status']['entities']['user_mentions']:
-                        text = text.replace('@%s' %userMention['screen_name'], '[@%s](http://twitter.com/%s)' %(userMention['screen_name'],userMention['screen_name']))
+                        text = text.replace('@%s' %userMention['screen_name'], '[@%s](https://twitter.com/%s)' %(userMention['screen_name'],userMention['screen_name']))
 
                     text = html.unescape(text)
                     field = Field(data['quoted_status']['user']['screen_name'], text)
