@@ -105,11 +105,13 @@ class StdOutListener(StreamListener):
                             media_type = media['type']
                         if media['type'] == 'video':
                             post_as_url = True
+                            media_type = media['type']
                         if media['type'] == 'animated_gif' and media_type != "video":
                             post_as_url = True
+                            media_type = 'gif'
 
                 if post_as_url:
-                    text_variant = '[@%s](http://twitter.com/%s) tweeted at %s: %s' %(data['user']['screen_name'], data['user']['screen_name'], datetime.strptime(data['created_at'], '%a %b %d %H:%M:%S +0000 %Y').isoformat(' '), "https://twitter.com/" + data['user']['screen_name'] + "/status/" + str(data['id_str']))
+                    text_variant = '[@%s](http://twitter.com/%s) tweeted (with %s) at %s: %s' %(data['user']['screen_name'], data['user']['screen_name'], media_type, datetime.strptime(data['created_at'], '%a %b %d %H:%M:%S +0000 %Y').isoformat(' '), "https://twitter.com/" + data['user']['screen_name'] + "/status/" + str(data['id_str']))
                     wh = Webhook(url=wh_url, content=text_variant, username = username, icon_url=icon_url)
                     wh.post()
                     continue
