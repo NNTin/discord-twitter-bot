@@ -89,13 +89,41 @@ class StdOutListener(StreamListener):
                     for media in data['entities']['media']:
                         if media['type'] == 'photo' and not media_url:
                             media_url = media['media_url_https']
-                            media_type = media['type']
+                            media_type = 'photo'
                         if media['type'] == 'video':
                             media_url = media['media_url_https']
-                            media_type = media['type']
+                            media_type = 'photo'
                         if media['type'] == 'animated_gif' and media_type != "video":
                             media_url = media['media_url_https']
                             media_type = 'photo'
+
+                if 'media' in data['extended_entities']:
+                    for media in data['extended_entities']['media']:
+                        if media['type'] == 'photo' and not media_url:
+                            media_url = media['media_url_https']
+                            media_type = media['type']
+                        if media['type'] == 'video':
+                            if 'video_info' in media:
+                                bitrate = -1
+                                for variant in media['video_info']['variants']:
+                                    if 'bitrate' in variant and variant['bitrate'] > bitrate:
+                                        bitrate = variant['bitrate']
+                                        media_url = variant['url']
+                                        media_type = 'video'
+                            else:
+                                media_url = media['media_url_https']
+                                media_type = 'photo'
+                        if media['type'] == 'animated_gif' and media_type != "video":
+                            if 'video_info' in media:
+                                bitrate = -1
+                                for variant in media['video_info']['variants']:
+                                    if 'bitrate' in variant and variant['bitrate'] > bitrate:
+                                        bitrate = variant['bitrate']
+                                        media_url = variant['url']
+                                        media_type = 'video'
+                            else:
+                                media_url = media['media_url_https']
+                                media_type = 'photo'
 
                 text = html.unescape(text)
                 at = Embed(author_name=username,
