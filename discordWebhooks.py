@@ -34,7 +34,7 @@ class Webhook():
         """
         Format the current object as a valid JSON object.
         """
-        data = {"username": self.username, "content": self.content, "avatar_url": self.icon_url, "attachments": []}
+        data = {"username": self.username, "content": self.content, "avatar_url": self.icon_url, "embeds": []}
 
         for attachment in self.attachments:
             att = {"author": attachment.author, "color": attachment.color, "description": attachment.description,
@@ -52,16 +52,17 @@ class Webhook():
                 f["inline"] = field.inline
                 att["fields"].append(f)
 
-            data["attachments"].append(att)
+            data["embeds"].append(att)
 
-        self.formatted = data
+        self.formatted = json.dumps(data)
 
     def post(self):
         """
         Send the JSON formated object to the specified `self.url`.
         """
         self.format()
-        result = requests.post(self.url, json=self.formatted).text
+        print(self.formatted)
+        result = requests.post(self.url, data=self.formatted, headers={"Content-Type": "application/json"}).text
 
         if result == "ok":
             return True
@@ -100,7 +101,7 @@ class Embed(classmethod):
         self.color = args["color"] if "color" in args else ""
         self.description = args["description"] if "description" in args else ""
         self.title = args["title"] if "title" in args else ""
-        self.url = args["url"] if "title_link" in args else ""
+        self.url = args["url"] if "url" in args else ""
         if "media_type" in args:
             if args["media_type"] == "photo":
                 self.image = {"url": args["media_url"]}

@@ -104,10 +104,11 @@ class StdOutListener(StreamListener):
                            description=text,
                            media_url=media_url,
                            media_type=media_type,
+                           title=data['user']['name'],
                            url="https://twitter.com/" + data['user']['screen_name'] + "/status/" + str(data['id_str']),
                            footer="Tweet created on",
                            footer_icon="https://cdn1.iconfinder.com/data/icons/iconza-circle-social/64/697029-twitter-512.png",
-                           timestamp=calendar.timegm(time.strptime(data['created_at'], '%a %b %d %H:%M:%S +0000 %Y')))
+                           timestamp=time.strptime(data['created_at'], '%a %b %d %H:%M:%S +0000 %Y').isoformat(' '))
 
 
                 print(strftime("[%Y-%m-%d %H:%M:%S]", gmtime()), data['user']['screen_name'], 'twittered.')
