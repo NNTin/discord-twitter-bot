@@ -98,7 +98,7 @@ class StdOutListener(StreamListener):
 
                 post_as_url = False
 
-                if 'media' in data['extended_entities']:
+                if 'extended_entities' in data and 'media' in data['extended_entities']:
                     for media in data['extended_entities']['media']:
                         if media['type'] == 'photo' and not media_url:
                             media_url = media['media_url_https']
