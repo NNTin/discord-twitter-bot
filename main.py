@@ -61,7 +61,6 @@ class StdOutListener(StreamListener):
                 username = data['user']['screen_name']
                 icon_url = data['user']['profile_image_url']
 
-                wh = Webhook(url=wh_url, username = username, icon_url=icon_url)
 
                 text = ''
                 if 'extended_tweet' in data:
@@ -97,33 +96,23 @@ class StdOutListener(StreamListener):
                             media_url = media['media_url_https']
                             media_type = 'photo'
 
+                post_as_url = False
+
                 if 'media' in data['extended_entities']:
                     for media in data['extended_entities']['media']:
                         if media['type'] == 'photo' and not media_url:
                             media_url = media['media_url_https']
                             media_type = media['type']
                         if media['type'] == 'video':
-                            if 'video_info' in media:
-                                bitrate = -1
-                                for variant in media['video_info']['variants']:
-                                    if 'bitrate' in variant and variant['bitrate'] > bitrate:
-                                        bitrate = variant['bitrate']
-                                        media_url = variant['url']
-                                        media_type = 'video'
-                            else:
-                                media_url = media['media_url_https']
-                                media_type = 'photo'
+                            post_as_url = True
                         if media['type'] == 'animated_gif' and media_type != "video":
-                            if 'video_info' in media:
-                                bitrate = -1
-                                for variant in media['video_info']['variants']:
-                                    if 'bitrate' in variant and variant['bitrate'] > bitrate:
-                                        bitrate = variant['bitrate']
-                                        media_url = variant['url']
-                                        media_type = 'video'
-                            else:
-                                media_url = media['media_url_https']
-                                media_type = 'photo'
+                            post_as_url = True
+
+                if post_as_url:
+                    text_variant = '[@%s](http://twitter.com/%s) tweeted at %s: %s' %(data['user']['screen_name'], data['user']['screen_name'], datetime.strptime(data['created_at'], '%a %b %d %H:%M:%S +0000 %Y').isoformat(' '), "https://twitter.com/" + data['user']['screen_name'] + "/status/" + str(data['id_str']))
+                    wh = Webhook(url=wh_url, content=text_variant, username = username, icon_url=icon_url)
+                    wh.post()
+                    continue
 
                 text = html.unescape(text)
                 at = Embed(author_name=username,
@@ -142,6 +131,7 @@ class StdOutListener(StreamListener):
 
                 print(strftime("[%Y-%m-%d %H:%M:%S]", gmtime()), data['user']['screen_name'], 'twittered.')
 
+                wh = Webhook(url=wh_url, username = username, icon_url=icon_url)
                 wh.addAttachment(at)
 
 
