@@ -2,8 +2,9 @@ from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler, Stream
 from tweepy.api import API
 from discordWebhooks import Webhook, Embed, Field
-import calendar, time, random, json
+import calendar, datetime, time, random, json
 from time import gmtime, strftime
+from datetime import datetime
 import html
 
 class StdOutListener(StreamListener):
@@ -108,7 +109,7 @@ class StdOutListener(StreamListener):
                            url="https://twitter.com/" + data['user']['screen_name'] + "/status/" + str(data['id_str']),
                            footer="Tweet created on",
                            footer_icon="https://cdn1.iconfinder.com/data/icons/iconza-circle-social/64/697029-twitter-512.png",
-                           timestamp=time.strptime(data['created_at'], '%a %b %d %H:%M:%S +0000 %Y').isoformat(' '))
+                           timestamp=datetime.strptime(data['created_at'], '%a %b %d %H:%M:%S +0000 %Y').isoformat(' '))
 
 
                 print(strftime("[%Y-%m-%d %H:%M:%S]", gmtime()), data['user']['screen_name'], 'twittered.')

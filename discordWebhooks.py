@@ -62,13 +62,13 @@ class Webhook():
         """
         self.format()
         print(self.formatted)
-        result = requests.post(self.url, data=self.formatted, headers={"Content-Type": "application/json"}).text
+        result = requests.post(self.url, data=self.formatted, headers={"Content-Type": "application/json"})
 
-        if result == "ok":
+        if 200 <= result.status_code <= 299 or result.text == "ok":
             return True
         else:
             try:
-                jsonResult = json.loads(result)
+                jsonResult = json.loads(result.text)
                 if jsonResult['message'] == 'You are being rate limited.':
                     print(jsonResult)
                     wait = int(jsonResult['retry_after'])
@@ -76,17 +76,16 @@ class Webhook():
                     time.sleep(wait)
                     self.post()
                 else:
-                    print(str(result))
-                    print(type(result))
-                    print(result)
+                    print(str(result.text))
+                    print(type(result.text))
+                    print(result.text)
                     print(jsonResult)
             except:
                 #raise Exception("Error on post : " + str(result))
                 print('Unhandled Error! Look into this')
-                print(str(result))
-                print(type(result))
-                print(result)
-                print(jsonResult)
+                print(str(result.text))
+                print(type(result.text))
+                print(result.text)
         #else:
         #    raise Exception("Error on post : " + str(result))
 
