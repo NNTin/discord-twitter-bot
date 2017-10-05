@@ -42,6 +42,9 @@ class Webhook():
         data["attachments"] = []
         for attachment in self.attachments:
             att = {}
+            data["username"] = attachment.author_name
+            data["icon_url"] = attachment.author_icon
+
             att["author_name"] = attachment.author_name
             att["author_icon"] = attachment.author_icon
             att["color"] = attachment.color
