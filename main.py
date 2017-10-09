@@ -30,30 +30,29 @@ class StdOutListener(StreamListener):
         for dataDiscord in dataD['Discord']:
 
 
-            if 'IncludeReplyToUser' in dataDiscord:     #other Twitter user tweeting to your followed Twitter user
-                if dataDiscord['IncludeReplyToUser'] == False:
-                    if data['user']['id_str'] not in dataDiscord['twitter_ids']:
-                        #print('Random Twitter user tweeted to your followed twitter users')
-                        continue
-            else:   #if not specified: default behavior is not to include
-                if data['user']['id_str'] not in dataDiscord['twitter_ids']:
-                    continue
+            if data['user']['id_str'] in dataDiscord['twitter_ids'] or data['in_reply_to_user_id_str'] in dataDiscord['twitter_ids']:
+                print(data)
 
-            if 'IncludeUserReply' in dataDiscord:       #your followed Twitter users tweeting to random Twitter users (relevant if you only want status updates/opt out of conversations)
-                if dataDiscord['IncludeUserReply'] == False:
-                    if data['user']['id_str'] in dataDiscord['twitter_ids']:
-                        if data['in_reply_to_user_id'] is not None:
-                            if data['in_reply_to_user_id'] not in dataDiscord['twitter_ids']:
-                                if 'retweeted_status' not in data:
-                                    #print('Your followed twitter users tweeted to someone else')
-                                    continue
+            data = {'created_at': 'Mon Oct 09 00:53:41 +0000 2017', 'id': 917191302118203392, 'id_str': '917191302118203392', 'text': '@Twitch can someone look into markdowns not working plz? Makin my channel look like a chump rn https://t.co/XLrYoVwGyr', 'display_text_range': [0, 94], 'source': '<a href="http://twitter.com/download/iphone" rel="nofollow">Twitter for iPhone</a>', 'truncated': False, 'in_reply_to_status_id': None, 'in_reply_to_status_id_str': None, 'in_reply_to_user_id': 309366491, 'in_reply_to_user_id_str': '309366491', 'in_reply_to_screen_name': 'Twitch', 'user': {'id': 821802513758232577, 'id_str': '821802513758232577', 'name': 'Nikkiduhgames', 'screen_name': 'NikkiDuhGames', 'location': 'Turn post notifications on!', 'url': 'http://www.twitch.tv/nikkiduhgames', 'description': 'Video game master, beer chuggin, bartender and dog crazed Virgo 🖖 @twitchkittens', 'translator_type': 'none', 'protected': False, 'verified': False, 'followers_count': 1907, 'friends_count': 2098, 'listed_count': 10, 'favourites_count': 1749, 'statuses_count': 1276, 'created_at': 'Wed Jan 18 19:32:42 +0000 2017', 'utc_offset': -25200, 'time_zone': 'Pacific Time (US & Canada)', 'geo_enabled': False, 'lang': 'en', 'contributors_enabled': False, 'is_translator': False, 'profile_background_color': '000000', 'profile_background_image_url': 'http://abs.twimg.com/images/themes/theme1/bg.png', 'profile_background_image_url_https': 'https://abs.twimg.com/images/themes/theme1/bg.png', 'profile_background_tile': False, 'profile_link_color': 'F58EA8', 'profile_sidebar_border_color': '000000', 'profile_sidebar_fill_color': '000000', 'profile_text_color': '000000', 'profile_use_background_image': False, 'profile_image_url': 'http://pbs.twimg.com/profile_images/881617627092733952/8bLKakMA_normal.jpg', 'profile_image_url_https': 'https://pbs.twimg.com/profile_images/881617627092733952/8bLKakMA_normal.jpg', 'profile_banner_url': 'https://pbs.twimg.com/profile_banners/821802513758232577/1499098249', 'default_profile': False, 'default_profile_image': False, 'following': None, 'follow_request_sent': None, 'notifications': None}, 'geo': None, 'coordinates': None, 'place': None, 'contributors': None, 'is_quote_status': False, 'quote_count': 0, 'reply_count': 0, 'retweet_count': 0, 'favorite_count': 0, 'entities': {'hashtags': [], 'urls': [], 'user_mentions': [{'screen_name': 'Twitch', 'name': 'Twitch', 'id': 309366491, 'id_str': '309366491', 'indices': [0, 7]}], 'symbols': [], 'media': [{'id': 917191291489763329, 'id_str': '917191291489763329', 'indices': [95, 118], 'media_url': 'http://pbs.twimg.com/tweet_video_thumb/DLqEnsBUQAEdA9w.jpg', 'media_url_https': 'https://pbs.twimg.com/tweet_video_thumb/DLqEnsBUQAEdA9w.jpg', 'url': 'https://t.co/XLrYoVwGyr', 'display_url': 'pic.twitter.com/XLrYoVwGyr', 'expanded_url': 'https://twitter.com/NikkiDuhGames/status/917191302118203392/photo/1', 'type': 'photo', 'sizes': {'large': {'w': 320, 'h': 400, 'resize': 'fit'}, 'small': {'w': 320, 'h': 400, 'resize': 'fit'}, 'thumb': {'w': 150, 'h': 150, 'resize': 'crop'}, 'medium': {'w': 320, 'h': 400, 'resize': 'fit'}}}]}, 'extended_entities': {'media': [{'id': 917191291489763329, 'id_str': '917191291489763329', 'indices': [95, 118], 'media_url': 'http://pbs.twimg.com/tweet_video_thumb/DLqEnsBUQAEdA9w.jpg', 'media_url_https': 'https://pbs.twimg.com/tweet_video_thumb/DLqEnsBUQAEdA9w.jpg', 'url': 'https://t.co/XLrYoVwGyr', 'display_url': 'pic.twitter.com/XLrYoVwGyr', 'expanded_url': 'https://twitter.com/NikkiDuhGames/status/917191302118203392/photo/1', 'type': 'animated_gif', 'sizes': {'large': {'w': 320, 'h': 400, 'resize': 'fit'}, 'small': {'w': 320, 'h': 400, 'resize': 'fit'}, 'thumb': {'w': 150, 'h': 150, 'resize': 'crop'}, 'medium': {'w': 320, 'h': 400, 'resize': 'fit'}}, 'video_info': {'aspect_ratio': [4, 5], 'variants': [{'bitrate': 0, 'content_type': 'video/mp4', 'url': 'https://video.twimg.com/tweet_video/DLqEnsBUQAEdA9w.mp4'}]}}]}, 'favorited': False, 'retweeted': False, 'possibly_sensitive': False, 'filter_level': 'low', 'lang': 'en', 'timestamp_ms': '1507510421672'}
 
-            if 'IncludeRetweet' in dataDiscord:         #retweets...
-                if dataDiscord['IncludeRetweet'] == False:
-                    if 'retweeted_status' in data:
-                        #print('This is a retweeted status')
-                        continue
 
+            worthPosting = True
+
+            if data['user']['id_str'] not in dataDiscord['twitter_ids']:
+                worthPosting = False
+                if 'IncludeReplyToUser' in dataDiscord:     #other Twitter user tweeting to your followed Twitter user
+                    if dataDiscord['IncludeUserReply'] == True:
+                        if data['in_reply_to_user_id_str'] in dataDiscord['twitter_ids']:
+                            worthPosting = True
+            else:
+                worthPosting = True
+                if 'IncludeUserReply' in dataDiscord:  # your followed Twitter users tweeting to random Twitter users (relevant if you only want status updates/opt out of conversations)
+                    if dataDiscord['IncludeUserReply'] == False and data['in_reply_to_user_id'] is not None:
+                            worthPosting = False
+
+
+            if not worthPosting:
+                continue
 
 
             for wh_url in dataDiscord['webhook_urls']:
@@ -111,6 +110,8 @@ class StdOutListener(StreamListener):
                             media_type = 'gif'
 
                 if post_as_url:
+                    print(strftime("[%Y-%m-%d %H:%M:%S]", gmtime()), data['user']['screen_name'], 'twittered. [Path 2]')
+
                     text_variant = '[@%s](https://twitter.com/%s) tweeted (with %s) at %s: %s' %(data['user']['screen_name'], data['user']['screen_name'], media_type, datetime.strptime(data['created_at'], '%a %b %d %H:%M:%S +0000 %Y').isoformat(' '), "https://twitter.com/" + data['user']['screen_name'] + "/status/" + str(data['id_str']))
                     wh = Webhook(url=wh_url, content=text_variant, username = username, icon_url=icon_url)
                     wh.post()
