@@ -30,8 +30,8 @@ class StdOutListener(StreamListener):
         for dataDiscord in dataD['Discord']:
 
 
-            if data['user']['id_str'] in dataDiscord['twitter_ids'] or data['in_reply_to_user_id_str'] in dataDiscord['twitter_ids']:
-                print(data)
+            #if data['user']['id_str'] in dataDiscord['twitter_ids'] or data['in_reply_to_user_id_str'] in dataDiscord['twitter_ids']:
+            #    print(data)
 
             worthPosting = True
 
