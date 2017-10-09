@@ -13,11 +13,11 @@ class Webhook():
         @param {String} username - The username to use while sending data to the webhook, may be left blank.
         @param {String} icon_url - An icon url, may be left blank.
         """
-        self.url = url if "/slack" in url else url + "/slack"
+        self.url = url
         self.content = content
         self.username = username
         self.icon_url = icon_url
-        self.formated = ""
+        self.formatted = ""
         self.attachments = []
 
     def addAttachment(self, attachment):
@@ -25,7 +25,7 @@ class Webhook():
         Add a specified Attachment to self.attachments for later usage.
         @param {Attachment} attachment - The Attachment object to append.
         """
-        if isinstance(attachment, Attachment):
+        if isinstance(attachment, Embed):
             self.attachments.append(attachment)
         else:
             raise Exception("The attachment is not a correct attachment object")
@@ -34,49 +34,41 @@ class Webhook():
         """
         Format the current object as a valid JSON object.
         """
-        data = {}
-        data["username"] = self.username
-        data["text"] = self.content
-        data["icon_url"] = self.icon_url
+        data = {"username": self.username, "content": self.content, "avatar_url": self.icon_url, "embeds": []}
 
-        data["attachments"] = []
         for attachment in self.attachments:
-            att = {}
-            att["author_name"] = attachment.author_name
-            att["author_icon"] = attachment.author_icon
-            att["color"] = attachment.color
-            att["pretext"] = attachment.pretext
-            att["title"] = attachment.title
-            att["title_link"] = attachment.title_link
-            att["image_url"] = attachment.image_url
-            att["footer"] = attachment.footer
-            att["footer_icon"] = attachment.footer_icon
-            att["ts"] = attachment.ts
+            att = {"author": attachment.author, "color": attachment.color, "description": attachment.description,
+                   "title": attachment.title, "url": attachment.url, "footer": attachment.footer,
+                   "timestamp": attachment.timestamp, "fields": []}
+            if attachment.type == "photo":
+                att["image"] = attachment.image
+            if attachment.type == "video":
+                att["video"] = attachment.video
 
-            att["fields"] = []
             for field in attachment.fields:
                 f = {}
-                f["title"] = field.title
+                f["name"] = field.name
                 f["value"] = field.value
-                f["short"] = field.short
+                f["inline"] = field.inline
                 att["fields"].append(f)
 
-            data["attachments"].append(att)
+            data["embeds"].append(att)
 
-        self.formated = json.dumps(data)
+        self.formatted = json.dumps(data)
 
     def post(self):
         """
         Send the JSON formated object to the specified `self.url`.
         """
         self.format()
-        result = requests.post(self.url, data=self.formated).text
+        #print(self.formatted)
+        result = requests.post(self.url, data=self.formatted, headers={"Content-Type": "application/json"})
 
-        if result == "ok":
+        if 200 <= result.status_code <= 299 or result.text == "ok":
             return True
         else:
             try:
-                jsonResult = json.loads(result)
+                jsonResult = json.loads(result.text)
                 if jsonResult['message'] == 'You are being rate limited.':
                     print(jsonResult)
                     wait = int(jsonResult['retry_after'])
@@ -84,35 +76,40 @@ class Webhook():
                     time.sleep(wait)
                     self.post()
                 else:
-                    print(str(result))
-                    print(type(result))
-                    print(result)
+                    print(str(result.text))
+                    print(type(result.text))
+                    print(result.text)
                     print(jsonResult)
             except:
                 #raise Exception("Error on post : " + str(result))
                 print('Unhandled Error! Look into this')
-                print(str(result))
-                print(type(result))
-                print(result)
-                print(jsonResult)
+                print(str(result.text))
+                print(type(result.text))
+                print(result.text)
         #else:
         #    raise Exception("Error on post : " + str(result))
 
-class Attachment(classmethod):
+class Embed(classmethod):
     def __init__(self, **args):
         """
         Initialize an Attachment object and fill the properties from given $args.
         """
-        self.author_name = args["author_name"] if "author_name" in args else ""
-        self.author_icon = args["author_icon"] if "author_icon" in args else ""
+        self.author = {"name": args["author_name"] if "author_name" in args else "",
+                       "url": args["author_url"] if "author_url" in args else "",
+                       "icon_url": args["author_icon"] if "author_icon" in args else ""}
         self.color = args["color"] if "color" in args else ""
-        self.pretext = args["pretext"] if "pretext" in args else ""
+        self.description = args["description"] if "description" in args else ""
         self.title = args["title"] if "title" in args else ""
-        self.title_link = args["title_link"] if "title_link" in args else ""
-        self.image_url = args["image_url"] if "image_url" in args else ""
-        self.footer = args["footer"] if "footer" in args else ""
-        self.footer_icon = args["footer_icon"] if "footer_icon" in args else ""
-        self.ts = args["ts"] if "ts" in args else 0
+        self.url = args["url"] if "url" in args else ""
+        if "media_type" in args:
+            if args["media_type"] == "photo":
+                self.image = {"url": args["media_url"]}
+            if args["media_type"] == "video":
+                self.video = {"url": args["media_url"]}
+        self.type = args["media_type"] if "media_type" in args else ""
+        self.footer = {"text": args["footer"] if "footer" in args else "",
+                       "icon_url": args["footer_icon"] if "footer_icon" in args else ""}
+        self.timestamp = args["timestamp"] if "timestamp" in args else 0
         self.fields = []
 
     def addField(self, field):
@@ -133,6 +130,6 @@ class Field():
         @param {String} value - The field value.
         @param {Boolean} short - TODO: Document usage of this variable.
         """
-        self.title = title
+        self.name = title
         self.value = value
-        self.short = short
+        self.inline = short
