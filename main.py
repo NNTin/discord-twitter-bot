@@ -126,7 +126,8 @@ class StdOutListener(StreamListener):
 
                 print(strftime("[%Y-%m-%d %H:%M:%S]", gmtime()), data['user']['screen_name'], 'twittered.')
 
-                wh = Webhook(url=wh_url, username = username, icon_url=icon_url)
+                #wh = Webhook(url=wh_url, username = username, icon_url=icon_url)
+                wh = Webhook(url=wh_url) #Use above if you have not set a default username and avatar for your webhook bot
                 wh.addAttachment(at)
 
 
