@@ -30,30 +30,26 @@ class StdOutListener(StreamListener):
         for dataDiscord in dataD['Discord']:
 
 
-            if 'IncludeReplyToUser' in dataDiscord:     #other Twitter user tweeting to your followed Twitter user
-                if dataDiscord['IncludeReplyToUser'] == False:
-                    if data['user']['id_str'] not in dataDiscord['twitter_ids']:
-                        #print('Random Twitter user tweeted to your followed twitter users')
-                        continue
-            else:   #if not specified: default behavior is not to include
-                if data['user']['id_str'] not in dataDiscord['twitter_ids']:
-                    continue
+            #if data['user']['id_str'] in dataDiscord['twitter_ids'] or data['in_reply_to_user_id_str'] in dataDiscord['twitter_ids']:
+            #    print(data)
 
-            if 'IncludeUserReply' in dataDiscord:       #your followed Twitter users tweeting to random Twitter users (relevant if you only want status updates/opt out of conversations)
-                if dataDiscord['IncludeUserReply'] == False:
-                    if data['user']['id_str'] in dataDiscord['twitter_ids']:
-                        if data['in_reply_to_user_id'] is not None:
-                            if data['in_reply_to_user_id'] not in dataDiscord['twitter_ids']:
-                                if 'retweeted_status' not in data:
-                                    #print('Your followed twitter users tweeted to someone else')
-                                    continue
+            worthPosting = True
 
-            if 'IncludeRetweet' in dataDiscord:         #retweets...
-                if dataDiscord['IncludeRetweet'] == False:
-                    if 'retweeted_status' in data:
-                        #print('This is a retweeted status')
-                        continue
+            if data['user']['id_str'] not in dataDiscord['twitter_ids']:
+                worthPosting = False
+                if 'IncludeReplyToUser' in dataDiscord:     #other Twitter user tweeting to your followed Twitter user
+                    if dataDiscord['IncludeUserReply'] == True:
+                        if data['in_reply_to_user_id_str'] in dataDiscord['twitter_ids']:
+                            worthPosting = True
+            else:
+                worthPosting = True
+                if 'IncludeUserReply' in dataDiscord:  # your followed Twitter users tweeting to random Twitter users (relevant if you only want status updates/opt out of conversations)
+                    if dataDiscord['IncludeUserReply'] == False and data['in_reply_to_user_id'] is not None:
+                            worthPosting = False
 
+
+            if not worthPosting:
+                continue
 
 
             for wh_url in dataDiscord['webhook_urls']:
@@ -96,7 +92,7 @@ class StdOutListener(StreamListener):
                             media_url = media['media_url_https']
                             media_type = 'photo'
 
-                post_as_url = False
+                videoAlert = False
 
                 if 'extended_entities' in data and 'media' in data['extended_entities']:
                     for media in data['extended_entities']['media']:
@@ -104,17 +100,14 @@ class StdOutListener(StreamListener):
                             media_url = media['media_url_https']
                             media_type = media['type']
                         if media['type'] == 'video':
-                            post_as_url = True
+                            videoAlert = True
                             media_type = media['type']
                         if media['type'] == 'animated_gif' and media_type != "video":
-                            post_as_url = True
+                            videoAlert = True
                             media_type = 'gif'
 
-                if post_as_url:
-                    text_variant = '[@%s](https://twitter.com/%s) tweeted (with %s) at %s: %s' %(data['user']['screen_name'], data['user']['screen_name'], media_type, datetime.strptime(data['created_at'], '%a %b %d %H:%M:%S +0000 %Y').isoformat(' '), "https://twitter.com/" + data['user']['screen_name'] + "/status/" + str(data['id_str']))
-                    wh = Webhook(url=wh_url, content=text_variant, username = username, icon_url=icon_url)
-                    wh.post()
-                    continue
+                if videoAlert:
+                    text += " *[tweet has video]*"
 
                 text = html.unescape(text)
                 at = Embed(author_name=username,
@@ -133,7 +126,8 @@ class StdOutListener(StreamListener):
 
                 print(strftime("[%Y-%m-%d %H:%M:%S]", gmtime()), data['user']['screen_name'], 'twittered.')
 
-                wh = Webhook(url=wh_url, username = username, icon_url=icon_url)
+                #wh = Webhook(url=wh_url, username = username, icon_url=icon_url)
+                wh = Webhook(url=wh_url) #Use above if you have not set a default username and avatar for your webhook bot
                 wh.addAttachment(at)
 
 
@@ -196,5 +190,10 @@ if __name__ == '__main__':
     auth.set_access_token(data['Twitter']['access_token'], data['Twitter']['access_token_secret'])
     stream = Stream(auth, l)
 
-    print('Twitter stream started.')
-    stream.filter(follow=data['twitter_ids'])
+    while True:
+        try:
+            print('Twitter stream started.')
+            stream.filter(follow=data['twitter_ids'])
+        except:
+            print('Bot crashed. Restarting in 30 seconds')
+            time.sleep(30)

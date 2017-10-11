@@ -61,7 +61,7 @@ class Webhook():
         Send the JSON formated object to the specified `self.url`.
         """
         self.format()
-        print(self.formatted)
+        #print(self.formatted)
         result = requests.post(self.url, data=self.formatted, headers={"Content-Type": "application/json"})
 
         if 200 <= result.status_code <= 299 or result.text == "ok":
