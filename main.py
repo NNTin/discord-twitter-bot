@@ -190,10 +190,5 @@ if __name__ == '__main__':
     auth.set_access_token(data['Twitter']['access_token'], data['Twitter']['access_token_secret'])
     stream = Stream(auth, l)
 
-    while True:
-        try:
-            print('Twitter stream started.')
-            stream.filter(follow=data['twitter_ids'])
-        except:
-            print('Bot crashed. Restarting in 30 seconds')
-            time.sleep(30)
+    print('Twitter stream started.')
+    stream.filter(follow=data['twitter_ids'])
