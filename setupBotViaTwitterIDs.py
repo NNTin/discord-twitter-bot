@@ -40,7 +40,7 @@ for element in data['Discord']:
 
 
 with open('data.json', 'w') as outfile:
-    json.dump(data, outfile)
+    json.dump(data, outfile, indent=4)
 
 
 
