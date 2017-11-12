@@ -35,7 +35,7 @@ for i in range(amount):
         'Give me a Twitter List URL:')
 
     twitter_ids = []
-    pattern = 'twitter.[A-Za-z]+\/(?P<twittername>[A-Za-z]+)\/lists\/(?P<listname>[A-Za-z-0-9_]+)'
+    pattern = '^https?:\/\/(?:www\.)?twitter\.com\/(?P<twittername>[a-zA-Z0-9]+)\/lists\/(?P<listname>[a-zA-Z0-9-]+)'
     for m in re.finditer(pattern, twitterListURL, re.I):
 
         for member in tweepy.Cursor(api.list_members, m.group('twittername'), m.group('listname')).items():
