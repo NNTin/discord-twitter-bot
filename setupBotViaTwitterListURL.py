@@ -39,7 +39,7 @@ for i in range(amount):
     for m in re.finditer(pattern, twitterListURL, re.I):
 
         for member in tweepy.Cursor(api.list_members, m.group('twittername'), m.group('listname')).items():
-            twitterID = member.id
+            twitterID = member._json['id_str']
             if twitterID not in twitter_ids:
                 twitter_ids.append(twitterID)
 
