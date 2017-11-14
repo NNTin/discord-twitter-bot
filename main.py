@@ -47,6 +47,10 @@ class StdOutListener(StreamListener):
                     if dataDiscord['IncludeUserReply'] == False and data['in_reply_to_user_id'] is not None:
                             worthPosting = False
 
+            if 'IncludeRetweet' in dataDiscord:  # retweets...
+                if dataDiscord['IncludeRetweet'] == False:
+                    if 'retweeted_status' in data:
+                        worthPosting = False #retweet
 
             if not worthPosting:
                 continue
