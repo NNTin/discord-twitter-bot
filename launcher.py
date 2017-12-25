@@ -72,8 +72,10 @@ class configuration:
         user_count = len(twitter_ids)
         while True:
             for i in range(0, int((user_count // 100)) + 1):
-                full_users.extend(self.client.lookup_users(user_ids=twitter_ids[i * 100:min((i + 1) * 100, user_count)]))
-            print('getting users batch: {}'.format(i))
+                try:
+                    full_users.extend(self.client.lookup_users(user_ids=twitter_ids[i * 100:min((i + 1) * 100, user_count)]))
+                except:
+                    print('None of your Twitter IDs are valid.')
             return full_users
 
     def getValidTwitterIDs(self, twitter_ids):
@@ -177,6 +179,63 @@ class configuration:
                 whString += self.data['Discord'][i]['webhook_urls'][j] + ' '
             print('{}. webhook URL(s): {}'.format(i+1, whString[:-1]))
         print('\n0. Cancel')
+
+    def modifyWebhook(self):
+        print('Listing all your webhooks.')
+        self.listWebhooks()
+        index = inputNumber('Which webhook do you want to modify?')
+        if index == 0:
+            print('Cancelled. Nothing was modified')
+            return
+        elif index < len(self.data['Discord']) + 1:
+            index -= 1
+            while True:
+                print('What do you want to modify?')
+                print('1. Webhook URL')
+                print('2. Twitter IDs')
+                print('3. Filter')
+                print('\n0. Go back.')
+                choice = user_choice()
+                if choice == "1":
+                    self.data['Discord'][index]['webhook_urls'] = cleanInput('Give webhook URL: ').split(',')
+                elif choice == "2":
+                    while True:
+                        print('Do you want to add or delete Twitter IDs?')
+                        print('1. Add Twitter IDs')
+                        print('2. Delete Twitter IDs')
+                        print('\n0. Go back.')
+                        choice = user_choice()
+                        if choice == "1":
+                            twitter_ids = str(input('Give twitter IDs: ').replace(' ', '')).split(',')
+                            originalCount = len(twitter_ids)
+                            twitter_ids = self.getValidTwitterIDs(twitter_ids)
+                            print('Of the {} twitter ids {} were valid.'.format(originalCount, len(twitter_ids)))
+                            for twitter_id in twitter_ids:
+                                self.data['Discord'][index]['twitter_ids'].append(twitter_id)
+                        elif choice == "2":
+                            twitter_ids = str(input('Give twitter IDs: ').replace(' ', '')).split(',')
+                            for twitter_id in twitter_ids:
+                                try:
+                                    self.data['Discord'][index]['twitter_ids'].remove(twitter_id)
+                                except ValueError:
+                                    print("\n{} couldn't be removed since the it wasn't in the list.\n".format(twitter_id))
+                        elif choice == "0":
+                            break
+
+                elif choice == "3":
+                    self.data['Discord'][index]['IncludeReplyToUser'] = get_bool(
+                        'Include reply tweets from other Twitter users? (Random Twitter user is replying to your followed Twitter user) (true/false)')
+                    self.data['Discord'][index]['IncludeUserReply'] = get_bool(
+                        'Include reply tweets to other Twitter users? (Your followed Twitter user is replying to random Twitter users.) (true/false)')
+                    self.data['Discord'][index]['IncludeRetweet'] = get_bool('Include Retweets? (true/false)')
+                elif choice == "0":
+                    break
+            c.saveConfig()
+
+
+        else:
+            print('This is not a valid option!')
+        c.saveConfig()
 
     def removeWebhook(self):
         print('Listing all your webhooks.')
@@ -304,10 +363,11 @@ if __name__ == '__main__':
         print("1. Install requirements")
         print("2. Set Twitter Credentials")
         print("3. Add a webhook")
-        print("4. Remove a webhook")
-        print("5. Print config")
-        print("6. Start the bot")
-        print("7. Start the bot with auto-rerun")
+        print("4. Modify a webhook")
+        print("5. Remove a webhook")
+        print("6. Print config")
+        print("7. Start the bot")
+        print("8. Start the bot with auto-rerun")
         print("\n0. Quit")
         choice = user_choice()
         if choice == "1":
@@ -324,17 +384,20 @@ if __name__ == '__main__':
             c.addWebhook()
             wait()
         elif choice == "4":
-            c.removeWebhook()
+            c.modifyWebhook()
             wait()
         elif choice == "5":
+            c.removeWebhook()
+            wait()
+        elif choice == "6":
             c.getConfig(compact=False)
             print()
             c.getConfig(compact=True)
             wait()
-        elif choice == "6":
+        elif choice == "7":
             runBot(autorestart=False)
             wait()
-        elif choice == "7":
+        elif choice == "8":
             runBot(autorestart=True)
             wait()
         elif choice == "0":

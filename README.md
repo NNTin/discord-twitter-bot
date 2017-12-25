@@ -4,6 +4,8 @@ Got questions? [Join the bot's discord server!](https://discord.gg/Dkg79tc)
 
 ## Preview
 
+[<img src="/img/gif.gif?raw=true" width="840px">](https://discord.gg/Dkg79tc)
+
 ## New Launcher
 
 I have now added an experimental launcher file. From which you can setup the bot as well as run the bot. Please provide feedback. In the near future I will delete the old setup files since they've become obsolete.
