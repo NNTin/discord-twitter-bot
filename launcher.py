@@ -99,16 +99,17 @@ class configuration:
             print('Do you want to setup your Webhook via Twitter IDs or a Twitter List URL?')
             print("1. Twitter IDs")
             print("2. Twitter List URL")
-            print("\n0. Quit")
+            print("\n0. Go back")
             choice = user_choice()
             if choice == "1":
                 self.addWebhookViaTwitterIDs()
-                break
             elif choice == "2":
                 self.addWebhookViaTwitterURL()
-                break
             elif choice == "0":
+                print('Going back...')
                 break
+            else:
+                print('\nThis is not a valid option!\n')
 
     def addWebhookViaTwitterURL(self):
         self.webhookCount()
@@ -185,7 +186,7 @@ class configuration:
         self.listWebhooks()
         index = inputNumber('Which webhook do you want to modify?')
         if index == 0:
-            print('Cancelled. Nothing was modified')
+            print('Going back...')
             return
         elif index < len(self.data['Discord']) + 1:
             index -= 1
@@ -238,17 +239,18 @@ class configuration:
         c.saveConfig()
 
     def removeWebhook(self):
-        print('Listing all your webhooks.')
-        self.listWebhooks()
-        index = inputNumber('Which webhook do you want to delete?')
-        if index == 0:
-            print('Cancelled. Nothing was deleted')
-            return
-        elif index < len(self.data['Discord'])+1:
-            del self.data['Discord'][index-1]
-        else:
-            print('This is not a valid option!')
-        c.saveConfig()
+        while True:
+            print('Listing all your webhooks.')
+            self.listWebhooks()
+            index = inputNumber('Which webhook do you want to delete?')
+            if index == 0:
+                print('Going back...')
+                break
+            elif index < len(self.data['Discord'])+1:
+                del self.data['Discord'][index-1]
+            else:
+                print('\nThis is not a valid option!\n')
+            c.saveConfig()
 
 def inputNumber(text):
     while True:
