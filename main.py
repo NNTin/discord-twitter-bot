@@ -189,6 +189,10 @@ if __name__ == '__main__':
         data = json.load(data_file)
         data_file.close()
 
+    data['twitter_ids'] = []
+    for element in data['Discord']:
+        data['twitter_ids'].extend(x for x in element['twitter_ids'] if x not in data['twitter_ids'])
+
     l = StdOutListener()
     auth = OAuthHandler(data['Twitter']['consumer_key'], data['Twitter']['consumer_secret'])
     auth.set_access_token(data['Twitter']['access_token'], data['Twitter']['access_token_secret'])
