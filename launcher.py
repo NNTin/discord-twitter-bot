@@ -29,6 +29,35 @@ class configuration:
                               self.data['Twitter']['access_token_secret'])
         self.client = tweepy.API(auth)
 
+    def runTest(self):
+        try:
+            self.authenticate()
+        except:
+            print('Error. Tweepy might not be installed.')
+        else:
+            print('Tweepy is installed.')
+
+        try:
+            self.client.verify_credentials()
+        except:
+            print('Your Twitter credentials are wrong!')
+        else:
+            print('Your Twitter credentials are set and correct!')
+
+        self.webhookCount()
+        self.getConfig(compact=False)
+        self.getConfig(compact=True)
+
+        print('Checking Twitter IDs. This may take a while.')
+
+        twitter_ids = []
+        for element in self.data['Discord']:
+            twitter_ids.extend(x for x in element['twitter_ids'] if x not in twitter_ids)
+
+        originalCount = len(twitter_ids)
+        twitter_ids = self.getValidTwitterIDs(twitter_ids)
+        print('Of the {} twitter ids {} were valid.'.format(originalCount, len(twitter_ids)))
+
     def getConfig(self, compact=False):
         if not compact:
             print(self.data)
@@ -210,9 +239,9 @@ class configuration:
                             twitter_ids = str(input('Give twitter IDs: ').replace(' ', '')).split(',')
                             originalCount = len(twitter_ids)
                             twitter_ids = self.getValidTwitterIDs(twitter_ids)
-                            print('Of the {} twitter ids {} were valid.'.format(originalCount, len(twitter_ids)))
+                            print('\nOf the {} twitter ids {} were valid.\n'.format(originalCount, len(twitter_ids)))
                             for twitter_id in twitter_ids:
-                                self.data['Discord'][index]['twitter_ids'].append(twitter_id)
+                                self.data['Discord'][index]['twitter_ids'] += [twitter_id] if twitter_id not in self.data['Discord'][index]['twitter_ids'] else []
                         elif choice == "2":
                             twitter_ids = str(input('Give twitter IDs: ').replace(' ', '')).split(',')
                             for twitter_id in twitter_ids:
@@ -370,6 +399,7 @@ if __name__ == '__main__':
         print("6. Print config")
         print("7. Start the bot")
         print("8. Start the bot with auto-rerun")
+        print("9. Run a test (troubleshooting)")
         print("\n0. Quit")
         choice = user_choice()
         if choice == "1":
@@ -401,6 +431,9 @@ if __name__ == '__main__':
             wait()
         elif choice == "8":
             runBot(autorestart=True)
+            wait()
+        elif choice == "9":
+            c.runTest()
             wait()
         elif choice == "0":
             break
