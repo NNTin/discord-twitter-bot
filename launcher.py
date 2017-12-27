@@ -30,17 +30,24 @@ class configuration:
         self.client = tweepy.API(auth)
 
     def runTest(self):
+        print('discord-twitter-bot needs Python 3.5 or superior. You are using: ' + get_python_version())
+        if PYTHON_OK:
+            print('Requirement is met.')
+        else:
+            print('Requirement is not met.')
+
         try:
             self.authenticate()
         except:
             print('Error. Tweepy might not be installed.')
+            return
         else:
             print('Tweepy is installed.')
-
         try:
             self.client.verify_credentials()
         except:
             print('Your Twitter credentials are wrong!')
+            return
         else:
             print('Your Twitter credentials are set and correct!')
 
@@ -340,7 +347,7 @@ def install_reqs():
         interpreter, "-m",
         "pip", "install",
         "--upgrade",
-        "--target", REQS_DIR,
+        #"--target", REQS_DIR,  #This has been causing problems for some users. Although I don't know what exactly is wrong with it.
         "-r", REQS_TXT
     ]
     code = subprocess.call(args)
@@ -357,10 +364,16 @@ def runBot(autorestart=False):
     if interpreter is None:  # This should never happen
         raise RuntimeError("Couldn't find Python's interpreter")
 
+    if tweepy is None:
+        print("Warning: tweepy is not installed. Please run the first option.\n")
+        wait()
+        return
+
     cmd = (interpreter, "main.py")
 
     while True:
         try:
+            print('Starting main.py. You can get back to the launcher via ctrl+c.')
             code = subprocess.call(cmd)
         except KeyboardInterrupt:
             code = 0
@@ -382,14 +395,14 @@ if __name__ == '__main__':
               "install Python without unchecking any option during the setup")
         wait()
         exit(1)
-    if tweepy is None:
-        print("Warning: tweepy is not installed. Please run the first option.\n")
 
     check_files()
 
     c = configuration()
 
     while True:
+        if tweepy is None:
+            print("Warning: tweepy is not installed. Please run the first option.\n")
         print(INTRO)
         print("1. Install requirements")
         print("2. Set Twitter Credentials")
