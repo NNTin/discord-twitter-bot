@@ -60,8 +60,5 @@ for i in range(amount):
 
 data['twitter_ids'] = []
 
-for element in data['Discord']:
-    data['twitter_ids'].extend(x for x in element['twitter_ids'] if x not in data['twitter_ids'])
-
 with open('data.json', 'w') as outfile:
     json.dump(data, outfile, indent=4)
