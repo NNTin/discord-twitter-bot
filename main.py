@@ -38,7 +38,7 @@ class StdOutListener(StreamListener):
             if data['user']['id_str'] not in dataDiscord['twitter_ids']:
                 worthPosting = False
                 if 'IncludeReplyToUser' in dataDiscord:     #other Twitter user tweeting to your followed Twitter user
-                    if dataDiscord['IncludeUserReply'] == True:
+                    if dataDiscord['IncludeReplyToUser'] == True:
                         if data['in_reply_to_user_id_str'] in dataDiscord['twitter_ids']:
                             worthPosting = True
             else:
