@@ -1,15 +1,22 @@
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler, Stream
 from tweepy.api import API
-from discordWebhooks import Webhook, Embed, Field
+from .discordWebhooks import Webhook, Embed, Field
 import calendar, datetime, time, random, json
 from time import gmtime, strftime
 from datetime import datetime
 import html
 
 class StdOutListener(StreamListener):
-    def __init__(self, api=None):
+    def __init__(self, api=None, dataD=None):
         self.api = api or API()
+
+        if dataD == None:
+            with open('data.json') as data_file:
+                datajson = json.load(data_file)
+                self.dataD = datajson['Discord']
+        else:
+            self.dataD = dataD
 
 
     def on_status(self, status):
@@ -22,19 +29,8 @@ class StdOutListener(StreamListener):
                   0xd9c36c, 0x2db3aa, 0xb380ff, 0xff0022, 0x333226, 0x005c73, 0x7c29a6]
 
         data = status._json
-        #print(data)
 
-        with open('data.json') as data_file:
-            dataD = json.load(data_file)
-
-        for dataDiscord in dataD['Discord']:
-
-
-            #if data['user']['id_str'] in dataDiscord['twitter_ids'] or data['in_reply_to_user_id_str'] in dataDiscord['twitter_ids']:
-            #    print(data)
-
-            worthPosting = True
-
+        for dataDiscord in self.dataD:
             if data['user']['id_str'] not in dataDiscord['twitter_ids']:
                 worthPosting = False
                 if 'IncludeReplyToUser' in dataDiscord:     #other Twitter user tweeting to your followed Twitter user
@@ -55,12 +51,9 @@ class StdOutListener(StreamListener):
             if not worthPosting:
                 continue
 
-
             for wh_url in dataDiscord['webhook_urls']:
-
                 username = data['user']['screen_name']
                 icon_url = data['user']['profile_image_url']
-
 
                 text = ''
                 if 'extended_tweet' in data:
@@ -127,17 +120,13 @@ class StdOutListener(StreamListener):
                            footer_icon="https://cdn1.iconfinder.com/data/icons/iconza-circle-social/64/697029-twitter-512.png",
                            timestamp=datetime.strptime(data['created_at'], '%a %b %d %H:%M:%S +0000 %Y').isoformat(' '))
 
-
                 print(strftime("[%Y-%m-%d %H:%M:%S]", gmtime()), data['user']['screen_name'], 'twittered.')
 
                 #wh = Webhook(url=wh_url, username = username, icon_url=icon_url)
                 wh = Webhook(url=wh_url) #Use above if you have not set a default username and avatar for your webhook bot
                 wh.addAttachment(at)
 
-
                 if ('quoted_status' in data):
-
-
                     text = data['quoted_status']['text']
                     for url in data['quoted_status']['entities']['urls']:
                         if url['expanded_url'] == None:
@@ -151,7 +140,6 @@ class StdOutListener(StreamListener):
                     field = Field(data['quoted_status']['user']['screen_name'], text)
                     at.addField(field)
                 wh.post()
-
         return True
 
     def on_limit(self, track):
@@ -180,7 +168,6 @@ class StdOutListener(StreamListener):
         print('on_warning')
         print(notice)
         return
-
 
 if __name__ == '__main__':
     print('Bot started.')
