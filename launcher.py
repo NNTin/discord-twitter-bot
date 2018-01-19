@@ -155,11 +155,11 @@ class configuration:
         webhook_url = input('Give webhook URL: ').split(',')
         twitterListURL = input(
             'The Twitter List URL needs to be in this format: https://twitter.com/XXXXXXXX/lists/XXXXXXXXX/.\n'
-            'Give me a Twitter List URL:')
+            'Give me Twitter List URL(s):')
         print('\nProgram is now attempting to communicate with Twitter. This can take a while!')
 
         twitter_ids = []
-        pattern = '^https?:\/\/(?:www\.)?twitter\.com\/(?P<twittername>[a-zA-Z0-9]+)\/lists\/(?P<listname>[a-zA-Z0-9-]+)'
+        pattern = 'https?:\/\/(?:www\.)?twitter\.com\/(?P<twittername>[a-zA-Z0-9]+)\/lists\/(?P<listname>[a-zA-Z0-9-]+)'
         for m in re.finditer(pattern, twitterListURL, re.I):
 
             for member in tweepy.Cursor(self.client.list_members, m.group('twittername'), m.group('listname')).items():
