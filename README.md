@@ -16,7 +16,7 @@ Not using venv will break your other projects.
 
 Get Python 3.5 or later.
 
-```python
+```coffeescript
 python3 -m venv bot-env
 source bot-env/bin/activate
 git clone -b rewrite --single-branch https://github.com/NNTin/discord-twitter-bot.git
@@ -36,6 +36,6 @@ Useful links:
 * [What's a webhook?](https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks)
 
 ## Credits
-Derpolino for providing the [discord-webhook-python](https://github.com/Derpolino/discord-webhooks-python) code.
-Rokxx for providing the [dota 2 twitter list](https://twitter.com/rokxx/lists/dota-2/members).
+Derpolino for providing the [discord-webhook-python](https://github.com/Derpolino/discord-webhooks-python) code.  
+Rokxx for providing the [dota 2 twitter list](https://twitter.com/rokxx/lists/dota-2/members).  
 JacobNWolf for providing the [twitter lists](https://twitter.com/JacobNWolf/lists/) for CS:GO, LoL, Overwatch, CoD and SSMB.
