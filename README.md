@@ -3,6 +3,8 @@ Post tweets to Discord Webhook of certain twitter users.
 Got questions? [Join the bot's discord server!](https://discord.gg/Dkg79tc)
 
 This rewrite branch uses the rewrite version of discord.py which is in beta.
+Warning: If you are relying on the async version of discord.py use Python's virtual environment. 
+Not using venv will break your other projects.
 
 ## Preview
 
@@ -17,16 +19,12 @@ Get Python 3.5 or later.
 ```python
 python3 -m venv bot-env
 source bot-env/bin/activate
-python3 -m pip install -U git+https://github.com/Rapptz/discord.py@rewrite#egg=discord.py
 git clone -b rewrite --single-branch https://github.com/NNTin/discord-twitter-bot.git
-cd discord-twitter-bot
-python3 launcher.py
+python3 discord-twitter-bot/launcher.py
 ```
 
-Creating a virtual environment and activating it. You can skip this but it is recommended if you are relying on an older version of discord.py.
-Installing the rewrite version of discord.py.
-Git cloning the rewrite branch of this GitHub project
-Executing launcher.py
+First two lines are skip-able but are recommended if you are relying on an older version of discord.py.
+Third line clones the rewrite branch. Fourth line executes launcher.py
 
 Once you have set everything up you can start main.py directly.
 

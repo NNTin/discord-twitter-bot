@@ -1,5 +1,9 @@
 from dataIO import fileIO
-import sys, os, subprocess, re, time
+import sys
+import os
+import subprocess
+import re
+import time
 try:
     import pip
 except ImportError:
@@ -8,6 +12,10 @@ try:
     import tweepy
 except ImportError:
     tweepy = None
+try:
+    import discord
+except ImportError:
+    discord = None
 
 REQS_DIR = "lib"
 sys.path.insert(0, REQS_DIR)
@@ -18,7 +26,8 @@ INTRO = ("==============================\n"
          "discord-twitter-bot - Launcher\n"
          "==============================\n")
 
-class configuration:
+
+class Configuration:
     def __init__(self):
         self.data = fileIO("data.json", "load")
 
@@ -29,12 +38,23 @@ class configuration:
                               self.data['Twitter']['access_token_secret'])
         self.client = tweepy.API(auth)
 
-    def runTest(self):
+    def run_test(self):
         print('discord-twitter-bot needs Python 3.5 or superior. You are using: ' + get_python_version())
         if PYTHON_OK:
             print('Requirement is met.')
         else:
             print('Requirement is not met.')
+
+        if discord is None:
+            print("Warning: discord is not installed. Please run the first option.\n")
+            return
+        else:
+            if discord.version_info.major < 1:
+                print(
+                    "Warning: You are using the async version of discord.py ({}). This rewrite branch requires you to "
+                    "install the rewrite version of discord.py.".format(discord.__version__))
+            else:
+                print('Discord.py ({}) is installed.'.format(discord.__version__))
 
         try:
             self.authenticate()
@@ -51,9 +71,9 @@ class configuration:
         else:
             print('Your Twitter credentials are set and correct!')
 
-        self.webhookCount()
-        self.getConfig(compact=False)
-        self.getConfig(compact=True)
+        self.webhook_count()
+        self.get_config(compact=False)
+        self.get_config(compact=True)
 
         print('Checking Twitter IDs. This may take a while.')
 
@@ -61,22 +81,22 @@ class configuration:
         for element in self.data['Discord']:
             twitter_ids.extend(x for x in element['twitter_ids'] if x not in twitter_ids)
 
-        originalCount = len(twitter_ids)
-        twitter_ids = self.getValidTwitterIDs(twitter_ids)
-        print('Of the {} twitter ids {} were valid.'.format(originalCount, len(twitter_ids)))
+        original_count = len(twitter_ids)
+        twitter_ids = self.get_valid_twitter_ids(twitter_ids)
+        print('Of the {} twitter ids {} were valid.'.format(original_count, len(twitter_ids)))
 
-    def getConfig(self, compact=False):
+    def get_config(self, compact=False):
         if not compact:
             print(self.data)
         else:
             for key in self.data['Twitter']:
                 print('{}: {}'.format(key, self.data['Twitter'][key]))
-            self.webhookCount()
+            self.webhook_count()
 
-    def setTwitterCredentials(self):
+    def set_twitter_credentials(self):
         print('Setting up Twitter!\nGet your Twitter API keys & secret as well as access token & secret from here: https://apps.twitter.com/')
         for key in self.data['Twitter']:
-            self.data['Twitter'][key] = cleanInput(key + ': ')
+            self.data['Twitter'][key] = clean_input(key + ': ')
         try:
             self.authenticate()
         except:
@@ -87,21 +107,21 @@ class configuration:
             print('Your Twitter credentials are wrong!')
         else:
             print('Your Twitter credentials are set and correct!')
-            c.saveConfig()
+            c.save_config()
 
-    def saveConfig(self):
+    def save_config(self):
         fileIO("data.json", "save", self.data)
 
-    def webhookCount(self):
-        amountWebhooks = len(self.data['Discord'])
-        amountChannels = 0
-        amountTwitterUsers = 0
-        for i in range(0, amountWebhooks):
-            amountChannels += len(self.data['Discord'][i]['webhook_urls'])
-            amountTwitterUsers += len(self.data['Discord'][i]['twitter_ids'])
+    def webhook_count(self):
+        amount_webhooks = len(self.data['Discord'])
+        amount_channels = 0
+        amount_twitter_users = 0
+        for i in range(0, amount_webhooks):
+            amount_channels += len(self.data['Discord'][i]['webhook_urls'])
+            amount_twitter_users += len(self.data['Discord'][i]['twitter_ids'])
 
         print('You currently have {} webhooks in {} channels with a total amount of {} followed twitter users.'
-              .format(amountWebhooks, amountChannels, amountTwitterUsers))
+              .format(amount_webhooks, amount_channels, amount_twitter_users))
 
     def lookup_users_list(self, twitter_ids):
         full_users = []
@@ -114,23 +134,23 @@ class configuration:
                     print('None of your Twitter IDs are valid.')
             return full_users
 
-    def getValidTwitterIDs(self, twitter_ids):
-        validTwitterIDs = []
+    def get_valid_twitter_ids(self, twitter_ids):
+        valid_twitter_ids = []
         try:
             self.authenticate()
             self.client.verify_credentials()
         except:
             print('Could not check Twitter IDs because Twitter API Credentials are invalid.')
-            return validTwitterIDs
+            return valid_twitter_ids
 
         user_objs = self.lookup_users_list(twitter_ids)
 
         for user in user_objs:
             print('twitter id: {} -> screen name: {}'.format(user.id, user.screen_name))
-            validTwitterIDs.append(str(user.id))
-        return validTwitterIDs
+            valid_twitter_ids.append(str(user.id))
+        return valid_twitter_ids
 
-    def addWebhook(self):
+    def add_webhook(self):
         while True:
             print('Do you want to setup your Webhook via Twitter IDs or a Twitter List URL?')
             print("1. Twitter IDs")
@@ -138,89 +158,88 @@ class configuration:
             print("\n0. Go back")
             choice = user_choice()
             if choice == "1":
-                self.addWebhookViaTwitterIDs()
+                self.add_webhook_via_twitter_ids()
             elif choice == "2":
-                self.addWebhookViaTwitterURL()
+                self.add_webhook_via_twitter_url()
             elif choice == "0":
                 print('Going back...')
                 break
             else:
                 print('\nThis is not a valid option!\n')
 
-    def addWebhookViaTwitterURL(self):
-        self.webhookCount()
+    def add_webhook_via_twitter_url(self):
+        self.webhook_count()
         self.authenticate()
         print('\nYou can post the same content in multiple text channels by separating the webhook URLs with a comma ,')
 
         webhook_url = input('Give webhook URL: ').split(',')
-        twitterListURL = input(
+        twitter_list_url = input(
             'The Twitter List URL needs to be in this format: https://twitter.com/XXXXXXXX/lists/XXXXXXXXX/.\n'
             'Give me Twitter List URL(s):')
         print('\nProgram is now attempting to communicate with Twitter. This can take a while!')
 
         twitter_ids = []
         pattern = 'https?:\/\/(?:www\.)?twitter\.com\/(?P<twittername>[a-zA-Z0-9]+)\/lists\/(?P<listname>[a-zA-Z0-9-]+)'
-        for m in re.finditer(pattern, twitterListURL, re.I):
+        for m in re.finditer(pattern, twitter_list_url, re.I):
 
             for member in tweepy.Cursor(self.client.list_members, m.group('twittername'), m.group('listname')).items():
-                twitterID = member._json['id_str']
-                if twitterID not in twitter_ids:
-                    twitter_ids.append(twitterID)
+                twitter_id = member._json['id_str']
+                if twitter_id not in twitter_ids:
+                    twitter_ids.append(twitter_id)
 
-        self.getValidTwitterIDs(twitter_ids)
+        self.get_valid_twitter_ids(twitter_ids)
         print('Added %s Twitter users to the webhook URL' % len(twitter_ids))
 
-        includeReplyToUser = get_bool(
+        include_reply_to_user = get_bool(
             'Include reply tweets from other Twitter users? (Random Twitter user is replying to your followed Twitter user) (true/false)')
-        includeUserReply = get_bool(
+        include_user_reply = get_bool(
             'Include reply tweets to other Twitter users? (Your followed Twitter user is replying to random non-followed Twitter users.) (true/false)')
-        includeRetweet = get_bool(
+        include_retweet = get_bool(
             'Include Retweets? (true/false)')
 
         self.data['Discord'].append(
-            {'webhook_urls': webhook_url, 'twitter_ids': twitter_ids, 'IncludeReplyToUser': includeReplyToUser,
-             "IncludeUserReply": includeUserReply, "IncludeRetweet": includeRetweet})
-        c.saveConfig()
+            {'webhook_urls': webhook_url, 'twitter_ids': twitter_ids, 'IncludeReplyToUser': include_reply_to_user,
+             "IncludeUserReply": include_user_reply, "IncludeRetweet": include_retweet})
+        c.save_config()
 
-
-    def addWebhookViaTwitterIDs(self):
-        self.webhookCount()
+    def add_webhook_via_twitter_ids(self):
+        self.webhook_count()
         print('\nYou can post the same content in multiple text channels by separating the webhook URLs with a comma ,')
         print('Get the twitter IDs from here: http://gettwitterid.com/')
         print('You can follow multiple twitter users by separating the twitter IDs with a comma ,')
 
-        webhook_url = cleanInput('Give webhook URL: ').split(',')
+        webhook_url = clean_input('Give webhook URL: ').split(',')
         twitter_ids = str(input('Give twitter IDs: ').replace(' ', '')).split(',')
-        includeReplyToUser = get_bool(
+        include_reply_to_user = get_bool(
             'Include reply tweets from other Twitter users? (Random Twitter user is replying to your followed Twitter user) (true/false)')
-        includeUserReply = get_bool(
+        include_user_reply = get_bool(
             'Include reply tweets to other Twitter users? (Your followed Twitter user is replying to random Twitter users.) (true/false)')
-        includeRetweet = get_bool('Include Retweets? (true/false)')
+        include_retweet = get_bool('Include Retweets? (true/false)')
 
-        originalCount = len(twitter_ids)
-        twitter_ids = self.getValidTwitterIDs(twitter_ids)
-        print('Of the {} twitter ids {} were valid.'.format(originalCount, len(twitter_ids)))
+        original_count = len(twitter_ids)
+        twitter_ids = self.get_valid_twitter_ids(twitter_ids)
+        print('Of the {} twitter ids {} were valid.'.format(original_count, len(twitter_ids)))
 
-        if (len(twitter_ids) != 0):
+        if len(twitter_ids) != 0:
             self.data['Discord'].append(
-                {'webhook_urls': webhook_url, 'twitter_ids': twitter_ids, 'IncludeReplyToUser': includeReplyToUser,
-                 "IncludeUserReply": includeUserReply, "IncludeRetweet": includeRetweet})
-            c.saveConfig()
+                {'webhook_urls': webhook_url, 'twitter_ids': twitter_ids, 'IncludeReplyToUser': include_reply_to_user,
+                 "IncludeUserReply": include_user_reply, "IncludeRetweet": include_retweet})
+            c.save_config()
         else:
             print('Your twitter IDs were invalid. Thus the webhook was not added. A Twitter ID is made up of numbers.')
 
-    def listWebhooks(self):
+    def list_webhooks(self):
         for i in range(0, len(self.data['Discord'])):
-            whString = ''
+            wh_string = ''
             for j in range(0, len(self.data['Discord'][i]['webhook_urls'])):
-                whString += self.data['Discord'][i]['webhook_urls'][j] + ' '
-            print('{}. webhook URL(s): {}'.format(i+1, whString[:-1]))
+                wh_string += self.data['Discord'][i]['webhook_urls'][j] + ' '
+            print('{}. webhook URL(s): {}'.format(i+1, wh_string[:-1]))
         print('\n0. Cancel')
 
-    def modifyWebhook(self):
+    def modify_webhook(self):
         print('Listing all your webhooks.')
-        self.listWebhooks()
-        index = inputNumber('Which webhook do you want to modify?')
+        self.list_webhooks()
+        index = input_number('Which webhook do you want to modify?')
         if index == 0:
             print('Going back...')
             return
@@ -234,7 +253,7 @@ class configuration:
                 print('\n0. Go back.')
                 choice = user_choice()
                 if choice == "1":
-                    self.data['Discord'][index]['webhook_urls'] = cleanInput('Give webhook URL: ').split(',')
+                    self.data['Discord'][index]['webhook_urls'] = clean_input('Give webhook URL: ').split(',')
                 elif choice == "2":
                     while True:
                         print('Do you want to add or delete Twitter IDs?')
@@ -244,9 +263,9 @@ class configuration:
                         choice = user_choice()
                         if choice == "1":
                             twitter_ids = str(input('Give twitter IDs: ').replace(' ', '')).split(',')
-                            originalCount = len(twitter_ids)
-                            twitter_ids = self.getValidTwitterIDs(twitter_ids)
-                            print('\nOf the {} twitter ids {} were valid.\n'.format(originalCount, len(twitter_ids)))
+                            original_count = len(twitter_ids)
+                            twitter_ids = self.get_valid_twitter_ids(twitter_ids)
+                            print('\nOf the {} twitter ids {} were valid.\n'.format(original_count, len(twitter_ids)))
                             for twitter_id in twitter_ids:
                                 self.data['Discord'][index]['twitter_ids'] += [twitter_id] if twitter_id not in self.data['Discord'][index]['twitter_ids'] else []
                         elif choice == "2":
@@ -267,18 +286,18 @@ class configuration:
                     self.data['Discord'][index]['IncludeRetweet'] = get_bool('Include Retweets? (true/false)')
                 elif choice == "0":
                     break
-            c.saveConfig()
+            c.save_config()
 
 
         else:
             print('This is not a valid option!')
-        c.saveConfig()
+        c.save_config()
 
-    def removeWebhook(self):
+    def remove_webhook(self):
         while True:
             print('Listing all your webhooks.')
-            self.listWebhooks()
-            index = inputNumber('Which webhook do you want to delete?')
+            self.list_webhooks()
+            index = input_number('Which webhook do you want to delete?')
             if index == 0:
                 print('Going back...')
                 break
@@ -286,9 +305,10 @@ class configuration:
                 del self.data['Discord'][index-1]
             else:
                 print('\nThis is not a valid option!\n')
-            c.saveConfig()
+            c.save_config()
 
-def inputNumber(text):
+
+def input_number(text):
     while True:
         try:
             return int(input(text).replace(' ', ''))
@@ -296,22 +316,24 @@ def inputNumber(text):
         except:
             print('This is not a number!')
 
-def cleanInput(text):
+
+def clean_input(text):
     return input(text).replace(' ', '')
+
 
 def get_bool(prompt):
     while True:
         try:
-           return {"true":True,"false":False}[input(prompt).lower().replace(' ','')]
+            return {"true": True, "false": False}[input(prompt).lower().replace(' ', '')]
         except KeyError:
-           print("Invalid input please enter True or False!")
+            print("Invalid input please enter True or False!")
+
 
 def check_files():
     f = "data.json"
     if not fileIO(f, "check"):
         print("data.json does not exist. Creating empty data.json...")
-        fileIO(f, "save",
-            {
+        fileIO(f, "save", {
                 "Twitter": {
                     "consumer_key": "",
                     "consumer_secret": "",
@@ -323,20 +345,25 @@ def check_files():
             }
         )
 
+
 def wait():
     input("Press enter to continue.")
+
 
 def user_choice():
     return input("> ").lower().replace(' ', '')
 
+
 def get_python_version():
     return ".".join(map(str, sys.version_info[:3]))
+
 
 def clear_screen():
     if IS_WINDOWS:
         os.system("cls")
     else:
         os.system("clear")
+
 
 def install_reqs():
     interpreter = sys.executable
@@ -347,7 +374,7 @@ def install_reqs():
         interpreter, "-m",
         "pip", "install",
         "--upgrade",
-        #"--target", REQS_DIR,  #This has been causing problems for some users. Although I don't know what exactly is wrong with it.
+        # "--target", REQS_DIR,  #This has been causing problems for some users. Although I don't know what exactly is wrong with it.
         "-r", REQS_TXT
     ]
     code = subprocess.call(args)
@@ -358,7 +385,8 @@ def install_reqs():
         print("\nAn error occurred and the requirements setup might "
               "not be completed. Consult the docs.\n")
 
-def runBot(autorestart=False):
+
+def run_bot(auto_restart=False):
     interpreter = sys.executable
 
     if interpreter is None:  # This should never happen
@@ -368,6 +396,15 @@ def runBot(autorestart=False):
         print("Warning: tweepy is not installed. Please run the first option.\n")
         wait()
         return
+
+    if discord is None:
+        print("Warning: discord is not installed. Please run the first option.\n")
+        wait()
+        return
+    else:
+        if discord.version_info.major < 1:
+            print("Warning: You are using the async version of discord.py ({}). This rewrite branch requires you to "
+                  "install the rewrite version of discord.py.".format(discord.__version__))
 
     cmd = (interpreter, "main.py")
 
@@ -379,7 +416,7 @@ def runBot(autorestart=False):
             code = 0
             break
         else:
-            if autorestart:
+            if auto_restart:
                 print('Unknown crash. Sleeping for 10 minutes.')
                 time.sleep(600)
             else:
@@ -398,11 +435,21 @@ if __name__ == '__main__':
 
     check_files()
 
-    c = configuration()
+    c = Configuration()
 
     while True:
         if tweepy is None:
             print("Warning: tweepy is not installed. Please run the first option.\n")
+
+        if discord is None:
+            print("Warning: discord is not installed. Please run the first option.\n")
+        else:
+            if discord.version_info.major < 1:
+                print("Warning: You are using the async version of discord.py ({}). This rewrite branch requires you "
+                      "to install the rewrite version of discord.py. Running the first option will install the rewrite"
+                      "version but your other projects may fail since they require the async version."
+                      .format(discord.__version__))
+
         print(INTRO)
         print("1. Install requirements")
         print("2. Set Twitter Credentials")
@@ -421,32 +468,36 @@ if __name__ == '__main__':
                 import tweepy
             except ImportError:
                 print('Installing tweepy failed. Please contact me with reproduction steps.')
+            try:
+                import discord
+            except ImportError:
+                print('Installing discord.py rewrite version failed. Please contact me with reproduction steps.')
             wait()
         elif choice == "2":
-            c.setTwitterCredentials()
+            c.set_twitter_credentials()
             wait()
         elif choice == "3":
-            c.addWebhook()
+            c.add_webhook()
             wait()
         elif choice == "4":
-            c.modifyWebhook()
+            c.modify_webhook()
             wait()
         elif choice == "5":
-            c.removeWebhook()
+            c.remove_webhook()
             wait()
         elif choice == "6":
-            c.getConfig(compact=False)
+            c.get_config(compact=False)
             print()
-            c.getConfig(compact=True)
+            c.get_config(compact=True)
             wait()
         elif choice == "7":
-            runBot(autorestart=False)
+            run_bot(auto_restart=False)
             wait()
         elif choice == "8":
-            runBot(autorestart=True)
+            run_bot(auto_restart=True)
             wait()
         elif choice == "9":
-            c.runTest()
+            c.run_test()
             wait()
         elif choice == "0":
             break
