@@ -1,26 +1,29 @@
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler, Stream
 from tweepy.api import API
-from .discordWebhooks import Webhook, Embed, Field
-import calendar, datetime, time, random, json
+from discord import Webhook, AsyncWebhookAdapter, Embed
 from time import gmtime, strftime
-from datetime import datetime
+import discord
+import aiohttp
+import random
+import json
+import datetime
+import asyncio
 import html
 
+
 class StdOutListener(StreamListener):
-    def __init__(self, api=None, dataD=None):
+    def __init__(self, api=None, datad=None):
         self.api = api or API()
 
-        if dataD == None:
+        if datad is None:
             with open('data.json') as data_file:
-                datajson = json.load(data_file)
-                self.dataD = datajson['Discord']
+                data_json = json.load(data_file)
+                self.data_d = data_json['Discord']
         else:
-            self.dataD = dataD
+            self.data_d = datad
 
-
-    def on_status(self, status):
-        """Called when a new status arrives"""
+    async def async_on_status(self, status):
 
         colors = [0x7f0000, 0x535900, 0x40d9ff, 0x8c7399, 0xd97b6c, 0xf2ff40, 0x8fb6bf, 0x502d59, 0x66504d,
                   0x89b359, 0x00aaff, 0xd600e6, 0x401100, 0x44ff00, 0x1a2b33, 0xff00aa, 0xff8c40, 0x17330d,
@@ -30,28 +33,30 @@ class StdOutListener(StreamListener):
 
         data = status._json
 
-        for dataDiscord in self.dataD:
-            if data['user']['id_str'] not in dataDiscord['twitter_ids']:
-                worthPosting = False
-                if 'IncludeReplyToUser' in dataDiscord:     #other Twitter user tweeting to your followed Twitter user
-                    if dataDiscord['IncludeReplyToUser'] == True:
-                        if data['in_reply_to_user_id_str'] in dataDiscord['twitter_ids']:
-                            worthPosting = True
+        for data_discord in self.data_d:
+            if data['user']['id_str'] not in data_discord['twitter_ids']:
+                worth_posting = False
+                if 'IncludeReplyToUser' in data_discord:  # other Twitter user tweeting to your followed Twitter user
+                    if data_discord['IncludeReplyToUser']:
+                        if data['in_reply_to_user_id_str'] in data_discord['twitter_ids']:
+                            worth_posting = True
             else:
-                worthPosting = True
-                if 'IncludeUserReply' in dataDiscord:  # your followed Twitter users tweeting to random Twitter users (relevant if you only want status updates/opt out of conversations)
-                    if dataDiscord['IncludeUserReply'] == False and data['in_reply_to_user_id'] is not None:
-                            worthPosting = False
+                worth_posting = True
+                # your followed Twitter users tweeting to random Twitter users
+                # (relevant if you only want status updates/opt out of conversations)
+                if 'IncludeUserReply' in data_discord:
+                    if not data_discord['IncludeUserReply'] and data['in_reply_to_user_id'] is not None:
+                            worth_posting = False
 
-            if 'IncludeRetweet' in dataDiscord:  # retweets...
-                if dataDiscord['IncludeRetweet'] == False:
+            if 'IncludeRetweet' in data_discord:  # retweets...
+                if not data_discord['IncludeRetweet']:
                     if 'retweeted_status' in data:
-                        worthPosting = False #retweet
+                        worth_posting = False  # retweet
 
-            if not worthPosting:
+            if not worth_posting:
                 continue
 
-            for wh_url in dataDiscord['webhook_urls']:
+            for wh_url in data_discord['webhook_urls']:
                 username = data['user']['screen_name']
                 icon_url = data['user']['profile_image_url']
 
@@ -62,12 +67,14 @@ class StdOutListener(StreamListener):
                     text = data['text']
 
                 for url in data['entities']['urls']:
-                    if url['expanded_url'] == None:
+                    if url['expanded_url'] is None:
                         continue
                     text = text.replace(url['url'], "[%s](%s)" %(url['display_url'],url['expanded_url']))
 
                 for userMention in data['entities']['user_mentions']:
-                    text = text.replace('@%s' %userMention['screen_name'], '[@%s](https://twitter.com/%s)' %(userMention['screen_name'],userMention['screen_name']))
+                    text = text.replace('@%s' % userMention['screen_name'],
+                                        '[@%s](https://twitter.com/%s)' % (userMention['screen_name'],
+                                                                           userMention['screen_name']))
 
                 media_url = ''
                 media_type = ''
@@ -89,7 +96,7 @@ class StdOutListener(StreamListener):
                             media_url = media['media_url_https']
                             media_type = 'photo'
 
-                videoAlert = False
+                video_alert = False
 
                 if 'extended_entities' in data and 'media' in data['extended_entities']:
                     for media in data['extended_entities']['media']:
@@ -97,50 +104,72 @@ class StdOutListener(StreamListener):
                             media_url = media['media_url_https']
                             media_type = media['type']
                         if media['type'] == 'video':
-                            videoAlert = True
+                            video_alert = True
                             media_type = media['type']
                         if media['type'] == 'animated_gif' and media_type != "video":
-                            videoAlert = True
+                            video_alert = True
                             media_type = 'gif'
 
-                if videoAlert:
+                if video_alert:
                     text += " *[tweet has video]*"
 
                 text = html.unescape(text)
-                at = Embed(author_name=username,
-                           author_url="https://twitter.com/" + data['user']['screen_name'],
-                           author_icon=icon_url,
-                           color=random.choice(colors),
-                           description=text,
-                           media_url=media_url,
-                           media_type=media_type,
-                           title=data['user']['name'],
-                           url="https://twitter.com/" + data['user']['screen_name'] + "/status/" + str(data['id_str']),
-                           footer="Tweet created on",
-                           footer_icon="https://cdn1.iconfinder.com/data/icons/iconza-circle-social/64/697029-twitter-512.png",
-                           timestamp=datetime.strptime(data['created_at'], '%a %b %d %H:%M:%S +0000 %Y').isoformat(' '))
+
+                embed = Embed(colour=random.choice(colors),
+                              url='https://twitter.com/{}/status/{}'.format(data['user']['screen_name'],
+                                                                            data['id_str']),
+                              title=data['user']['name'],
+                              description=text,
+                              timestamp=datetime.datetime.strptime(data['created_at'], '%a %b %d %H:%M:%S +0000 %Y'))
+
+                embed.set_author(name=username,
+                                 url="https://twitter.com/" + data['user']['screen_name'],
+                                 icon_url=icon_url)
+                embed.set_footer(text='Tweet created on',
+                                 icon_url='https://cdn1.iconfinder.com/data/icons/iconza-circle-social/64/697029-twitter-512.png')
+
+                if media_url:
+                    # embed.set_thumbnail(url=media_url)
+                    embed.set_image(url=media_url)
 
                 print(strftime("[%Y-%m-%d %H:%M:%S]", gmtime()), data['user']['screen_name'], 'twittered.')
 
-                #wh = Webhook(url=wh_url, username = username, icon_url=icon_url)
-                wh = Webhook(url=wh_url) #Use above if you have not set a default username and avatar for your webhook bot
-                wh.addAttachment(at)
-
-                if ('quoted_status' in data):
+                if 'quoted_status' in data:
                     text = data['quoted_status']['text']
                     for url in data['quoted_status']['entities']['urls']:
-                        if url['expanded_url'] == None:
+                        if url['expanded_url'] is None:
                             continue
                         text = text.replace(url['url'], "[%s](%s)" % (url['display_url'], url['expanded_url']))
 
                     for userMention in data['quoted_status']['entities']['user_mentions']:
-                        text = text.replace('@%s' %userMention['screen_name'], '[@%s](https://twitter.com/%s)' %(userMention['screen_name'],userMention['screen_name']))
+                        text = text.replace('@%s' % userMention['screen_name'],
+                                            '[@%s](https://twitter.com/%s)' % (userMention['screen_name'],
+                                                                               userMention['screen_name']))
 
                     text = html.unescape(text)
-                    field = Field(data['quoted_status']['user']['screen_name'], text)
-                    at.addField(field)
-                wh.post()
-        return True
+
+                    embed.add_field(name=data['quoted_status']['user']['screen_name'], value=text)
+
+                async with aiohttp.ClientSession() as session:
+                    webhook = Webhook.from_url(wh_url, adapter=AsyncWebhookAdapter(session))
+                    try:
+                        await webhook.send(embed=embed)
+                    except discord.errors.HTTPException as error:
+                        print('---------Error---------')
+                        print("You've found an error. Please contact the owner (https://discord.gg/JV5eUB) "
+                              "and send him what follows below:")
+                        print(error)
+                        print(data)
+                        print('-----------------------')
+
+    def on_status(self, status):
+        """Called when a new status arrives"""
+        loop = asyncio.get_event_loop()
+        if loop.is_running():
+            loop.create_task(self.async_on_status(status))
+        else:
+            loop.run_until_complete(self.async_on_status(status))
+        return
 
     def on_limit(self, track):
         """Called when a limitation notice arrives"""
@@ -173,17 +202,19 @@ if __name__ == '__main__':
     print('Bot started.')
 
     with open('data.json') as data_file:
-        data = json.load(data_file)
+        data_t = json.load(data_file)
         data_file.close()
 
-    data['twitter_ids'] = []
-    for element in data['Discord']:
-        data['twitter_ids'].extend(x for x in element['twitter_ids'] if x not in data['twitter_ids'])
+    data_t['twitter_ids'] = []
+    for element in data_t['Discord']:
+        data_t['twitter_ids'].extend(x for x in element['twitter_ids'] if x not in data_t['twitter_ids'])
+
+    print('{} Twitter users are being followed.'.format(len(data_t['twitter_ids'])))
 
     l = StdOutListener()
-    auth = OAuthHandler(data['Twitter']['consumer_key'], data['Twitter']['consumer_secret'])
-    auth.set_access_token(data['Twitter']['access_token'], data['Twitter']['access_token_secret'])
+    auth = OAuthHandler(data_t['Twitter']['consumer_key'], data_t['Twitter']['consumer_secret'])
+    auth.set_access_token(data_t['Twitter']['access_token'], data_t['Twitter']['access_token_secret'])
     stream = Stream(auth, l)
 
     print('Twitter stream started.')
-    stream.filter(follow=data['twitter_ids'])
+    stream.filter(follow=data_t['twitter_ids'])
