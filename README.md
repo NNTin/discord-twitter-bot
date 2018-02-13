@@ -16,6 +16,8 @@ Got questions? [Join the bot's discord server!](https://discord.gg/Dkg79tc)
 
 ![](https://i.imgur.com/TdJahu9.png)
 
+Once you have set everything up you can start main.py directly. (systemd, pm2, upstart, ...)
+
 Useful links:
 * [Twitter API](https://apps.twitter.com/)
 * [What's a webhook?](https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks)
