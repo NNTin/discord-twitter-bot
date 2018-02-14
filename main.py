@@ -1,7 +1,7 @@
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler, Stream
 from tweepy.api import API
-from .discordWebhooks import Webhook, Embed, Field
+from discordWebhooks import Webhook, Embed, Field
 import calendar, datetime, time, random, json
 from time import gmtime, strftime
 from datetime import datetime
