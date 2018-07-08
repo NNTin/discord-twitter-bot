@@ -18,8 +18,8 @@ To further configure the bot get Heroku CLI and run launcher.py.
 
 ```coffeescript
 heroku login
-heroku git:clone -a nntin-dtb
-cd nntin-dtb
+heroku git:clone -a <your heroku app name>
+cd <your heroku app name>
 python launcher.py
 git add .
 git commit -am "updated configuration"
