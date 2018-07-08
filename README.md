@@ -44,10 +44,7 @@ Third line clones the rewrite branch. Fourth line executes launcher.py
 
 Once you have set everything up you can run main.py directly. (Useful in combination with systemd, Upstart, PM2, etc.)
 
-
 ![](https://i.imgur.com/TdJahu9.png)
-
-Once you have set everything up you can start main.py directly. (systemd, pm2, upstart, ...)
 
 Useful links:
 * [Twitter API](https://apps.twitter.com/)
