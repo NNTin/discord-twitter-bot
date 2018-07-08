@@ -1,4 +1,5 @@
 pip
+aiohttp==3.3.2
 tweepy
 requests
 git+https://github.com/Rapptz/discord.py@rewrite#egg=discord.py
