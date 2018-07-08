@@ -12,7 +12,7 @@
   "logo": "https://i.imgur.com/11zvdoc.png",
   "env": {
     "CONSUMER_KEY": {
-      "description": "Twitter consumer key"
+      "description": "Twitter consumer key https://apps.twitter.com/"
     },
     "CONSUMER_SECRET": {
       "description": "Twitter consumer secret"
@@ -24,10 +24,10 @@
       "description": "Twitter access token secret"
     },
     "WEBHOOK_URL": {
-      "description": "Discord webhook URL"
+      "description": "Discord webhook URL https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks"
     },
     "TWITTER_ID": {
-      "description": "Twitter ID, see http://gettwitterid.com/"
+      "description": "Twitter ID http://gettwitterid.com/"
     }
   }
 }

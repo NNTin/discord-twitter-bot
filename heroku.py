@@ -1,7 +1,7 @@
-import json
 from tweepy import OAuthHandler, Stream
 from main import StdOutListener
 import os
+from dataIO import fileIO
 
 data_t = {
     "Twitter": {
@@ -15,17 +15,15 @@ data_t = {
             "IncludeReplyToUser": True,
             "IncludeRetweet": True,
             "IncludeUserReply": True,
-            "webhook_urls": [
-                os.environ["WEBHOOK_URL"]
-            ],
-            "twitter_ids": [
-                os.environ["TWITTER_ID"]
-            ]
+            "webhook_urls": os.environ["WEBHOOK_URL"].replace(" ", "").split(","),
+            "twitter_ids": os.environ["TWITTER_ID"].replace(" ", "").split(",")
         }
     ]
 }
 
 if __name__ == '__main__':
+    fileIO("data.json", "save", data_t)
+
     print('Bot started.')
 
     data_t['twitter_ids'] = []

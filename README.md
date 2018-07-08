@@ -2,19 +2,33 @@
 Post tweets to Discord Webhook of certain twitter users.  
 Got questions? [Join the bot's discord server!](https://discord.gg/Dkg79tc)
 
-This rewrite branch uses the rewrite version of discord.py which is in beta.
-Warning: If you are relying on the async version of discord.py use Python's virtual environment. 
-Not using venv will break your other projects.
-
-[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
 ## Preview
 
 [![](img/gif.gif)](https://discord.gg/Dkg79tc)
 
-## Setup
+## Heroku Deployment
 
-**You need to host this bot yourself.**
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
+Remember to [activate](https://i.imgur.com/zOfa0Qm.png) the app. [View the logs here.](https://i.imgur.com/tWBoTuB.png)  
+Use this to initially deploy your discord-twitter-bot.
+
+To further configure the bot get Heroku CLI and run launcher.py.
+
+```coffeescript
+heroku login
+heroku git:clone -a nntin-dtb
+cd nntin-dtb
+python launcher.py
+git add .
+git commit -am "updated configuration"
+git push heroku
+```
+
+Heroku is a nice solution to host the bot for free.
+
+## Normal Setup
 
 Get Python 3.5 or later.
 
@@ -36,6 +50,7 @@ Once you have set everything up you can run main.py directly. (Useful in combina
 Useful links:
 * [Twitter API](https://apps.twitter.com/)
 * [What's a webhook?](https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks)
+
 
 ## Credits
 Derpolino for providing the [discord-webhook-python](https://github.com/Derpolino/discord-webhooks-python) code.  
