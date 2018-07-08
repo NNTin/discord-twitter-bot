@@ -34,7 +34,7 @@ if __name__ == '__main__':
 
     print('{} Twitter users are being followed.'.format(len(data_t['twitter_ids'])))
 
-    l = StdOutListener()
+    l = StdOutListener(datad=data_t["Discord"])
     auth = OAuthHandler(data_t['Twitter']['consumer_key'], data_t['Twitter']['consumer_secret'])
     auth.set_access_token(data_t['Twitter']['access_token'], data_t['Twitter']['access_token_secret'])
     stream = Stream(auth, l)
