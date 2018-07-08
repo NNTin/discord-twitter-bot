@@ -3,26 +3,29 @@ from main import StdOutListener
 import os
 from dataIO import fileIO
 
-data_t = {
-    "Twitter": {
-        "consumer_key": os.environ["CONSUMER_KEY"],
-        "consumer_secret": os.environ["CONSUMER_SECRET"],
-        "access_token": os.environ["ACCESS_TOKEN"],
-        "access_token_secret": os.environ["ACCESS_TOKEN_SECRET"]
-    },
-    "Discord": [
-        {
-            "IncludeReplyToUser": True,
-            "IncludeRetweet": True,
-            "IncludeUserReply": True,
-            "webhook_urls": os.environ["WEBHOOK_URL"].replace(" ", "").split(","),
-            "twitter_ids": os.environ["TWITTER_ID"].replace(" ", "").split(",")
-        }
-    ]
-}
-
 if __name__ == '__main__':
-    fileIO("data.json", "save", data_t)
+    if not fileIO("check"):
+        print("data.json does not exist. Creating empty data.json...")
+        fileIO("data.json", "save", {
+                "Twitter": {
+                    "consumer_key": os.environ["CONSUMER_KEY"],
+                    "consumer_secret": os.environ["CONSUMER_SECRET"],
+                    "access_token": os.environ["ACCESS_TOKEN"],
+                    "access_token_secret": os.environ["ACCESS_TOKEN_SECRET"]
+                },
+                "Discord": [
+                    {
+                        "IncludeReplyToUser": True,
+                        "IncludeRetweet": True,
+                        "IncludeUserReply": True,
+                        "webhook_urls": os.environ["WEBHOOK_URL"].replace(" ", "").split(","),
+                        "twitter_ids": os.environ["TWITTER_ID"].replace(" ", "").split(",")
+                    }
+                ]
+            }
+        )
+
+    data_t = fileIO("data.json", "load")
 
     print('Bot started.')
 
