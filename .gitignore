@@ -145,3 +145,11 @@ $RECYCLE.BIN/
 *.xml
 .idea/discord-twitter-bot.iml
 data.json
+createJson.py
+createJson2.py
+info.py
+info2.txt
+test.py
+info.txt
+debug.json
+debug.py
