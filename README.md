@@ -6,6 +6,8 @@ This rewrite branch uses the rewrite version of discord.py which is in beta.
 Warning: If you are relying on the async version of discord.py use Python's virtual environment. 
 Not using venv will break your other projects.
 
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
 ## Preview
 
 [![](img/gif.gif)](https://discord.gg/Dkg79tc)
@@ -26,7 +28,7 @@ python3 discord-twitter-bot/launcher.py
 First two lines are skip-able but are recommended if you are relying on an older version of discord.py.
 Third line clones the rewrite branch. Fourth line executes launcher.py
 
-Once you have set everything up you can start main.py directly.
+Once you have set everything up you can run main.py directly. (Useful in combination with systemd, Upstart, PM2, etc.)
 
 
 ![](https://i.imgur.com/TdJahu9.png)

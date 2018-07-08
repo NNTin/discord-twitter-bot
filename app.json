@@ -1,0 +1,33 @@
+{
+  "name": "Discord Twitter Bot",
+  "description": "Posts Twitter tweets to Discord through Webhook",
+  "keywords": [
+    "discord",
+    "bot",
+    "twitter",
+    "tweets"
+  ],
+  "website": "https://nntin.github.io/discord-logo/",
+  "repository": "https://github.com/NNTin/discord-twitter-bot",
+  "logo": "https://i.imgur.com/11zvdoc.png",
+  "env": {
+    "CONSUMER_KEY": {
+      "description": "Twitter consumer key"
+    },
+    "CONSUMER_SECRET": {
+      "description": "Twitter consumer secret"
+    },
+    "ACCESS_TOKEN": {
+      "description": "Twitter access token"
+    },
+    "ACCESS_TOKEN_SECRET": {
+      "description": "Twitter access token secret"
+    },
+    "WEBHOOK_URL": {
+      "description": "Discord webhook URL"
+    },
+    "TWITTER_ID": {
+      "description": "Twitter ID, see http://gettwitterid.com/"
+    }
+  }
+}
