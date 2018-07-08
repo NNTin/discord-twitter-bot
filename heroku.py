@@ -4,7 +4,7 @@ import os
 from dataIO import fileIO
 
 if __name__ == '__main__':
-    if not fileIO("check"):
+    if not fileIO("data.json", "check"):
         print("data.json does not exist. Creating empty data.json...")
         fileIO("data.json", "save", {
                 "Twitter": {
