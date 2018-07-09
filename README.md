@@ -20,6 +20,8 @@ To further configure the bot get Heroku CLI and run launcher.py.
 heroku login
 heroku git:clone -a <your heroku app name>
 cd <your heroku app name>
+git remote add origin https://github.com/NNTin/discord-twitter-bot
+git pull origin master
 python launcher.py
 git add .
 git commit -am "updated configuration"
