@@ -1,16 +1,14 @@
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler, Stream
 from tweepy.api import API
-from discord import Webhook, AsyncWebhookAdapter, Embed
+from discord import Webhook, RequestsWebhookAdapter, Embed
 from time import gmtime, strftime
 import discord
-import aiohttp
 import random
 import json
 import datetime
-import asyncio
 import html
-import time
+import re
 
 
 class StdOutListener(StreamListener):
@@ -24,7 +22,7 @@ class StdOutListener(StreamListener):
         else:
             self.data_d = datad
 
-    async def async_on_status(self, status):
+    def _on_status(self, status):
         colors = [0x7f0000, 0x535900, 0x40d9ff, 0x8c7399, 0xd97b6c, 0xf2ff40, 0x8fb6bf, 0x502d59, 0x66504d,
                   0x89b359, 0x00aaff, 0xd600e6, 0x401100, 0x44ff00, 0x1a2b33, 0xff00aa, 0xff8c40, 0x17330d,
                   0x0066bf, 0x33001b, 0xb39886, 0xbfffd0, 0x163a59, 0x8c235b, 0x8c5e00, 0x00733d, 0x000c59,
@@ -150,24 +148,16 @@ class StdOutListener(StreamListener):
 
                     embed.add_field(name=data['quoted_status']['user']['screen_name'], value=text)
 
-                async with aiohttp.ClientSession() as session:
-                    webhook = Webhook.from_url(wh_url, adapter=AsyncWebhookAdapter(session))
+                regex = r"discordapp\.com\/api\/webhooks\/(?P<id>\d+)\/(?P<token>.+)"
+                match = re.search(regex, wh_url)
+
+                if match:
+                    webhook = Webhook.partial(match.group("id"), match.group("token"), adapter=RequestsWebhookAdapter())
                     try:
-                        await webhook.send(embed=embed)
+                        webhook.send(embed=embed)
                     except discord.errors.HTTPException as error:
-                        try:
-                            error_json = json.loads(error.text)
-                            if error_json['message'] == 'You are being rate limited.':
-                                print("--------Warning--------")
-                                print("Dropping tweet due to rate limit")
-                                print("-----------------------")
-                                time.sleep(error_json['retry_after']/1000)
-                            else:
-                                raise error
-                        except:
-                            raise error
-                    except:
                         print('---------Error---------')
+                        print('discord.errors.HTTPException')
                         print("You've found an error. Please contact the owner (https://discord.gg/JV5eUB) "
                               "and send him what follows below:")
                         print(error)
@@ -176,12 +166,16 @@ class StdOutListener(StreamListener):
 
     def on_status(self, status):
         """Called when a new status arrives"""
-        loop = asyncio.get_event_loop()
-        if loop.is_running():
-            loop.create_task(self.async_on_status(status))
-        else:
-            loop.run_until_complete(self.async_on_status(status))
-        return
+        try:
+            self._on_status(status)
+        except Exception as error:
+           print('---------Error---------')
+           print('unknown error')
+           print("You've found an error. Please contact the owner (https://discord.gg/JV5eUB) "
+                 "and send him what follows below:")
+           print(error)
+           print(status)
+           print('-----------------------')
 
     def on_limit(self, track):
         """Called when a limitation notice arrives"""
