@@ -10,6 +10,7 @@ import json
 import datetime
 import asyncio
 import html
+import time
 
 
 class StdOutListener(StreamListener):
@@ -154,6 +155,18 @@ class StdOutListener(StreamListener):
                     try:
                         await webhook.send(embed=embed)
                     except discord.errors.HTTPException as error:
+                        try:
+                            error_json = json.loads(error.text)
+                            if error_json['message'] == 'You are being rate limited.':
+                                print("--------Warning--------")
+                                print("Dropping tweet due to rate limit")
+                                print("-----------------------")
+                                time.sleep(error_json['retry_after']/1000)
+                            else:
+                                raise error
+                        except:
+                            raise error
+                    except:
                         print('---------Error---------')
                         print("You've found an error. Please contact the owner (https://discord.gg/JV5eUB) "
                               "and send him what follows below:")
