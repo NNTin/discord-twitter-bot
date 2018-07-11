@@ -32,7 +32,7 @@ Heroku is a nice solution to host the bot for free.
 
 ## Normal Setup
 
-Get Python 3.5 or later.
+Get Python >=3.5.3, <3.7
 
 ```coffeescript
 python3 -m venv bot-env
