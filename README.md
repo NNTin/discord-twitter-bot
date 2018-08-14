@@ -22,7 +22,7 @@ heroku git:clone -a <your heroku app name>
 cd <your heroku app name>
 git remote add origin https://github.com/NNTin/discord-twitter-bot
 git pull origin master
-python launcher.py
+python3 launcher.py
 git add .
 git commit -am "updated configuration"
 git push heroku
@@ -37,7 +37,7 @@ Get Python >=3.5.3, <3.7
 ```coffeescript
 python3 -m venv bot-env
 source bot-env/bin/activate
-git clone -b rewrite --single-branch https://github.com/NNTin/discord-twitter-bot.git
+git clone https://github.com/NNTin/discord-twitter-bot.git
 python3 discord-twitter-bot/launcher.py
 ```
 
