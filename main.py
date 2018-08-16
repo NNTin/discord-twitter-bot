@@ -70,6 +70,11 @@ class StdOutListener(StreamListener):
                                         '[@%s](https://twitter.com/%s)' % (userMention['screen_name'],
                                                                            userMention['screen_name']))
 
+                for hashtag in data['entities']['hashtags']:
+                    text = text.replace('#%s' % hashtag['text'],
+                                        '[#%s](https://twitter.com/hashtag/%s)' %(hashtag['text'],
+                                                                                  hashtag['text']))
+
                 media_url = ''
                 media_type = ''
                 if 'extended_tweet' in data:
@@ -138,6 +143,11 @@ class StdOutListener(StreamListener):
                         text = text.replace('@%s' % userMention['screen_name'],
                                             '[@%s](https://twitter.com/%s)' % (userMention['screen_name'],
                                                                                userMention['screen_name']))
+
+                    for hashtag in data['entities']['hashtags']:
+                        text = text.replace('#%s' % hashtag['text'],
+                                            '[#%s](https://twitter.com/hashtag/%s)' % (hashtag['text'],
+                                                                                       hashtag['text']))
 
                     text = html.unescape(text)
 
