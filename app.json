@@ -27,7 +27,19 @@
       "description": "Discord webhook URL https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks"
     },
     "TWITTER_ID": {
-      "description": "Twitter ID http://gettwitterid.com/"
+      "description": "Twitter ID(s) http://gettwitterid.com/ Separate multiple twitter IDs with a comma"
+    },
+    "INCLUDE_REPLY_TO_USER": {
+      "description": "Include replies from other Twitter users tweeting TO your tracked twitter user?",
+      "value": "True"
+    },
+    "INCLUDE_RETWEET": {
+      "description": "Include retweets?",
+      "value": "True"
+    },
+    "INCLUDE_USER_REPLY": {
+      "description": "Include replies FROM your tracked twitter user to other twitter users",
+      "value": "True"
     }
   }
 }
