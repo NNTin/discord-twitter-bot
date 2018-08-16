@@ -18,8 +18,8 @@ else:
                 "IncludeReplyToUser": True,
                 "IncludeRetweet": True,
                 "IncludeUserReply": True,
-                "webhook_urls": os.environ.get("WEBHOOK_URL", []).lower().replace(" ", "").split(","),
-                "twitter_ids": os.environ.get("TWITTER_ID", []).lower().replace(" ", "").split(",")
+                "webhook_urls": os.environ.get("WEBHOOK_URL", []).replace(" ", "").split(","),
+                "twitter_ids": os.environ.get("TWITTER_ID", []).replace(" ", "").split(",")
             }
         ],
         "twitter_ids": []
