@@ -202,6 +202,8 @@ class StdOutListener(StreamListener):
 if __name__ == '__main__':
     print('Bot started.')
 
+    print(data_json)
+
     data_json['twitter_ids'] = []
     for element in data_json['Discord']:
         data_json['twitter_ids'].extend(x for x in element['twitter_ids'] if x not in data_json['twitter_ids'])
