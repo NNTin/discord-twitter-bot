@@ -9,18 +9,14 @@ import json
 import datetime
 import html
 import re
+from config import data_json
 
 
 class StdOutListener(StreamListener):
-    def __init__(self, api=None, datad=None):
+    def __init__(self, api=None):
         self.api = api or API()
 
-        if datad is None:
-            with open('data.json') as data_file:
-                data_json = json.load(data_file)
-                self.data_d = data_json['Discord']
-        else:
-            self.data_d = datad
+        self.data_d = data_json['Discord']
 
     def _on_status(self, status):
         colors = [0x7f0000, 0x535900, 0x40d9ff, 0x8c7399, 0xd97b6c, 0xf2ff40, 0x8fb6bf, 0x502d59, 0x66504d,
@@ -127,7 +123,6 @@ class StdOutListener(StreamListener):
                                  icon_url='https://cdn1.iconfinder.com/data/icons/iconza-circle-social/64/697029-twitter-512.png')
 
                 if media_url:
-                    # embed.set_thumbnail(url=media_url)
                     embed.set_image(url=media_url)
 
                 print(strftime("[%Y-%m-%d %H:%M:%S]", gmtime()), data['user']['screen_name'], 'twittered.')
@@ -207,20 +202,16 @@ class StdOutListener(StreamListener):
 if __name__ == '__main__':
     print('Bot started.')
 
-    with open('data.json') as data_file:
-        data_t = json.load(data_file)
-        data_file.close()
+    data_json['twitter_ids'] = []
+    for element in data_json['Discord']:
+        data_json['twitter_ids'].extend(x for x in element['twitter_ids'] if x not in data_json['twitter_ids'])
 
-    data_t['twitter_ids'] = []
-    for element in data_t['Discord']:
-        data_t['twitter_ids'].extend(x for x in element['twitter_ids'] if x not in data_t['twitter_ids'])
-
-    print('{} Twitter users are being followed.'.format(len(data_t['twitter_ids'])))
+    print('{} Twitter users are being followed.'.format(len(data_json['twitter_ids'])))
 
     l = StdOutListener()
-    auth = OAuthHandler(data_t['Twitter']['consumer_key'], data_t['Twitter']['consumer_secret'])
-    auth.set_access_token(data_t['Twitter']['access_token'], data_t['Twitter']['access_token_secret'])
+    auth = OAuthHandler(data_json['Twitter']['consumer_key'], data_json['Twitter']['consumer_secret'])
+    auth.set_access_token(data_json['Twitter']['access_token'], data_json['Twitter']['access_token_secret'])
     stream = Stream(auth, l)
 
     print('Twitter stream started.')
-    stream.filter(follow=data_t['twitter_ids'])
+    stream.filter(follow=data_json['twitter_ids'])

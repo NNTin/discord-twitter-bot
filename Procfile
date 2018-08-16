@@ -1,1 +1,1 @@
-bot: python heroku.py
+bot: python main.py
