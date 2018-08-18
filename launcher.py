@@ -374,6 +374,7 @@ def install_reqs():
         interpreter, "-m",
         "pip", "install",
         "--upgrade",
+        "--user",
         # "--target", REQS_DIR,  #This has been causing problems for some users. Although I don't know what exactly is wrong with it.
         "-r", REQS_TXT
     ]
