@@ -1,6 +1,8 @@
 from dataIO import fileIO
 import os
 
+# todo: add mongoDB support
+
 false_strings = ["false", "False", "f", "F", "0", ""]
 
 if fileIO("data.json", "check"):
@@ -15,9 +17,9 @@ else:
         },
         "Discord": [
             {
-                "IncludeReplyToUser": True,
-                "IncludeRetweet": True,
-                "IncludeUserReply": True,
+                "IncludeReplyToUser": os.environ["INCLUDE_REPLY_TO_USER"],
+                "IncludeRetweet": os.environ["INCLUDE_RETWEET"],
+                "IncludeUserReply": os.environ["INCLUDE_USER_REPLY"],
                 "webhook_urls": os.environ.get("WEBHOOK_URL", []).replace(" ", "").split(","),
                 "twitter_ids": os.environ.get("TWITTER_ID", []).replace(" ", "").split(",")
             }
