@@ -17,9 +17,9 @@ else:
         },
         "Discord": [
             {
-                "IncludeReplyToUser": os.environ["INCLUDE_REPLY_TO_USER"],
-                "IncludeRetweet": os.environ["INCLUDE_RETWEET"],
-                "IncludeUserReply": os.environ["INCLUDE_USER_REPLY"],
+                "IncludeReplyToUser": False if os.environ["INCLUDE_REPLY_TO_USER"] in false_strings else True,
+                "IncludeRetweet": False if os.environ["INCLUDE_RETWEET"] in false_strings else True,
+                "IncludeUserReply": False if os.environ["INCLUDE_USER_REPLY"] in false_strings else True,
                 "webhook_urls": os.environ.get("WEBHOOK_URL", []).replace(" ", "").split(","),
                 "twitter_ids": os.environ.get("TWITTER_ID", []).replace(" ", "").split(",")
             }
