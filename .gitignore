@@ -144,7 +144,6 @@ $RECYCLE.BIN/
 *.lnk
 *.xml
 .idea/discord-twitter-bot.iml
-data.json
 createJson.py
 createJson2.py
 info.py
