@@ -20,7 +20,7 @@ except ImportError:
 REQS_DIR = "lib"
 sys.path.insert(0, REQS_DIR)
 IS_WINDOWS = os.name == "nt"
-PYTHON_OK = sys.version_info >= (3, 5) and sys.version_info < (3, 7)
+PYTHON_OK = sys.version_info >= (3, 5, 3) and sys.version_info < (3, 7)
 REQS_TXT = "requirements.txt"
 INTRO = ("==============================\n"
          "discord-twitter-bot - Launcher\n"
