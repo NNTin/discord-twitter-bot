@@ -30,6 +30,10 @@ git push heroku
 
 Heroku is a nice solution to host the bot for free.
 
+## YT Video to Heroku Deployment
+
+[![YT Video](https://img.youtube.com/vi/NwPcXBvStSI/0.jpg)](https://www.youtube.com/watch?v=NwPcXBvStSI)
+
 ## Normal Setup
 
 Get Python >=3.5.3, <3.7
@@ -49,11 +53,10 @@ Once you have set everything up you can run main.py directly. (Useful in combina
 ![](https://i.imgur.com/TdJahu9.png)
 
 Useful links:
-* [Twitter API](https://apps.twitter.com/)
+* [Twitter API](https://developer.twitter.com/en/apps)
 * [What's a webhook?](https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks)
 
 
 ## Credits
-Derpolino for providing the [discord-webhook-python](https://github.com/Derpolino/discord-webhooks-python) code.  
 Rokxx for providing the [dota 2 twitter list](https://twitter.com/rokxx/lists/dota-2/members).  
-JacobNWolf for providing the [twitter lists](https://twitter.com/JacobNWolf/lists/) for CS:GO, LoL, Overwatch, CoD and SSMB.
+JacobWolf for providing the [twitter lists](https://twitter.com/JacobWolf/lists) for CS:GO, LoL, Overwatch, CoD and SSMB.
