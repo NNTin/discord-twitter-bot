@@ -20,7 +20,7 @@ except ImportError:
 REQS_DIR = "lib"
 sys.path.insert(0, REQS_DIR)
 IS_WINDOWS = os.name == "nt"
-PYTHON_OK = sys.version_info >= (3, 5)
+PYTHON_OK = sys.version_info >= (3, 5) and sys.version_info < (3, 7)
 REQS_TXT = "requirements.txt"
 INTRO = ("==============================\n"
          "discord-twitter-bot - Launcher\n"
@@ -425,7 +425,7 @@ def run_bot(auto_restart=False):
 
 if __name__ == '__main__':
     if not PYTHON_OK:
-        print('discord-twitter-bot needs Python 3.5 or superior. You are using: ' + get_python_version())
+        print('discord-twitter-bot needs Python >=3.5.3, <3.7. You are using: ' + get_python_version())
         wait()
         exit(1)
     if pip is None:
