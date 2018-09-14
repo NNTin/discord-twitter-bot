@@ -67,7 +67,6 @@ class StdOutListener(StreamListener):
                         if keyword_set_present:
                             break
                     if not keyword_set_present:
-                        print("keyword_set_not_present")
                         break
 
                 for url in data['entities']['urls']:

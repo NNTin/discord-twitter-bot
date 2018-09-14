@@ -46,7 +46,7 @@
       "required": false
     },
     "KEYWORDS": {
-      "description": "OPTIONAL: Will only post tweets with certain keywords. Comma separate keyword sets. Separate a keyword set with +. Example: world+hello, dota--> hello guys! ✘, what is wrong with this world ✘, hello this is my first tweet in the world ✔, let's play some dota ✔",
+      "description": "OPTIONAL: Will only post tweets with certain keywords. Comma separate keyword sets. Separate a keyword set with +. Example: world+hello, dota--> hello guys! ✘, what in the world ✘, my first tweet: hello world ✔, let's play some dota! ✔",
       "required": false
     }
   }
