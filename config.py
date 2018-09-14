@@ -6,8 +6,6 @@ false_strings = ["false", "False", "f", "F", "0", "", "n", "N", "no", "No", "NO"
 if fileIO("data.json", "check"):
     data_json = fileIO("data.json", "load")
 else:
-    keyword_sets = [keyword_set.split("+") for keyword_set in os.environ.get("KEYWORDS", []).replace(" ", "").split(",")]
-
     data_json = {
         "Twitter": {
             "consumer_key": os.environ["CONSUMER_KEY"],
@@ -22,9 +20,12 @@ else:
                 "IncludeUserReply": False if os.environ["INCLUDE_USER_REPLY"] in false_strings else True,
                 "webhook_urls": os.environ["WEBHOOK_URL"].replace(" ", "").split(","),
                 "twitter_ids": os.environ["TWITTER_ID"].replace(" ", "").split(","),
-                "custom_message": os.environ.get("CUSTOM_MESSAGE", None),
-                "keyword_sets": keyword_sets
+                "custom_message": os.environ.get("CUSTOM_MESSAGE", None)
             }
         ],
         "twitter_ids": []
     }
+    keyword_sets = os.environ.get("KEYWORDS", None)
+    if keyword_sets:
+        keyword_sets = [keyword_set.split("+") for keyword_set in keyword_sets.replace(" ", "").split(",")]
+        data_json["Discord"]["keyword_sets"] = keyword_sets

@@ -60,7 +60,7 @@ class StdOutListener(StreamListener):
                 else:
                     text = data['text']
 
-                if "keyword_sets" in data_discord:
+                if "keyword_sets" in data_discord and data_discord["keyword_sets"] is not None:
                     for keyword_set in data_discord["keyword_sets"]:
                         keyword_present = [keyword.lower() in text.lower() for keyword in keyword_set]
                         keyword_set_present = all(keyword_present)
