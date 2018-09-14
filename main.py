@@ -60,6 +60,15 @@ class StdOutListener(StreamListener):
                 else:
                     text = data['text']
 
+                if "keyword_sets" in data_discord:
+                    for keyword_set in data_discord["keyword_sets"]:
+                        keyword_present = [keyword.lower() in text.lower() for keyword in keyword_set]
+                        keyword_set_present = all(keyword_present)
+                        if keyword_set_present:
+                            break
+                    if not keyword_set_present:
+                        break
+
                 for url in data['entities']['urls']:
                     if url['expanded_url'] is None:
                         continue
@@ -159,7 +168,10 @@ class StdOutListener(StreamListener):
                 if match:
                     webhook = Webhook.partial(match.group("id"), match.group("token"), adapter=RequestsWebhookAdapter())
                     try:
-                        webhook.send(embed=embed)
+                        if "custom_message" in data_discord and data_discord["custom_message"] is not None:
+                            webhook.send(embed=embed, content=data_discord["custom_message"])
+                        else:
+                            webhook.send(embed=embed)
                     except discord.errors.HTTPException as error:
                         print('---------Error---------')
                         print('discord.errors.HTTPException')
