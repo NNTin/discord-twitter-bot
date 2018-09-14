@@ -70,7 +70,7 @@ class StdOutListener(StreamListener):
                                         '[@%s](https://twitter.com/%s)' % (userMention['screen_name'],
                                                                            userMention['screen_name']))
 
-                for hashtag in data['entities']['hashtags']:
+                for hashtag in sorted(data['entities']["hashtags"], key=lambda k: k["text"], reverse=True):
                     text = text.replace('#%s' % hashtag['text'],
                                         '[#%s](https://twitter.com/hashtag/%s)' %(hashtag['text'],
                                                                                   hashtag['text']))
@@ -144,7 +144,7 @@ class StdOutListener(StreamListener):
                                             '[@%s](https://twitter.com/%s)' % (userMention['screen_name'],
                                                                                userMention['screen_name']))
 
-                    for hashtag in data['entities']['hashtags']:
+                    for hashtag in sorted(data['entities']["hashtags"], key=lambda k: k["text"], reverse=True):
                         text = text.replace('#%s' % hashtag['text'],
                                             '[#%s](https://twitter.com/hashtag/%s)' % (hashtag['text'],
                                                                                        hashtag['text']))
