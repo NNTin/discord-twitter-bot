@@ -28,4 +28,4 @@ else:
     keyword_sets = os.environ.get("KEYWORDS", None)
     if keyword_sets:
         keyword_sets = [keyword_set.split("+") for keyword_set in keyword_sets.replace(" ", "").split(",")]
-        data_json["Discord"]["keyword_sets"] = keyword_sets
+        data_json["Discord"][0]["keyword_sets"] = keyword_sets
