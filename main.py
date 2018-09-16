@@ -81,18 +81,25 @@ class StdOutListener(StreamListener):
                                         '[@%s](https://twitter.com/%s)' % (userMention['screen_name'],
                                                                            userMention['screen_name']))
 
-                for hashtag in sorted(data['entities']["hashtags"], key=lambda k: k["text"], reverse=True):
-                    text = text.replace('#%s' % hashtag['text'],
-                                        '[#%s](https://twitter.com/hashtag/%s)' %(hashtag['text'],
-                                                                                  hashtag['text']))
-
                 media_url = ''
                 media_type = ''
                 if 'extended_tweet' in data:
+                    for hashtag in sorted(data['extended_tweet']['entities']["hashtags"], key=lambda k: k["text"],
+                                          reverse=True):
+                        text = text.replace('#%s' % hashtag['text'],
+                                            '[#%s](https://twitter.com/hashtag/%s)' % (hashtag['text'],
+                                                                                       hashtag['text']))
+
                     if 'media' in data['extended_tweet']['entities']:
                         for media in data['extended_tweet']['entities']['media']:
                             if media['type'] == 'photo':
                                 media_url = media['media_url']
+
+                for hashtag in sorted(data['entities']["hashtags"], key=lambda k: k["text"],
+                                      reverse=True):
+                    text = text.replace('#%s' % hashtag['text'],
+                                        '[#%s](https://twitter.com/hashtag/%s)' % (hashtag['text'],
+                                                                                   hashtag['text']))
 
                 if 'media' in data['entities']:
                     for media in data['entities']['media']:
@@ -188,13 +195,13 @@ class StdOutListener(StreamListener):
         try:
             self._on_status(status)
         except Exception as error:
-           print('---------Error---------')
-           print('unknown error')
-           print("You've found an error. Please contact the owner (https://discord.gg/JV5eUB) "
-                 "and send him what follows below:")
-           print(error)
-           print(status)
-           print('-----------------------')
+            print('---------Error---------')
+            print('unknown error')
+            print("You've found an error. Please contact the owner (https://discord.gg/JV5eUB) "
+                  "and send him what follows below:")
+            print(error)
+            print(status)
+            print('-----------------------')
 
     def on_limit(self, track):
         """Called when a limitation notice arrives"""
