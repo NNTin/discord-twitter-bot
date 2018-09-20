@@ -181,6 +181,28 @@ class StdOutListener(StreamListener):
                             webhook.send(embed=embed, content=data_discord["custom_message"])
                         else:
                             webhook.send(embed=embed)
+                    except discord.errors.NotFound as error:
+                        print('---------Error---------')
+                        print('discord.errors.NotFound')
+                        print("The Webhook URL you provided does not exist.")
+                        print(error)
+                        print('-----------------------')
+                    except discord.errors.Forbidden as error:
+                        print('---------Error---------')
+                        print('discord.errors.Forbidden')
+                        print("The authorization token for your Webhook is incorrect.")
+                        print(error)
+                        print('-----------------------')
+                        pass
+                    except discord.errors.InvalidArgument as error:
+                        print('---------Error---------')
+                        print('discord.errors.InvalidArgument')
+                        print("This should never happen. Contakt me https://discord.gg/JV5eUB "
+                              "and send me what follows below:")
+                        print(error)
+                        print(data)
+                        print('-----------------------')
+                        pass
                     except discord.errors.HTTPException as error:
                         print('---------Error---------')
                         print('discord.errors.HTTPException')
