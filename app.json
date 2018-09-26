@@ -1,4 +1,4 @@
-{
+﻿{
   "name": "Discord Twitter Bot",
   "description": "Posts Twitter tweets to Discord through Webhook",
   "keywords": [
@@ -12,7 +12,7 @@
   "logo": "https://i.imgur.com/11zvdoc.png",
   "env": {
     "CONSUMER_KEY": {
-      "description": "Twitter consumer key https://apps.twitter.com/"
+      "description": "Twitter consumer key https://developer.twitter.com/en/apps"
     },
     "CONSUMER_SECRET": {
       "description": "Twitter consumer secret"
