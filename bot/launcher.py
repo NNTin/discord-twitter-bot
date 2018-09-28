@@ -158,75 +158,77 @@ class Configuration:
             print("\n0. Go back")
             choice = user_choice()
             if choice == "1":
-                self.add_webhook_via_twitter_ids()
+                self.add_webhook_via(method="twitter_ids")
             elif choice == "2":
-                self.add_webhook_via_twitter_url()
+                self.add_webhook_via(method="twitter_list")
             elif choice == "0":
                 print('Going back...')
                 break
             else:
                 print('\nThis is not a valid option!\n')
 
-    def add_webhook_via_twitter_url(self):
+    def add_webhook_via(self, method):
         self.webhook_count()
-        self.authenticate()
+
+        if method is "twitter_list":
+            self.authenticate()
         print('\nYou can post the same content in multiple text channels by separating the webhook URLs with a comma ,')
+        if method is "twitter_ids":
+            print('Get the twitter IDs from here: http://gettwitterid.com/')
+            print('You can follow multiple twitter users by separating the twitter IDs with a comma ,')
 
         webhook_url = input('Give webhook URL: ').split(',')
-        twitter_list_url = input(
-            'The Twitter List URL needs to be in this format: https://twitter.com/XXXXXXXX/lists/XXXXXXXXX/.\n'
-            'Give me Twitter List URL(s):')
-        print('\nProgram is now attempting to communicate with Twitter. This can take a while!')
 
-        twitter_ids = []
-        pattern = 'https?:\/\/(?:www\.)?twitter\.com\/(?P<twittername>[a-zA-Z0-9]+)\/lists\/(?P<listname>[a-zA-Z0-9-]+)'
-        for m in re.finditer(pattern, twitter_list_url, re.I):
 
-            for member in tweepy.Cursor(self.client.list_members, m.group('twittername'), m.group('listname')).items():
-                twitter_id = member._json['id_str']
-                if twitter_id not in twitter_ids:
-                    twitter_ids.append(twitter_id)
+        if method is "twitter_list":
+            twitter_list_url = input(
+                'The Twitter List URL needs to be in this format: https://twitter.com/XXXXXXXX/lists/XXXXXXXXX/.\n'
+                'Give me Twitter List URL(s):')
+            print('\nProgram is now attempting to communicate with Twitter. This can take a while!')
 
-        self.get_valid_twitter_ids(twitter_ids)
-        print('Added %s Twitter users to the webhook URL' % len(twitter_ids))
+            twitter_ids = []
+            pattern = 'https?:\/\/(?:www\.)?twitter\.com\/(?P<twittername>[a-zA-Z0-9]+)\/lists\/(?P<listname>[a-zA-Z0-9-]+)'
+            for m in re.finditer(pattern, twitter_list_url, re.I):
+
+                for member in tweepy.Cursor(self.client.list_members, m.group('twittername'), m.group('listname')).items():
+                    twitter_id = member._json['id_str']
+                    if twitter_id not in twitter_ids:
+                        twitter_ids.append(twitter_id)
+
+            self.get_valid_twitter_ids(twitter_ids)
+            print('Added %s Twitter users to the webhook URL' % len(twitter_ids))
+
+        elif method is "twitter_ids":
+            twitter_ids = str(input('Give twitter IDs: ').replace(' ', '')).split(',')
+        else:
+            raise Exception("This shouldn't happen.")
 
         include_reply_to_user = get_bool(
-            'Include reply tweets from other Twitter users? (Random Twitter user is replying to your followed Twitter user) (true/false)')
+            'Include replies from other Twitter users tweeting TO your tracked twitter user? (true/false)')
         include_user_reply = get_bool(
-            'Include reply tweets to other Twitter users? (Your followed Twitter user is replying to random non-followed Twitter users.) (true/false)')
+            'Include replies FROM your tracked twitter user to other twitter users (true/false)')
         include_retweet = get_bool(
             'Include Retweets? (true/false)')
 
-        self.data['Discord'].append(
-            {'webhook_urls': webhook_url, 'twitter_ids': twitter_ids, 'IncludeReplyToUser': include_reply_to_user,
-             "IncludeUserReply": include_user_reply, "IncludeRetweet": include_retweet})
+        res = {'webhook_urls': webhook_url, 'twitter_ids': twitter_ids, 'IncludeReplyToUser': include_reply_to_user,
+               "IncludeUserReply": include_user_reply, "IncludeRetweet": include_retweet}
+
+        custom_message = input("OPTIONAL: Custom message. Useful for pinging @everyone, a role or individual discord members (syntax: <@ROLE_OR_MEMBER_ID>)")
+        keyword_sets = input("OPTIONAL: Will only post tweets with certain keywords. Comma separate keyword sets. Separate a keyword set with +. Example: world+hello, dota--> hello guys! ✘, what in the world ✘, my first tweet: hello world ✔, let's play some dota! ✔")
+
+        if custom_message is not "":
+            res["custom_message"] = custom_message
+        else:
+            res["custom_message"] = None
+
+        if keyword_sets is not "":
+            keyword_sets = [keyword_set.split("+") for keyword_set in keyword_sets.replace(" ", "").split(",")]
+            res["keyword_sets"] = keyword_sets
+
+        self.data['Discord'].append(res)
+
         c.save_config()
 
-    def add_webhook_via_twitter_ids(self):
-        self.webhook_count()
-        print('\nYou can post the same content in multiple text channels by separating the webhook URLs with a comma ,')
-        print('Get the twitter IDs from here: http://gettwitterid.com/')
-        print('You can follow multiple twitter users by separating the twitter IDs with a comma ,')
-
-        webhook_url = clean_input('Give webhook URL: ').split(',')
-        twitter_ids = str(input('Give twitter IDs: ').replace(' ', '')).split(',')
-        include_reply_to_user = get_bool(
-            'Include reply tweets from other Twitter users? (Random Twitter user is replying to your followed Twitter user) (true/false)')
-        include_user_reply = get_bool(
-            'Include reply tweets to other Twitter users? (Your followed Twitter user is replying to random Twitter users.) (true/false)')
-        include_retweet = get_bool('Include Retweets? (true/false)')
-
-        original_count = len(twitter_ids)
-        twitter_ids = self.get_valid_twitter_ids(twitter_ids)
-        print('Of the {} twitter ids {} were valid.'.format(original_count, len(twitter_ids)))
-
-        if len(twitter_ids) != 0:
-            self.data['Discord'].append(
-                {'webhook_urls': webhook_url, 'twitter_ids': twitter_ids, 'IncludeReplyToUser': include_reply_to_user,
-                 "IncludeUserReply": include_user_reply, "IncludeRetweet": include_retweet})
-            c.save_config()
-        else:
-            print('Your twitter IDs were invalid. Thus the webhook was not added. A Twitter ID is made up of numbers.')
 
     def list_webhooks(self):
         for i in range(0, len(self.data['Discord'])):
@@ -250,6 +252,8 @@ class Configuration:
                 print('1. Webhook URL')
                 print('2. Twitter IDs')
                 print('3. Filter')
+                print('4. Keywords')
+                print('5. Custom message')
                 print('\n0. Go back.')
                 choice = user_choice()
                 if choice == "1":
@@ -284,6 +288,15 @@ class Configuration:
                     self.data['Discord'][index]['IncludeUserReply'] = get_bool(
                         'Include reply tweets to other Twitter users? (Your followed Twitter user is replying to random Twitter users.) (true/false)')
                     self.data['Discord'][index]['IncludeRetweet'] = get_bool('Include Retweets? (true/false)')
+
+                elif choice == "4":
+                    self.data['Discord'][index]['keyword_sets'] = input(
+                    "OPTIONAL: Will only post tweets with certain keywords. Comma separate keyword sets. Separate a keyword set with +. Example: world+hello, dota--> hello guys! ✘, what in the world ✘, my first tweet: hello world ✔, let's play some dota! ✔")
+
+                elif choice == "5":
+                    self.data['Discord'][index]['custom_message'] = input(
+                    "OPTIONAL: Custom message. Useful for pinging @everyone, a role or individual discord members (syntax: <@ROLE_OR_MEMBER_ID>)")
+
                 elif choice == "0":
                     break
             c.save_config()
