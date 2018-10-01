@@ -5,7 +5,7 @@ Got questions? [Join the bot's discord server!](https://discord.gg/Dkg79tc)
 
 ## Preview
 
-[![](https://i.imgur.com/7Acpoo0.png)]
+![](https://i.imgur.com/7Acpoo0.png)
 
 ## Heroku Deployment
 
