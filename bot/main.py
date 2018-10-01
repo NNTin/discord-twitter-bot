@@ -62,15 +62,6 @@ class StdOutListener(StreamListener):
                 else:
                     text = data['text']
 
-                if "keyword_sets" in data_discord and data_discord["keyword_sets"] is not None:
-                    for keyword_set in data_discord["keyword_sets"]:
-                        keyword_present = [keyword.lower() in text.lower() for keyword in keyword_set]
-                        keyword_set_present = all(keyword_present)
-                        if keyword_set_present:
-                            break
-                    if not keyword_set_present:
-                        break
-
                 for url in data['entities']['urls']:
                     if url['expanded_url'] is None:
                         continue
@@ -100,6 +91,15 @@ class StdOutListener(StreamListener):
                     text = text.replace('#%s' % hashtag['text'],
                                         '[#%s](https://twitter.com/hashtag/%s)' % (hashtag['text'],
                                                                                    hashtag['text']))
+
+                if "keyword_sets" in data_discord and data_discord["keyword_sets"] is not None:
+                    for keyword_set in data_discord["keyword_sets"]:
+                        keyword_present = [keyword.lower() in text.lower() for keyword in keyword_set]
+                        keyword_set_present = all(keyword_present)
+                        if keyword_set_present:
+                            break
+                    if not keyword_set_present:
+                        break
 
                 if 'media' in data['entities']:
                     for media in data['entities']['media']:
