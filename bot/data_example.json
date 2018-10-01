@@ -1,0 +1,28 @@
+{
+    "Discord" : [
+        {
+            "custom_message": "Pinging <@1234567890>",
+            "keyword_sets": [
+                ["dota"],
+                ["hello", "world"],
+                ["Global", "Offensive"]
+            ],
+            "IncludeReplyToUser" : false,
+            "IncludeRetweet" : false,
+            "IncludeUserReply" : false,
+            "twitter_ids" : [
+                ""
+            ],
+            "webhook_urls" : [
+                "https://ptb.discordapp.com/api/webhooks/1234567890/XXXXXXXXXXXXXXXXXXXXXXXXXX"
+            ]
+        }
+    ],
+    "Twitter" : {
+        "access_token" : "X-X",
+        "access_token_secret" : "X",
+        "consumer_key" : "X",
+        "consumer_secret" : "X"
+    },
+    "twitter_ids" : []
+}

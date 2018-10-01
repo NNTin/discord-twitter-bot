@@ -1,0 +1,53 @@
+﻿{
+  "name": "Discord Twitter Bot",
+  "description": "Posts Twitter tweets to Discord through Webhook",
+  "keywords": [
+    "discord",
+    "bot",
+    "twitter",
+    "tweets"
+  ],
+  "website": "https://nntin.github.io/discord-logo/",
+  "repository": "https://github.com/NNTin/discord-twitter-bot",
+  "logo": "https://i.imgur.com/11zvdoc.png",
+  "env": {
+    "CONSUMER_KEY": {
+      "description": "Twitter consumer key https://developer.twitter.com/en/apps"
+    },
+    "CONSUMER_SECRET": {
+      "description": "Twitter consumer secret"
+    },
+    "ACCESS_TOKEN": {
+      "description": "Twitter access token"
+    },
+    "ACCESS_TOKEN_SECRET": {
+      "description": "Twitter access token secret"
+    },
+    "WEBHOOK_URL": {
+      "description": "Discord webhook URL https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks"
+    },
+    "TWITTER_ID": {
+      "description": "Twitter ID(s) http://gettwitterid.com/ Separate multiple twitter IDs with a comma"
+    },
+    "INCLUDE_REPLY_TO_USER": {
+      "description": "Include replies from other Twitter users tweeting TO your tracked twitter user?",
+      "value": "True"
+    },
+    "INCLUDE_RETWEET": {
+      "description": "Include retweets?",
+      "value": "True"
+    },
+    "INCLUDE_USER_REPLY": {
+      "description": "Include replies FROM your tracked twitter user to other twitter users",
+      "value": "True"
+    },
+    "CUSTOM_MESSAGE": {
+      "description": "OPTIONAL: Custom message. Useful for pinging @everyone, a role or individual discord members (syntax: <@ROLE_OR_MEMBER_ID>)",
+      "required": false
+    },
+    "KEYWORDS": {
+      "description": "OPTIONAL: Will only post tweets with certain keywords. Comma separate keyword sets. Separate a keyword set with +. Example: world+hello, dota--> hello guys! ✘, what in the world ✘, my first tweet: hello world ✔, let's play some dota! ✔",
+      "required": false
+    }
+  }
+}

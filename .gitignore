@@ -144,4 +144,4 @@ $RECYCLE.BIN/
 *.lnk
 *.xml
 .idea/discord-twitter-bot.iml
-data.json
+experiment/
