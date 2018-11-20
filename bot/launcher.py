@@ -290,8 +290,11 @@ class Configuration:
                     self.data['Discord'][index]['IncludeRetweet'] = get_bool('Include Retweets? (true/false)')
 
                 elif choice == "4":
-                    self.data['Discord'][index]['keyword_sets'] = input(
+                    keyword_sets = input(
                     "OPTIONAL: Will only post tweets with certain keywords. Comma separate keyword sets. Separate a keyword set with +. Example: world+hello, dota--> hello guys! ✘, what in the world ✘, my first tweet: hello world ✔, let's play some dota! ✔")
+
+                    keyword_sets = [keyword_set.split("+") for keyword_set in keyword_sets.replace(" ", "").split(",")]
+                    self.data['Discord'][index]['keyword_sets'] = keyword_sets
 
                 elif choice == "5":
                     self.data['Discord'][index]['custom_message'] = input(
