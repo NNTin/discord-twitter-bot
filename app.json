@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "Discord Twitter Bot",
   "description": "Posts Twitter tweets to Discord through Webhook",
   "keywords": [
@@ -7,8 +7,7 @@
     "twitter",
     "tweets"
   ],
-  "website": "https://nntin.github.io/discord-logo/",
-  "repository": "https://github.com/NNTin/discord-twitter-bot",
+  "website": "https://nntin.xyz/",
   "logo": "https://i.imgur.com/11zvdoc.png",
   "env": {
     "CONSUMER_KEY": {

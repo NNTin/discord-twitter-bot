@@ -14,11 +14,11 @@ Got questions? [Join the bot's discord server!](https://discord.gg/Dkg79tc)
 Remember to [activate](https://i.imgur.com/zOfa0Qm.png) the app. [View the logs here.](https://i.imgur.com/tWBoTuB.png)  
 Use this to initially deploy your discord-twitter-bot.
 
-To further configure the bot get Heroku CLI and run launcher.py.
+To further configure the bot get Heroku CLI and run launcher.py. (**Warning:** This is not recommended for inexperienced users since a lot of things could go wrong. Troubleshooting support will not be provided.)
 
 ```coffeescript
 heroku login
-heroku git:clone -a <your heroku app name>
+heroku create <your heroku app name>
 cd <your heroku app name>
 git remote add origin https://github.com/NNTin/discord-twitter-bot
 git pull origin master
@@ -28,13 +28,15 @@ git commit -am "updated configuration"
 git push heroku
 ```
 
-Heroku is a nice solution to host the bot for free.
+This will create a data.json and the bot will ignore any set environment variable.
 
 ## YT Video to Heroku Deployment
 
 [![YT Video](https://img.youtube.com/vi/NwPcXBvStSI/0.jpg)](https://www.youtube.com/watch?v=NwPcXBvStSI)
 
 ## Normal Setup
+
+(**Warning:** This is only recommended for experienced users who have some basic experience with CLI.)
 
 Get Python >=3.5.3, <3.7
 
@@ -46,7 +48,7 @@ python3 discord-twitter-bot/launcher.py
 ```
 
 First two lines are skip-able but are recommended if you are relying on an older version of discord.py.
-Third line clones the rewrite branch. Fourth line executes launcher.py
+Third line clones the GitHub project. Fourth line executes launcher.py
 
 Once you have set everything up you can run main.py directly. (Useful in combination with systemd, Upstart, PM2, etc.)
 
