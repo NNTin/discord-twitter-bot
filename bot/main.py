@@ -12,6 +12,7 @@ import html
 import re
 from config import data_json
 import urllib3
+import requests
 
 
 class StdOutListener(StreamListener):
@@ -268,24 +269,24 @@ if __name__ == '__main__':
 
     print('Twitter stream started.')
     while True:
+        def print_error(_error):
+            print('---------Error---------')
+            print('Known error. Ignore. Nothing you can do.')
+            print(_error)
+            print('Sleeping for 1 minute then continuing.')
+            sleep(600)
+            print('Twitter streaming continues.')
+            print('-----------------------')
         try:
             stream.filter(follow=data_json['twitter_ids'])
         except urllib3.exceptions.ProtocolError as error:
-            print('---------Error---------')
-            print('This is probably caused by "Connection reset by peer." Ignore. Nothing you can do.')
-            print(error)
-            print('Sleeping for 10 seconds then continuing.')
-            sleep(10)
-            print('Twitter streaming continues.')
-            print('-----------------------')
+            print_error(_error=error)
         except ConnectionResetError as error:
-            print('---------Error---------')
-            print('This is probably caused by "Connection reset by peer." Ignore. Nothing you can do.')
-            print(error)
-            print('Sleeping for 10 seconds then continuing.')
-            sleep(10)
-            print('Twitter streaming continues.')
-            print('-----------------------')
+            print_error(_error=error)
+        except ConnectionError as error:
+            print_error(_error=error)
+        except requests.exceptions.ConnectionError as error:
+            print_error(_error=error)
         except Exception as error:
             print('---------Error---------')
             print('unknown error')
