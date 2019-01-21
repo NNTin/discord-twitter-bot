@@ -145,3 +145,4 @@ $RECYCLE.BIN/
 *.xml
 .idea/discord-twitter-bot.iml
 experiment/
+bot/config.json

@@ -1,0 +1,80 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "title": "Config",
+  "description": "Configuration for the discord-twitter-bot",
+  "type": "object",
+  "properties": {
+    "Discord": {
+      "description": "List of custom feeds",
+      "type": "array",
+      "uniqueItems": true,
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "custom_message": {
+            "type": "string"
+          },
+          "webhook_urls": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "twitter_ids": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "keyword_sets": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "IncludeReplyToUser": {
+            "type": "boolean"
+          },
+          "IncludeRetweet": {
+            "type": "boolean"
+          },
+          "IncludeUserReply": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "required": ["webhook_urls", "twitter_ids"]
+      }
+    },
+    "Twitter": {
+      "description": "Twitter API credentials",
+      "type": "object",
+      "properties": {
+        "access_token": {
+          "type": "string"
+        },
+        "access_token_secret": {
+          "type": "string"
+        },
+        "consumer_key": {
+          "type": "string"
+        },
+        "consumer_secret": {
+          "type": "string"
+        }
+      },
+      "required": ["access_token", "access_token_secret", "consumer_key", "consumer_secret"]
+    }
+  },
+  "required": ["Discord", "Twitter"]
+}

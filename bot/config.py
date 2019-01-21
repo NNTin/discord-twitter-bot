@@ -1,12 +1,12 @@
-from dataIO import fileIO
+from utils.dataIO import fileIO
 import os
 
 false_strings = ["false", "False", "f", "F", "0", "", "n", "N", "no", "No", "NO", "FALSE"]
 
-if fileIO("data.json", "check"):
-    data_json = fileIO("data.json", "load")
+if fileIO("config.json", "check"):
+    config = fileIO("config.json", "load")
 else:
-    data_json = {
+    config = {
         "Twitter": {
             "consumer_key": os.environ["CONSUMER_KEY"],
             "consumer_secret": os.environ["CONSUMER_SECRET"],
@@ -28,4 +28,4 @@ else:
     keyword_sets = os.environ.get("KEYWORDS", None)
     if keyword_sets:
         keyword_sets = [keyword_set.split("+") for keyword_set in keyword_sets.replace(" ", "").split(",")]
-        data_json["Discord"][0]["keyword_sets"] = keyword_sets
+        config["Discord"][0]["keyword_sets"] = keyword_sets
