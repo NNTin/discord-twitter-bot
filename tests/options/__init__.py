@@ -1,1 +1,4 @@
-# check worth_posting behavior responding with expected results
+import unittest
+
+if __name__ == '__main__':
+    unittest.main()

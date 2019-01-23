@@ -14,6 +14,33 @@ COLORS = [0x7f0000, 0x535900, 0x40d9ff, 0x8c7399, 0xd97b6c, 0xf2ff40, 0x8fb6bf, 
 WH_REGEX = r"discordapp\.com\/api\/webhooks\/(?P<id>\d+)\/(?P<token>.+)"
 
 
+def worth_posting(tweeter_id, twitter_ids, in_reply_to_twitter_id, retweeted,
+                  include_reply_to_user, include_user_reply, include_retweet):
+    if tweeter_id not in twitter_ids:
+        worth_posting = False
+        if include_reply_to_user:
+            if in_reply_to_twitter_id in twitter_ids:
+                worth_posting = True
+    else:
+        worth_posting = True
+        if not include_user_reply and in_reply_to_twitter_id is not None:
+            worth_posting = False
+
+    if not include_retweet:
+        if retweeted:
+            worth_posting = False
+    return worth_posting
+
+
+def keyword_set_present(keyword_sets, text):
+    for keyword_set in keyword_sets:
+        keyword_present = [keyword.lower() in text.lower() for keyword in keyword_set]
+        keyword_set_present = all(keyword_present)
+        if keyword_set_present:
+            return True
+    return False
+
+
 class Processor:
     def __init__(self, status_tweet, discord_config):
         self.status_tweet = status_tweet
@@ -22,26 +49,15 @@ class Processor:
         self.embed = None
 
     def worth_posting(self):
-        if self.status_tweet['user']['id_str'] not in self.discord_config['twitter_ids']:
-            worth_posting = False
-            if 'IncludeReplyToUser' in self.discord_config:  # other Twitter user tweeting to your followed Twitter user
-                if self.discord_config['IncludeReplyToUser']:
-                    if self.status_tweet['in_reply_to_user_id_str'] in self.discord_config['twitter_ids']:
-                        worth_posting = True
-        else:
-            worth_posting = True
-            # your followed Twitter users tweeting to random Twitter users
-            # (relevant if you only want status updates/opt out of conversations)
-            if 'IncludeUserReply' in self.discord_config:
-                if not self.discord_config['IncludeUserReply'] and self.status_tweet['in_reply_to_user_id'] is not None:
-                    worth_posting = False
-
-        if 'IncludeRetweet' in self.discord_config:  # retweets...
-            if not self.discord_config['IncludeRetweet']:
-                if 'retweeted_status' in self.status_tweet:
-                    worth_posting = False  # retweet
-
-        return worth_posting
+        return worth_posting(
+            tweeter_id=self.status_tweet["user"]["id_str"],
+            twitter_ids=self.discord_config["twitter_ids"],
+            in_reply_to_twitter_id=self.status_tweet["in_reply_to_user_id_str"],
+            retweeted=self.status_tweet["retweeted"],
+            include_reply_to_user=self.discord_config["IncludeReplyToUser"],
+            include_user_reply=self.discord_config["IncludeUserReply"],
+            include_retweet=self.discord_config["IncludeRetweet"]
+        )
 
     def get_text(self):
         if 'extended_tweet' in self.status_tweet:
@@ -76,15 +92,7 @@ class Processor:
         return unescape(self.text)
 
     def keyword_set_present(self):
-        if "keyword_sets" in self.discord_config and self.discord_config["keyword_sets"]:
-            for keyword_set in self.discord_config["keyword_sets"]:
-                keyword_present = [keyword.lower() in self.text.lower() for keyword in keyword_set]
-                keyword_set_present = all(keyword_present)
-                if keyword_set_present:
-                    return True
-            return False
-        else:  # when no keywords are specified always return True
-            return True
+        return keyword_set_present(self.discord_config["keyword_sets"], self.text)
 
     def attach_media(self):
         if 'extended_tweet' in self.status_tweet and 'media' in self.status_tweet['extended_tweet']['entities']:
@@ -167,4 +175,10 @@ class Processor:
                   f"The following webhook URL is invalid:\n"
                   f"{wh_url}\n"
                   f"-----------------------")
+
+
+if __name__ == '__main__':
+    p = Processor({}, {"keyword_sets": [[""]]})
+    p.text = "Hello World!"
+    print(p.keyword_set_present())
 

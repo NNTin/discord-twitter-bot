@@ -1,1 +1,4 @@
-# check the webhook. this test is only run on the dev machine
+import unittest
+
+if __name__ == '__main__':
+    unittest.main()

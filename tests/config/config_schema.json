@@ -13,7 +13,7 @@
         "type": "object",
         "properties": {
           "custom_message": {
-            "type": "string"
+            "type": ["string", "null"]
           },
           "webhook_urls": {
             "type": "array",
@@ -53,7 +53,10 @@
           }
         },
         "additionalProperties": false,
-        "required": ["webhook_urls", "twitter_ids"]
+        "required": [
+          "webhook_urls", "twitter_ids", "custom_message", "keyword_sets",
+          "IncludeReplyToUser", "IncludeRetweet", "IncludeUserReply"
+        ]
       }
     },
     "Twitter": {
