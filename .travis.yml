@@ -4,10 +4,7 @@ python:
 install:
   - pip install -r requirements.txt
 env:
-  - CONSUMER_KEY=consumer_key
-  - CONSUMER_SECRET=consumer_secret
-  - ACCESS_TOKEN=access_token
-  - ACCESS_TOKEN_SECRET=access_token_secret
+  - CONSUMER_KEY=X CONSUMER_SECRET=X ACCESS_TOKEN=X-X ACCESS_TOKEN_SECRET=X
 script:
   - python -m unittest discover -s tests/config
   - python -m unittest discover -s tests/options
