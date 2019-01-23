@@ -1,7 +1,9 @@
 # discord-twitter-bot
 Post tweets to Discord Webhook of certain twitter users.  
-Got questions? [Join the bot's discord server!](https://discord.gg/Dkg79tc)
 
+[![Invite Link](https://discordapp.com/api/guilds/295528852518731786/widget.png?style=shield)](https://discord.gg/Dkg79tc)
+[![Build Status](https://api.travis-ci.com/NNTin/discord-twitter-bot.svg)](https://travis-ci.com/NNTin/discord-twitter-bot)
+[![Pull Requests](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/NNTin/discord-twitter-bot/pulls)
 
 ## Preview
 

@@ -21,7 +21,7 @@ REQS_DIR = "lib"
 sys.path.insert(0, REQS_DIR)
 IS_WINDOWS = os.name == "nt"
 PYTHON_OK = sys.version_info >= (3, 5, 3) and sys.version_info < (3, 7)
-REQS_TXT = "requirements.txt"
+REQS_TXT = "../requirements.txt"
 INTRO = ("==============================\n"
          "discord-twitter-bot - Launcher\n"
          "==============================\n")
@@ -29,7 +29,7 @@ INTRO = ("==============================\n"
 
 class Configuration:
     def __init__(self):
-        self.data = fileIO("data.json", "load")
+        self.data = fileIO("config.json", "load")
 
     def authenticate(self):
         auth = tweepy.OAuthHandler(self.data['Twitter']['consumer_key'],
@@ -110,7 +110,7 @@ class Configuration:
             c.save_config()
 
     def save_config(self):
-        fileIO("data.json", "save", self.data)
+        fileIO("config.json", "save", self.data)
 
     def webhook_count(self):
         amount_webhooks = len(self.data['Discord'])
@@ -346,9 +346,9 @@ def get_bool(prompt):
 
 
 def check_files():
-    f = "data.json"
+    f = "config.json"
     if not fileIO(f, "check"):
-        print("data.json does not exist. Creating empty data.json...")
+        print("config.json does not exist. Creating empty config.json...")
         fileIO(f, "save", {
                 "Twitter": {
                     "consumer_key": "",
