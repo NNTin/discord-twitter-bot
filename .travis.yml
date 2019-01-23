@@ -6,6 +6,6 @@ install:
 env:
   - CONSUMER_KEY=X CONSUMER_SECRET=X ACCESS_TOKEN=X-X ACCESS_TOKEN_SECRET=X
 script:
-  - python -m unittest discover -s tests/config
-  - python -m unittest discover -s tests/options
-  - python -m unittest discover -s tests/discord
+  - python -m unittest discover -s tests/test_config
+  - python -m unittest discover -s tests/test_options
+  - python -m unittest discover -s tests/test_discord
