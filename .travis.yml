@@ -8,4 +8,4 @@ env:
 script:
   - python -m unittest discover -s tests/config
   - python -m unittest discover -s tests/options
-  - python -m unittest discover -s tests/webhook
+  - python -m unittest discover -s tests/discord
