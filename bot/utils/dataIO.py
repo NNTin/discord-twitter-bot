@@ -2,12 +2,12 @@ import json
 import os
 from random import randint
 
+
 class InvalidFileIO(Exception):
     pass
 
-class DataIO():
-    #def __init__(self):
 
+class DataIO:
     def save_json(self, filename, data):
         """Atomically saves json file"""
         rnd = randint(1000, 9999)
@@ -42,26 +42,28 @@ class DataIO():
 
     def _save_json(self, filename, data):
         with open(filename, encoding='utf-8', mode="w") as f:
-            json.dump(data, f, indent=4,sort_keys=True,
-                separators=(',',' : '))
+            json.dump(data, f, indent=4, sort_keys=True,
+                      separators=(',', ' : '))
         return data
 
     def _legacy_fileio(self, filename, IO, data=None):
         """Old fileIO provided for backwards compatibility"""
-        if IO == "save" and data != None:
+        if IO == "save" and data is not None:
             return self.save_json(filename, data)
-        elif IO == "load" and data == None:
+        elif IO == "load" and data is None:
             return self.load_json(filename)
-        elif IO == "check" and data == None:
+        elif IO == "check" and data is None:
             return self.is_valid_json(filename)
         else:
             raise InvalidFileIO("FileIO was called with invalid"
-                " parameters")
+                                " parameters")
+
 
 def get_value(filename, key):
     with open(filename, encoding='utf-8', mode="r") as f:
         data = json.load(f)
     return data[key]
+
 
 def set_value(filename, key, value):
     data = fileIO(filename, "load")
