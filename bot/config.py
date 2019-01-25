@@ -1,5 +1,7 @@
-#from .utils.dataIO import fileIO
-from bot.utils.dataIO import fileIO
+try:
+    from utils.dataIO import fileIO
+except ModuleNotFoundError:
+    from bot.utils.dataIO import fileIO
 import os
 
 os.chdir(os.path.dirname(__file__))

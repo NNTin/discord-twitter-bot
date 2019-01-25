@@ -2,8 +2,8 @@ from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler, Stream
 from time import gmtime, strftime
 from time import sleep
-from bot.config import config
-from bot.utils.processor import Processor
+from config import config
+from utils.processor import Processor
 #from .config import config
 #from .utils.processor import Processor
 import urllib3
