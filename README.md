@@ -24,7 +24,7 @@ heroku create <your heroku app name>
 cd <your heroku app name>
 git remote add origin https://github.com/NNTin/discord-twitter-bot
 git pull origin master
-python3 launcher.py
+python bot/launcher.py
 git add .
 git commit -am "updated configuration"
 git push heroku
@@ -43,14 +43,15 @@ This will create a data.json and the bot will ignore any set environment variabl
 Get Python >=3.5.3, <3.7
 
 ```coffeescript
-python3 -m venv bot-env
-source bot-env/bin/activate
 git clone https://github.com/NNTin/discord-twitter-bot.git
-python3 discord-twitter-bot/launcher.py
+cd discord-twitter-bot      # ^ download the project and cd into it
+python3 -m venv venv        # optional virtual environment, recommended
+source venv/bin/activate    # only run if you did venv
+python3 -m pip install tox  # optional used for testing/troubleshooting/contributing
+python3 bot/launcher.py     # configure the bot, this create a config.json
+tox                         # only run if you did tox, run the test suite
+python3 bot/main.py         # run the bot
 ```
-
-First two lines are skip-able but are recommended if you are relying on an older version of discord.py.
-Third line clones the GitHub project. Fourth line executes launcher.py
 
 Once you have set everything up you can run main.py directly. (Useful in combination with systemd, Upstart, PM2, etc.)
 

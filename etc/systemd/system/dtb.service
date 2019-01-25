@@ -1,0 +1,14 @@
+[Unit]
+Description=discord-twitter-bot
+After=multi-user.target
+[Service]
+WorkingDirectory=/home/tin/discord-twitter-bot
+User=tin
+Group=tin
+ExecStart=/usr/bin/python3 /home/tin/discord-twitter-bot/bot/main.py
+Type=idle
+Restart=always
+RestartSec=15
+
+[Install]
+WantedBy=multi-user.target
