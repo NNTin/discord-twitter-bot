@@ -17,12 +17,11 @@ env:
     - CONSUMER_SECRET=X
     - ACCESS_TOKEN=X-X
     - ACCESS_TOKEN_SECRET=X
-  matrix:
-    - TOXENV=py
 jobs:
   include:
     - python: 3.6.6
-      env: TOXENV=style
+      name: "Stylecheck"
+      script: make stylecheck
 script:
   - python -m unittest discover -s tests/test_config
   - python -m unittest discover -s tests/test_options
