@@ -40,7 +40,7 @@ This will create a data.json and the bot will ignore any set environment variabl
 
 (**Warning:** This is only recommended for experienced users who have some basic experience with CLI.)
 
-Get Python >=3.5.3, <3.7
+Get Python >=3.6.0, <3.7.0
 
 ```coffeescript
 git clone https://github.com/NNTin/discord-twitter-bot.git
