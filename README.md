@@ -47,9 +47,7 @@ git clone https://github.com/NNTin/discord-twitter-bot.git
 cd discord-twitter-bot      # ^ download the project and cd into it
 python3 -m venv venv        # optional virtual environment, recommended
 source venv/bin/activate    # only run if you did venv
-python3 -m pip install tox  # optional used for testing/troubleshooting/contributing
 python3 bot/launcher.py     # configure the bot, this create a config.json
-tox                         # only run if you did tox, run the test suite
 python3 bot/main.py         # run the bot
 ```
 

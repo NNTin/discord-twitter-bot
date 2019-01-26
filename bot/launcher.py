@@ -46,6 +46,7 @@ class Configuration:
         self.client = tweepy.API(auth)
 
     def run_test(self):
+        os.chdir(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
         subprocess.call(["tox"])
 
     def get_config(self, compact=False):
@@ -150,7 +151,7 @@ class Configuration:
             print('\nProgram is now attempting to communicate with Twitter. This can take a while!')
 
             twitter_ids = []
-            pattern = 'https?:\/\/(?:www\.)?twitter\.com\/(?P<twittername>[a-zA-Z0-9]+)\/lists\/(?P<listname>[a-zA-Z0-9-]+)'
+            pattern = '(https?:\/\/(?:www\.)?)?twitter\.com\/(?P<twittername>[a-zA-Z0-9]+)\/lists\/(?P<listname>[a-zA-Z0-9-]+)'
             for m in re.finditer(pattern, twitter_list_url, re.I):
 
                 for member in tweepy.Cursor(self.client.list_members, m.group('twittername'), m.group('listname')).items():

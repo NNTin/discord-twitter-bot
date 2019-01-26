@@ -1,6 +1,7 @@
 from bot.config import config
 import tweepy
 import unittest
+import warnings
 
 
 class TestTwitter(unittest.TestCase):
@@ -40,5 +41,5 @@ class TestTwitter(unittest.TestCase):
             print('twitter id: {} -> screen name: {}'.format(user.id, user.screen_name))
             valid_twitter_ids.append(str(user.id))
 
-        self.assertEqual(len(twitter_ids), len(valid_twitter_ids),
-                         f"Of the {len(twitter_ids)} twitter ids only {len(valid_twitter_ids)} were valid.")
+        if len(valid_twitter_ids) != len(twitter_ids):
+            warnings.warn(f"Of the {len(twitter_ids)} twitter ids only {len(valid_twitter_ids)} were valid.")
