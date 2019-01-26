@@ -1,13 +1,19 @@
+#!/usr/local/bin/python
+# -*- coding: utf-8 -*-
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler, Stream
 from time import gmtime, strftime
 from time import sleep
-from config import config
-from utils.processor import Processor
-#from .config import config
-#from .utils.processor import Processor
 import urllib3
 import requests
+try:
+    from utils.processor import Processor
+except ModuleNotFoundError:
+    from bot.utils.processor import Processor
+try:
+    from config import config
+except ModuleNotFoundError:
+    from bot.config import config
 
 
 class StdOutListener(StreamListener):

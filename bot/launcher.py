@@ -1,7 +1,7 @@
-#from .utils.dataIO import fileIO
-from utils.dataIO import fileIO
-import sys
+#!/usr/local/bin/python
+# -*- coding: utf-8 -*-
 import os
+import sys
 import subprocess
 import re
 import time
@@ -17,12 +17,18 @@ try:
     import discord
 except ImportError:
     discord = None
+try:
+    from utils.dataIO import fileIO
+except ModuleNotFoundError:
+    from bot.utils.dataIO import fileIO
 
+CONFIG_JSON = os.path.abspath(os.path.join(os.path.dirname(__file__), 'config.json'))
+CONFIG_EXAMPLE_JSON = os.path.abspath(os.path.join(os.path.dirname(__file__), 'config.example.json'))
 REQS_DIR = "lib"
 sys.path.insert(0, REQS_DIR)
 IS_WINDOWS = os.name == "nt"
-PYTHON_OK = sys.version_info >= (3, 5, 3) and sys.version_info < (3, 7)
-REQS_TXT = os.getcwd() + "/requirements.txt"
+PYTHON_OK = (3, 7) > sys.version_info >= (3, 5, 3)
+REQS_TXT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'requirements.txt'))
 INTRO = ("==============================\n"
          "discord-twitter-bot - Launcher\n"
          "==============================\n")
@@ -30,7 +36,7 @@ INTRO = ("==============================\n"
 
 class Configuration:
     def __init__(self):
-        self.data = fileIO("bot/config.json", "load")
+        self.data = fileIO(CONFIG_JSON, "load")
 
     def authenticate(self):
         auth = tweepy.OAuthHandler(self.data['Twitter']['consumer_key'],
@@ -40,51 +46,7 @@ class Configuration:
         self.client = tweepy.API(auth)
 
     def run_test(self):
-        print('discord-twitter-bot needs Python 3.5 or superior. You are using: ' + get_python_version())
-        if PYTHON_OK:
-            print('Requirement is met.')
-        else:
-            print('Requirement is not met.')
-
-        if discord is None:
-            print("Warning: discord is not installed. Please run the first option.\n")
-            return
-        else:
-            if discord.version_info.major < 1:
-                print(
-                    "Warning: You are using the async version of discord.py ({}). This rewrite branch requires you to "
-                    "install the rewrite version of discord.py.".format(discord.__version__))
-            else:
-                print('Discord.py ({}) is installed.'.format(discord.__version__))
-
-        try:
-            self.authenticate()
-        except:
-            print('Error. Tweepy might not be installed.')
-            return
-        else:
-            print('Tweepy is installed.')
-        try:
-            self.client.verify_credentials()
-        except:
-            print('Your Twitter credentials are wrong!')
-            return
-        else:
-            print('Your Twitter credentials are set and correct!')
-
-        self.webhook_count()
-        self.get_config(compact=False)
-        self.get_config(compact=True)
-
-        print('Checking Twitter IDs. This may take a while.')
-
-        twitter_ids = []
-        for element in self.data['Discord']:
-            twitter_ids.extend(x for x in element['twitter_ids'] if x not in twitter_ids)
-
-        original_count = len(twitter_ids)
-        twitter_ids = self.get_valid_twitter_ids(twitter_ids)
-        print('Of the {} twitter ids {} were valid.'.format(original_count, len(twitter_ids)))
+        subprocess.call(["tox"])
 
     def get_config(self, compact=False):
         if not compact:
@@ -111,7 +73,7 @@ class Configuration:
             c.save_config()
 
     def save_config(self):
-        fileIO("config.json", "save", self.data)
+        fileIO(CONFIG_JSON, "save", self.data)
 
     def webhook_count(self):
         amount_webhooks = len(self.data['Discord'])
@@ -347,20 +309,9 @@ def get_bool(prompt):
 
 
 def check_files():
-    f = "bot/config.json"
-    if not fileIO(f, "check"):
-        print("config.json does not exist. Creating empty config.json...")
-        fileIO(f, "save", {
-                "Twitter": {
-                    "consumer_key": "",
-                    "consumer_secret": "",
-                    "access_token": "",
-                    "access_token_secret": ""
-                },
-                "Discord": [],
-                "twitter_ids": []
-            }
-        )
+    if not fileIO(CONFIG_JSON, "check"):
+        print("config.json does not exist. Creating mock config.json...")
+        fileIO(CONFIG_JSON, "save", fileIO(CONFIG_EXAMPLE_JSON, "load"))
 
 
 def wait():
@@ -424,18 +375,18 @@ def run_bot(auto_restart=False):
             print("Warning: You are using the async version of discord.py ({}). This rewrite branch requires you to "
                   "install the rewrite version of discord.py.".format(discord.__version__))
 
-    cmd = (interpreter, "main.py")
+    main_py = os.path.abspath(os.path.join(os.path.dirname(__file__), 'main.py'))
+    cmd = (interpreter, main_py)
 
     while True:
         try:
             print('Starting main.py. You can get back to the launcher via ctrl+c.')
             code = subprocess.call(cmd)
         except KeyboardInterrupt:
-            code = 0
             break
         else:
             if auto_restart:
-                print('Unknown crash. Sleeping for 10 minutes.')
+                print('Unknown crash. Sleeping for 10 minutes. Code: {code}'.format(code=code))
                 time.sleep(600)
             else:
                 break

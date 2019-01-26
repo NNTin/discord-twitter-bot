@@ -1,14 +1,18 @@
+#!/usr/local/bin/python
+# -*- coding: utf-8 -*-
+import os
+
 try:
     from utils.dataIO import fileIO
 except ModuleNotFoundError:
     from bot.utils.dataIO import fileIO
-import os
 
-os.chdir(os.path.dirname(__file__))
 false_strings = ["false", "False", "f", "F", "0", "", "n", "N", "no", "No", "NO", "FALSE"]
 
-if fileIO("config.json", "check"):
-    config = fileIO("config.json", "load")
+CONFIG_JSON = os.path.abspath(os.path.join(os.path.dirname(__file__), 'config.json'))
+
+if fileIO(CONFIG_JSON, "check"):
+    config = fileIO(CONFIG_JSON, "load")
 else:
     config = {
         "Twitter": {

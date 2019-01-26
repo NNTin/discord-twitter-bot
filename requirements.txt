@@ -1,6 +1,7 @@
 pip
-aiohttp
+aiohttp<3.5.0,>=3.3.0
 tweepy==3.7.0
 requests
 git+https://github.com/Rapptz/discord.py@rewrite#egg=discord.py
 jsonschema
+tox
