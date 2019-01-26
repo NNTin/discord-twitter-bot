@@ -9,5 +9,8 @@ class TestPython(unittest.TestCase):
 
         python_ok = (3, 7) > sys.version_info >= (3, 6, 0)
 
-        self.assertTrue(python_ok,
-                        'discord-twitter-bot needs Python >=3.6.0, <3.7. You are using: ' + get_python_version())
+        self.assertTrue(
+            python_ok,
+            "discord-twitter-bot needs Python >=3.6.0, <3.7. You are using: "
+            + get_python_version(),
+        )

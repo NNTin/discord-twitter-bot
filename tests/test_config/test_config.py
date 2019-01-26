@@ -6,7 +6,7 @@ import os
 
 
 def read_json(filename):
-    with open(filename, encoding='utf-8', mode="r") as f:
+    with open(filename, encoding="utf-8", mode="r") as f:
         data = json.load(f)
     return data
 
