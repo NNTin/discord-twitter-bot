@@ -18,7 +18,7 @@ black -l 99 -N !PYFILES!
 exit /B %ERRORLEVEL%
 
 :stylecheck
-black -l 99 -N --check !PYFILES!
+black -l 99 -N --diff --check !PYFILES!
 exit /B %ERRORLEVEL%
 
 :help

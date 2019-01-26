@@ -1,11 +1,12 @@
+dist: xenial
 language: python
+cache: pip
 notifications:
   email: false
 python:
   - "3.6.0"
-  - "3.6.1"
-  - "3.6.3"
-  - "3.6.5"
+  - "3.6.2"
+  - "3.6.4"
   - "3.6.6"
   - "3.6.7"
 
@@ -21,7 +22,7 @@ jobs:
   include:
     - python: 3.6.6
       name: "Stylecheck"
-      script: make stylecheck
+      script: black --check --diff -l 99 -N `git ls-files "*.py"`
 script:
   - python -m unittest discover -s tests/test_config
   - python -m unittest discover -s tests/test_options
