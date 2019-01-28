@@ -7,7 +7,7 @@
     "Discord": {
       "description": "List of custom feeds",
       "type": "array",
-      "uniqueItems": true,
+      "uniqueItems": false,
       "minItems": 1,
       "items": {
         "type": "object",
