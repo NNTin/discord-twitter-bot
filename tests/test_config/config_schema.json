@@ -54,8 +54,7 @@
         },
         "additionalProperties": false,
         "required": [
-          "webhook_urls", "twitter_ids", "custom_message", "keyword_sets",
-          "IncludeReplyToUser", "IncludeRetweet", "IncludeUserReply"
+          "webhook_urls", "twitter_ids"
         ]
       }
     },
