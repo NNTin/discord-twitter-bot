@@ -100,7 +100,7 @@ class Processor:
             tweeter_id=self.status_tweet["user"]["id_str"],
             twitter_ids=self.discord_config["twitter_ids"],
             in_reply_to_twitter_id=self.status_tweet["in_reply_to_user_id_str"],
-            retweeted=self.status_tweet["retweeted"],
+            retweeted=self.status_tweet["retweeted"] or "retweeted_status" in self.status_tweet,
             include_reply_to_user=self.discord_config["IncludeReplyToUser"],
             include_user_reply=self.discord_config["IncludeUserReply"],
             include_retweet=self.discord_config["IncludeRetweet"],
