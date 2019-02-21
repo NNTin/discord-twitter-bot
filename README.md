@@ -8,6 +8,7 @@
   <a href="https://github.com/nntin/discord-twitter-bot"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
   <a href="https://github.com/NNTin/discord-twitter-bot/commits/"><img alt="Last Commit" src="https://img.shields.io/github/last-commit/nntin/discord-twitter-bot.svg"></a>
   <a href="https://github.com/NNTin/discord-twitter-bot/pulls"><img alt="Pull Requests" src="https://img.shields.io/github/issues-pr/nntin/discord-twitter-bot.svg"></a>
+  <a href="https://hub.docker.com/r/nntin/discord-twitter-bot"><img alt="Docker Pulls" src="https://img.shields.io/docker/pulls/nntin/discord-twitter-bot.svg"></a>
 </p>
 
 ## Preview
@@ -40,6 +41,27 @@ This will create a data.json and the bot will ignore any set environment variabl
 ## YT Video to Heroku Deployment
 
 [![YT Video](https://img.youtube.com/vi/NwPcXBvStSI/0.jpg)](https://www.youtube.com/watch?v=NwPcXBvStSI)
+
+## Docker Setup
+
+(**Warning:** This is only recommended for experienced users who have some basic experience with Docker.)
+
+```bash
+nano .env
+docker run --env-file ./.env nntin/discord-twitter-bot
+```
+
+.env file example
+```
+ACCESS_TOKEN=XXX-XXX
+ACCESS_TOKEN_SECRET=XXX
+CONSUMER_KEY=XXX
+CONSUMER_SECRET=XXX
+TWITTER_ID=123,456,789
+WEBHOOK_URL=https://discordapp.com/api/webhooks/123456789/XXXX-XXXX
+```
+
+Optional environment variables: `INCLUDE_REPLY_TO_USER`, `INCLUDE_RETWEET`, `INCLUDE_USER_REPLY`, `CUSTOM_MESSAGE`, `KEYWORDS`
 
 ## Normal Setup
 
