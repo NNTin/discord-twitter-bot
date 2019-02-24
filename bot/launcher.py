@@ -15,6 +15,8 @@ try:
     from tweepy import API, Cursor, OAuthHandler
 except ImportError:
     TWEEPY_OK = False
+except TypeError:
+    pip = None  # this error is somehow related to pip
 try:
     import discord
 except ImportError:
@@ -472,8 +474,7 @@ if __name__ == "__main__":
         exit(1)
     if pip is None:
         print(
-            "discord-twitter-bot cannot work without the pip module. Please make sure to "
-            "install Python without unchecking any option during the setup"
+            "discord-twitter-bot requires pip. Install or upgrade your pip module"
         )
         wait()
         exit(1)
