@@ -71,4 +71,5 @@ jobs:
           branch: master
           repo: NNTin/discord-twitter-bot
     - stage: docker test
+      before_script: export DOCKER_TAG="$TRAVIS_BRANCH-${TRAVIS_COMMIT::8}"
       script: docker pull "$DOCKER_IMAGE_NAME:$DOCKER_TAG"
