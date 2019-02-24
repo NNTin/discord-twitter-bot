@@ -473,9 +473,7 @@ if __name__ == "__main__":
         wait()
         exit(1)
     if pip is None:
-        print(
-            "discord-twitter-bot requires pip. Install or upgrade your pip module"
-        )
+        print("discord-twitter-bot requires pip. Install or upgrade your pip module")
         wait()
         exit(1)
 
