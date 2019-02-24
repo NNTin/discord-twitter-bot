@@ -5,15 +5,17 @@ import warnings
 
 
 class TestTwitter(unittest.TestCase):
-    def test_login(self):
+    def setUp(self):
         auth = tweepy.OAuthHandler(
             config["Twitter"]["consumer_key"], config["Twitter"]["consumer_secret"]
         )
         auth.set_access_token(
             config["Twitter"]["access_token"], config["Twitter"]["access_token_secret"]
         )
-        client = tweepy.API(auth)
-        client.verify_credentials()
+        self.client = tweepy.API(auth)
+
+    def test_login(self):
+        self.client.verify_credentials()
 
     def test_valid_twitter_ids(self):
         def lookup_users_list(_twitter_ids):
@@ -23,7 +25,7 @@ class TestTwitter(unittest.TestCase):
                 for i in range(0, int((user_count // 100)) + 1):
                     try:
                         full_users.extend(
-                            client.lookup_users(
+                            self.client.lookup_users(
                                 user_ids=_twitter_ids[i * 100 : min((i + 1) * 100, user_count)]
                             )
                         )
@@ -34,15 +36,6 @@ class TestTwitter(unittest.TestCase):
         twitter_ids = []
         for element in config["Discord"]:
             twitter_ids.extend(x for x in element["twitter_ids"] if x not in twitter_ids)
-
-        auth = tweepy.OAuthHandler(
-            config["Twitter"]["consumer_key"], config["Twitter"]["consumer_secret"]
-        )
-        auth.set_access_token(
-            config["Twitter"]["access_token"], config["Twitter"]["access_token_secret"]
-        )
-        client = tweepy.API(auth)
-        client.verify_credentials()
 
         valid_twitter_ids = []
 
