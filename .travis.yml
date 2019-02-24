@@ -1,4 +1,5 @@
-dist: xenial
+sudo: true
+dist: trusty
 language: python
 cache: pip
 notifications:
@@ -15,13 +16,59 @@ env:
     - CONSUMER_SECRET=X
     - ACCESS_TOKEN=X-X
     - ACCESS_TOKEN_SECRET=X
-jobs:
-  include:
-    - python: 3.6.6
-      name: "Stylecheck"
-      script: black --check --diff -l 99 -N `git ls-files "*.py"`
+    - DOCKER_USERNAME=nntin
+    - DOCKER_IMAGE_NAME=nntin/discord-twitter-bot
+    - secure: "Nwp138sYrukAR02hMCOMfKpvhRbPQbR7F91dmd6UPErFw23N0GMCTlz6c+qUuX8uNPum3yQQhZwFkggKBH2CCji62XAL3GtPr0o0evqlAi0jTHI60OvhTilgwFTc09Yt4NE7+HOWRZr+VKkOyAt1NwkqKHj1Cw5hnvnZUfSoqwZAfe/kZX4PCpDf6dhMvAvSZtrOg5A9IryWsTPQNPgO1C3kWNN1R40hF3idf2v7vNIFY2erRNRGDDAWwsJC/EG4k+wc8CgdS9LZU58RZAcNUKPsk2xix5SYBD2eMp2F2xouELhKGGDcrvuXgMC3QtoZfNxk2uQUvFroqfLMpI/tTiIj3GWbBq6nuzrorPhFw/IipVF4IaJHtU0rxA/SdsRR5CPjyX2RDIFq4WiQ+MhWJWQeBihFRg99dhdnlG04Qq0ct4h1ue/Ck0fzIRDqtoHdfmC7mNtL8O49YpDnWuXjdgytwYeylSLNvC0scFbhmeTo4gJVrvEq5CHTnsrHcZJQzfagSgh+EBBDOiFAt9AVLjRerfP3bpC/dPdGsW+HnYXDhIISIfBTR4T3pr/yE7v2cbICA3F4R9kU5S9OzyNO4PVVKP1ca66HgB31UjwxbQLb4NldYK7FxwRmjvsv8vmkILb7QkfJZV/hlen8NQF/wx2VfTwzLnIPDwKvNRzGkBw="
+    - TWITTER_ID=3065618342
 script:
   - python -m unittest discover -s tests/test_config
   - python -m unittest discover -s tests/test_options
   - python -m unittest discover -s tests/test_discord
   - python -m unittest discover -s tests/test_python
+jobs:
+  include:
+    - stage: stylecheck
+      python: 3.6.6
+      script: black --check --diff -l 99 -N `git ls-files "*.py"`
+    - stage: additional tests
+      script: echo "Running additional tests"
+      python:
+      - 3.6.6
+      - 3.6.7
+      env:
+        global:  # CONSUMER_KEY, CONSUMER_KEY, ACCESS_TOKEN, ACCESS_TOKEN_SECRET, WEBHOOK_URL
+        - secure: "CsSClbyk9eA7NJmcoEU2cbtKFQ9ZxGClBM6rYA36E65gfVbZG4AWEV/3l3Yr2Z+Ta5sRDwJPm9IVTPGs7xTwyqL2A4sMoYbIVs1IRESG3enhUyteSxyvkrFHC2AR4HVGJmdtHijS+Z6OQcPhbhKU6uLzAoPyMJOj/QT3h/5lr9PH96dyGVAcbCSfAxCPG8NI4hZbWLgT2OiKuEvTVW5sI9vorN6+52TaLLztrLwNc6h82cXuvneGbGVtzQRyJ1A5juFefNPY1X7E85B8GOI+9RYvHG/jW5tAWTiM6QQuSEucYSDRczp2AKR5zQUjGBNMsLNcjBTUja84/Ws8qUAlb6LdsnZp8Eiqcry6pOLEZwBQcqXSzvd3MAtdpl3xsMOlVTeBJmoM8v8T+aO1tPnSKY7UrYpl34HQOJjU2PxlK6iykQR3y+yFnLqEphB/fIYA7Xz5Mw82o4jSt1x7eBMPb40+/Mj06HlXBDIuW4vWEzsV/y5eVvGw20E24iHA57Np1TwXzroSUOJlmRqaV2G2dZMC8a8O4lbk3ziyZtp0SpbF0zmIp8JmgzkEBQ+VblPj85Vb3KJAFvnVgWvd/tqAdrtsfJO3dvGefl8tfHGf3gdA8l7I6FCYmswDVDcLJRLLUk+FwRkaVH9AwgrL6jrMxVKZLfdN9LDYl7FOqjoLXt0="
+        - secure: "maiQztRYTHW7jQPwlZtXz2ImdjGFW5iqllZLzCV714Wa9szoMqWbacJNROpflyejg7S8mKp7jaZM1MqA378IsV3mXlafP7fxQeqmvdyjZMlaFom/4UkKbNgw2kseYYTbddaM5eVFLonPDbGkE+tEHV5K7YA3gC6e87XXyEkcqEQ4ZVne5qvb+rl89+bYMpCcoYdMmevzdm6UGsa5TsnkO4l31nasKYQ1gskztRs9s8wWgX+7ahTT+NmxdJd1Qu34YTowbywWdlITvce/DgFAa79N2jpPQNSJuu0MfccBo8WXxJb2q2msp7jqjRAb8M/gG/bGH3X4t0qFJTlgNCK74tuRIOTmopc7irL+3/Jqu+5VKApYqAYNGUW0Gv/sXJOZOUbG/Z2+cCXkDnu5/wF74p2hq/Q0x63W90at9jDYI8bZV0GyxllUF7272bHuVtDbxjWbP7H5wm4QPGqmmKjo7wUIYrR+4Siid2oWlY+4CmNtDVBTYb8IZpxjj1TpcLY4SpLPhOM7YVI9L3ZCb3KMWA2acF5hIWNCQkDOCjqy4eg5l+aBigC91HyCg10WYfxJAwWgfSG+KlLZzH4eFB83g0mluFfb+RzFpbVogwi0+9K0sMEOdmD1IYwCV8g3WfsV88411cpYv1W2U8cllKr0Uxw6z23m+VzxGd2XpnyeGoo="
+        - secure: "P+63cZhgEFLvmeHb0qxpfXkcwgPWE0mIEzqncJR5cJ+Em+BWNejashld4Hu+xqpwHM/2xW5PiXsBX+4WkxTfqO7MrVaYbFszgY9kHw50uFzNwVU4kgricBwa7A2qujOp4w07oD8j6xZQxi/iXP0Ur18gmP7TDQ6Dui7E3zkot2j8nwD1OD8yOgR8mQcce/KWt/5tKplqZXzPpDQrduuBiFb07GQ8ssltdDudmR7CdbXyVcMnEZgIVAG/l8ysjPq8DlxxZNgLiycPKK1fuU3gYeTxwxORqAe5XO9xhERl19Pqiii2BUWKwmfJKsi52BAdt/AJ2cPcaPDk/mhCntoDXfmmNbEKNRvsIEv+BVHLGbBMYxZN0j9UvFRoMSBe8Tq63FxUwGXlug0jee834sjKFLABAUjdjj/OHtXPwJTO+Gq4I2iXaXxAC00mIFMDy4HJGRIAxuvSD1msQZILXGjuANyr6c97W/ZCUkNn9lCaK6rXQrPdARMjhNq8at5+ZownYt690Dco0ssWXAneE60bk8zemugpJsLK07m59MUyWRy25fdEyj3sfrKUzHy7RuhdOikaCH2SNiCaoZJycFGNNvCGrXQ+uZSKajveyCZRxqjCQeiA84SlBjJpHO3drUspYM75zdrZmsJ4584v1MZ/DWNA06SsjRN763oU9kMVXb8="
+        - secure: "JY1XCrPhK3R9z8lg1UqwXdFJq9xpCgE9rHrApicCiMmReNvTfp9LNX/a9UF7nS+nXS34PyZxW9N7CG8XzrDMgJRWHZnXl+VaLyk0ZLf1dAzKcrO/ScbxBRqZ5HsE+L+4MrX+8KuFPUSwzCT8ftdlcLg0+vEsYXlN0wHoiLPJJ4aSsxxkiRapfznpr0dnqZTJgwAi7yfnhnpuJo9QdI3HPfFR6mXj1IY6gsOrGjdr7t4d5qO97uJQ6RSiznT9odV6KR2DQXIytgIEbbE3axDzdwKtdL26EL8ZHvkyYQKwB9hoor7HrgXkRzw0llZHlHmp5wRkabwMaCof420xJXlfTKG9m8QEUdM7lnJB2Rnyt6PTjrJhZ9HRK+dF+X6d9sV6a1U8LrTILX9YNS2Jo1bc75lnAf+LoeHg+c/+HiQ0Zi8QOALsZpyz4NkzdNyokjsfwxkm3CNtVgcbyU0ylRRFEdhd2tRxtZPzf18LJR6Gl0H2VjLnmfCfSMNv2M/8W7/gRBH98Ryqzy+DZi2yKngd6NbB8YNKmiXIawgxxV+3l4o7yZu/de1bXSMlfDgCvHqYthNnDpTAAoDL7V5Rmi4FWBd4aYA4+CUlFtPR4bVdm2lax2skplJxrmLAzx1ywVoUtE/7BBwvSuCAt3lRtdNYjy20582A65yQPj4EyMq/sUE="
+        - secure: "HnLit3lxI9G+jYnEy64ddM8GfkVlzcyV23oZ2G2dDQjbNZZ08iAt2y4PyHq7OqOh+eTFfIPgVIhWA5tgMlcXz3rAsRK8eWmyeCy7ij7W72IRngWgm2cCS24EA7TysKZ8pweLBYbcG8EBmpSnChIH4r+jsD6Iw2/rSfK6GJ4Cf0+yoNBwBU8eWMph837eETFV2KZ/WNJr3BiydHSp8J83fAKnup0lnDts6k+ra1qmFmtYAH2eZWafX1WlEn80ozg0WaW6K6UkQIiwwmib8leA1AvQPzkFuonZjfxWVczEDqohnAnYFXegK7DQ7sbw2aMDMyF9fDUMUiQjwswWivRd+CICSIeSYoOeKKjRXhuZqlsagZ31BWsl4WW4J7hxwIo2RQREL5lYU65VM5ATID24wd3nKK+sFFNf46fSWcb8iAkfrIh6AjXYhSeytWnKCIMNtsqId4270wmRB4ayyC4nwF6uJIRM956hHEIKpnypX+WJXbfskpig4HK64e7XJNGyoljjL7qe4cz4YTGxgBSS35aQwHMAMMvGzmAQ+XffHnlASiArL4ZM76uQR/qXa2Q/YE4KOvEU1NSCsl17NNrI50NBCJhYdSnY4mjsGG0PdVI0WoS9egiRE0bqjMT5OWwP4cAyIDrgCbNs+hChHTvjvghGVia769qi+e6k2TsdCGY="
+      deploy:
+      - provider: script
+        script: python -m unittest discover -s tests
+    - stage: docker
+      python: 3.6.6
+      before_script:
+      - docker pull "$DOCKER_IMAGE_NAME" || true
+      script:
+      - docker build --pull --cache-from "$DOCKER_IMAGE_NAME" -t temp-image .
+      after_script:
+      - docker images
+      before_deploy:
+      - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+      - export DOCKER_TAG="$TRAVIS_BRANCH-${TRAVIS_COMMIT::8}"
+      - docker tag temp-image "$DOCKER_IMAGE_NAME:$DOCKER_TAG"
+      - docker tag temp-image "$DOCKER_IMAGE_NAME:$TRAVIS_BRANCH"
+      - docker tag temp-image "$DOCKER_IMAGE_NAME:latest"
+      deploy:
+      - provider: script
+        script: docker push "$DOCKER_IMAGE_NAME:$DOCKER_TAG" && docker push "$DOCKER_IMAGE_NAME:$TRAVIS_BRANCH"
+        on:
+          all_branches: true
+          repo: NNTin/discord-twitter-bot
+      - provider: script
+        script: docker push "$DOCKER_IMAGE_NAME:latest"
+        on:
+          branch: master
+          repo: NNTin/discord-twitter-bot
+    - stage: docker test
+      script: docker pull "$DOCKER_IMAGE_NAME:$DOCKER_TAG"
