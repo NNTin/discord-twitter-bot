@@ -54,7 +54,7 @@ class Configuration:
 
     def run_test(self):
         os.chdir(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-        subprocess.call(["tox"])
+        subprocess.call(["tox", "-e", "py36"])
 
     def get_config(self, compact=False):
         if not compact:
