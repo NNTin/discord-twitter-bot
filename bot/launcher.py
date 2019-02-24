@@ -222,11 +222,10 @@ class Configuration:
         else:
             res["custom_message"] = None
 
-        if keyword_sets is not "":
-            keyword_sets = [
-                keyword_set.split("+") for keyword_set in keyword_sets.replace(" ", "").split(",")
-            ]
-            res["keyword_sets"] = keyword_sets
+        keyword_sets = [
+            keyword_set.split("+") for keyword_set in keyword_sets.replace(" ", "").split(",")
+        ]
+        res["keyword_sets"] = keyword_sets
 
         self.data["Discord"].append(res)
 
