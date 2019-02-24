@@ -72,5 +72,3 @@ jobs:
           repo: NNTin/discord-twitter-bot
     - stage: docker test
       script: docker pull "$DOCKER_IMAGE_NAME:$DOCKER_TAG"
-      install: skip
-      python: skip
