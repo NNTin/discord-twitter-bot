@@ -10,10 +10,13 @@ try:
     import pip
 except ImportError:
     pip = None
+TWEEPY_OK = True
 try:
-    import tweepy
+    from tweepy import API, Cursor, OAuthHandler
 except ImportError:
-    tweepy = None
+    TWEEPY_OK = False
+except TypeError:
+    pip = None  # this error is somehow related to pip
 try:
     import discord
 except ImportError:
@@ -44,17 +47,17 @@ class Configuration:
         self.data = fileIO(CONFIG_JSON, "load")
 
     def authenticate(self):
-        auth = tweepy.OAuthHandler(
+        auth = OAuthHandler(
             self.data["Twitter"]["consumer_key"], self.data["Twitter"]["consumer_secret"]
         )
         auth.set_access_token(
             self.data["Twitter"]["access_token"], self.data["Twitter"]["access_token_secret"]
         )
-        self.client = tweepy.API(auth)
+        self.client = API(auth)
 
     def run_test(self):
         os.chdir(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-        subprocess.call(["tox"])
+        subprocess.call(["tox", "-e", "py36"])
 
     def get_config(self, compact=False):
         if not compact:
@@ -176,7 +179,7 @@ class Configuration:
             pattern = "(https?:\/\/(?:www\.)?)?twitter\.com\/(?P<twittername>[a-zA-Z0-9]+)\/lists\/(?P<listname>[a-zA-Z0-9-]+)"
             for m in re.finditer(pattern, twitter_list_url, re.I):
 
-                for member in tweepy.Cursor(
+                for member in Cursor(
                     self.client.list_members, m.group("twittername"), m.group("listname")
                 ).items():
                     twitter_id = member._json["id_str"]
@@ -219,11 +222,10 @@ class Configuration:
         else:
             res["custom_message"] = None
 
-        if keyword_sets is not "":
-            keyword_sets = [
-                keyword_set.split("+") for keyword_set in keyword_sets.replace(" ", "").split(",")
-            ]
-            res["keyword_sets"] = keyword_sets
+        keyword_sets = [
+            keyword_set.split("+") for keyword_set in keyword_sets.replace(" ", "").split(",")
+        ]
+        res["keyword_sets"] = keyword_sets
 
         self.data["Discord"].append(res)
 
@@ -428,7 +430,7 @@ def run_bot(auto_restart=False):
     if interpreter is None:  # This should never happen
         raise RuntimeError("Couldn't find Python's interpreter")
 
-    if tweepy is None:
+    if not TWEEPY_OK:
         print("Warning: tweepy is not installed. Please run the first option.\n")
         wait()
         return
@@ -470,10 +472,7 @@ if __name__ == "__main__":
         wait()
         exit(1)
     if pip is None:
-        print(
-            "discord-twitter-bot cannot work without the pip module. Please make sure to "
-            "install Python without unchecking any option during the setup"
-        )
+        print("discord-twitter-bot requires pip. Install or upgrade your pip module")
         wait()
         exit(1)
 
@@ -482,7 +481,7 @@ if __name__ == "__main__":
     c = Configuration()
 
     while True:
-        if tweepy is None:
+        if not TWEEPY_OK:
             print("Warning: tweepy is not installed. Please run the first option.\n")
 
         if discord is None:
