@@ -10,10 +10,11 @@ try:
     import pip
 except ImportError:
     pip = None
+TWEEPY_OK = True
 try:
-    import tweepy
+    from tweepy import API, Cursor, OAuthHandler
 except ImportError:
-    tweepy = None
+    TWEEPY_OK = False
 try:
     import discord
 except ImportError:
@@ -44,13 +45,13 @@ class Configuration:
         self.data = fileIO(CONFIG_JSON, "load")
 
     def authenticate(self):
-        auth = tweepy.OAuthHandler(
+        auth = OAuthHandler(
             self.data["Twitter"]["consumer_key"], self.data["Twitter"]["consumer_secret"]
         )
         auth.set_access_token(
             self.data["Twitter"]["access_token"], self.data["Twitter"]["access_token_secret"]
         )
-        self.client = tweepy.API(auth)
+        self.client = API(auth)
 
     def run_test(self):
         os.chdir(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -176,7 +177,7 @@ class Configuration:
             pattern = "(https?:\/\/(?:www\.)?)?twitter\.com\/(?P<twittername>[a-zA-Z0-9]+)\/lists\/(?P<listname>[a-zA-Z0-9-]+)"
             for m in re.finditer(pattern, twitter_list_url, re.I):
 
-                for member in tweepy.Cursor(
+                for member in Cursor(
                     self.client.list_members, m.group("twittername"), m.group("listname")
                 ).items():
                     twitter_id = member._json["id_str"]
@@ -428,7 +429,7 @@ def run_bot(auto_restart=False):
     if interpreter is None:  # This should never happen
         raise RuntimeError("Couldn't find Python's interpreter")
 
-    if tweepy is None:
+    if not TWEEPY_OK:
         print("Warning: tweepy is not installed. Please run the first option.\n")
         wait()
         return
@@ -482,7 +483,7 @@ if __name__ == "__main__":
     c = Configuration()
 
     while True:
-        if tweepy is None:
+        if not TWEEPY_OK:
             print("Warning: tweepy is not installed. Please run the first option.\n")
 
         if discord is None:
