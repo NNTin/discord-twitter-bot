@@ -1,4 +1,4 @@
-<h1 align="center">discord-twitter-bot</h2>
+<h1 align="center">discord-twitter-bot</h1>
 <p align="center">Posts Twitter Tweets to Discord through Webhook</p>
 
 <p align="center">
@@ -12,7 +12,6 @@
 </p>
 
 ## Preview
-
 [![](img/gif.gif)](https://discord.gg/Dkg79tc)
 
 ## Heroku Deployment
@@ -22,7 +21,7 @@
 Remember to [activate](https://i.imgur.com/zOfa0Qm.png) the app. [View the logs here.](https://i.imgur.com/tWBoTuB.png)  
 Use this to initially deploy your discord-twitter-bot.
 
-To further configure the bot get Heroku CLI and run launcher.py. (**Warning:** This is not recommended for inexperienced users since a lot of things could go wrong. Troubleshooting support will not be provided.)
+To further configure the bot get Heroku CLI and run launcher.py. (**Warning:** This is not recommended for inexperienced users since a lot of things could go wrong.)
 
 ```coffeescript
 heroku login
@@ -43,7 +42,6 @@ This will create a data.json and the bot will ignore any set environment variabl
 [![YT Video](https://img.youtube.com/vi/NwPcXBvStSI/0.jpg)](https://www.youtube.com/watch?v=NwPcXBvStSI)
 
 ## Docker Setup
-
 (**Warning:** This is only recommended for experienced users who have some basic experience with Docker.)
 
 ```bash
@@ -64,12 +62,11 @@ WEBHOOK_URL=https://discordapp.com/api/webhooks/123456789/XXXX-XXXX
 Optional environment variables: `INCLUDE_REPLY_TO_USER`, `INCLUDE_RETWEET`, `INCLUDE_USER_REPLY`, `CUSTOM_MESSAGE`, `KEYWORDS`
 
 ## Normal Setup
-
 (**Warning:** This is only recommended for experienced users who have some basic experience with CLI.)
 
-Get Python >=3.6.0, <3.7.0
+Get Python >=3.6.0
 
-```coffeescript
+```
 git clone https://github.com/NNTin/discord-twitter-bot.git
 cd discord-twitter-bot      # ^ download the project and cd into it
 python3 -m venv venv        # optional virtual environment, recommended
@@ -86,6 +83,12 @@ Useful links:
 * [Twitter API](https://developer.twitter.com/en/apps)
 * [What's a webhook?](https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks)
 
+##  Why?
+Q: Why Heroku?  
+A: Heroku has a lot of bad reputation for being an inferior hosting service. The heroku dynos restart roughly every 24 hours and data are lost. However Heroku can be incredibly user friendly once it is properly set up. No knowledge about git, ssh and python is required. I personally don't host anything on Heroku but I appreciate Heroku since it is a free hosting solution and it can be very user friendly (but not developer friendly).
+
+Q: Why add automated testing and automated docker image deployment for a relatively simple solo project? Isn't this overkill?  
+A: Continuous integration/deployment is incredible useful in bigger projects. It cuts down development time. I contributed to other FOSS projects that had CI/CD and I was interested how the flow was actually implemented.
 
 ## Credits
 Rokxx for providing the [dota 2 twitter list](https://twitter.com/rokxx/lists/dota-2/members).  
