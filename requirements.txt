@@ -25,4 +25,4 @@ jsonschema==3.0.0
 pluggy==0.8.1
 py==1.7.0
 tox==3.7.0
-virtualenv==16.3.0
+virtualenv==16.4.1
