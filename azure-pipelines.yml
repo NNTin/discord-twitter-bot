@@ -1,0 +1,41 @@
+jobs:
+
+- job: 'Test'
+  pool:
+    vmImage: 'Ubuntu-16.04'
+  strategy:
+    matrix:
+      Python36-32bit-fast:
+        PYTHON_VERSION: '3.6'
+        PYTHON_ARCH: 'x86'
+      Python36-64bit-full:
+        PYTHON_VERSION: '3.6'
+        PYTHON_ARCH: 'x64'
+
+  steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '$(PYTHON_VERSION)'
+      architecture: $(PYTHON_ARCH)
+
+  - script: python -m pip install --upgrade pip && pip install -r requirements.txt
+    displayName: 'Install dependencies'
+
+  - script: |
+      python -m unittest discover -s tests/test_discord
+      python -m unittest discover -s tests/test_python
+    displayName: 'unittest'
+
+- job: 'Publish'
+  dependsOn: 'Test'
+  pool:
+    vmImage: 'Ubuntu-16.04'
+
+  steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.6'
+      architecture: 'x64'
+
+  - script: echo "placeholder"
+    displayName: 'Placeholder'
