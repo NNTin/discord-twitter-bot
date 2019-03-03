@@ -5,8 +5,11 @@ __pycache__/
 .git/
 .gitattributes
 .gitignore
+.pyup.yml
 .travis.yml
 app.json
+azure-pipelines.yml
+azure/
 bot/config.json
 etc/
 img/
