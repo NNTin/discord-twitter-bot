@@ -1,29 +1,38 @@
 jobs:
 
 - job: 'Test'
-  pool:
-    vmImage: 'Ubuntu-16.04'
   strategy:
     matrix:
-      Python36-32bit-fast:
+      Python36-Windows-Style:
         PYTHON_VERSION: '3.6'
-        PYTHON_ARCH: 'x86'
-      Python36-64bit-full:
+        IMAGE_NAME: 'vs2017-win2016'
+        TOXENV: 'style'
+      Python36-Windows:
         PYTHON_VERSION: '3.6'
-        PYTHON_ARCH: 'x64'
+        IMAGE_NAME: 'vs2017-win2016'
+        TOXENV: 'py36'
+      Python36-Linux:
+        PYTHON_VERSION: '3.6'
+        IMAGE_NAME: 'ubuntu-16.04'
+        TOXENV: 'py36'
+      Python36-MacOSX:
+        PYTHON_VERSION: '3.6'
+        IMAGE_NAME: 'macos-10.13'
+        TOXENV: 'py36'
+
+  pool:
+    vmImage: '$(IMAGE_NAME)'
 
   steps:
   - task: UsePythonVersion@0
     inputs:
       versionSpec: '$(PYTHON_VERSION)'
-      architecture: $(PYTHON_ARCH)
 
-  - script: python -m pip install --upgrade pip && pip install -r requirements.txt
-    displayName: 'Install dependencies'
+  - script: python -m pip install --upgrade pip && pip install tox
+    displayName: 'Install tox'
 
   - script: |
-      python -m unittest discover -s tests/test_discord
-      python -m unittest discover -s tests/test_python
+      tox -e $TOXENV
     displayName: 'unittest'
 
 - job: 'Publish'
@@ -35,7 +44,9 @@ jobs:
   - task: UsePythonVersion@0
     inputs:
       versionSpec: '3.6'
-      architecture: 'x64'
+
+  - script: python -m pip install --upgrade pip && pip install -r requirements.txt
+    displayName: 'Install dependencies'
 
   - script: echo "placeholder"
     displayName: 'Placeholder'
