@@ -1,11 +1,14 @@
+variables:
+- group: dtb-variables
+
 jobs:
 
 - job: 'Test'
   strategy:
     matrix:
-      Python36-Windows-Style:
+      Python36-Linux-Style:
         PYTHON_VERSION: '3.6'
-        IMAGE_NAME: 'vs2017-win2016'
+        IMAGE_NAME: 'ubuntu-16.04'
         TOXENV: 'style'
       Python36-Windows:
         PYTHON_VERSION: '3.6'
@@ -34,6 +37,12 @@ jobs:
   - script: |
       tox -e $(TOXENV)
     displayName: 'unittest'
+    env:
+      ACCESS_TOKEN: $(CI_ACCESS_TOKEN)
+      ACCESS_TOKEN_SECRET: $(CI_ACCESS_TOKEN_SECRET)
+      CONSUMER_KEY: $(CI_CONSUMER_KEY)
+      CONSUMER_SECRET: $(CI_CONSUMER_SECRET)
+      WEBHOOK_URL: $(CI_WEBHOOK_URL)
 
 - job: 'Publish'
   dependsOn: 'Test'
