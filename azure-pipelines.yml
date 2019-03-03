@@ -28,11 +28,11 @@ jobs:
     inputs:
       versionSpec: '$(PYTHON_VERSION)'
 
-  - script: python -m pip install --upgrade pip && pip install tox
+  - script: python -m pip install --upgrade pip && pip install setuptools tox
     displayName: 'Install tox'
 
   - script: |
-      tox -e $TOXENV
+      tox -e $(TOXENV)
     displayName: 'unittest'
 
 - job: 'Publish'
