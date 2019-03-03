@@ -75,8 +75,12 @@ jobs:
       docker pull $(repo) || true
     displayName: 'Fetching...'
 
+  - task: ShellScript@2
+    displayName: 'Run build script'
+    inputs:
+      scriptPath: ./azure/build.sh
+
   - script: |
-      ./azure/build.sh
       docker build --pull --cache-from $(repo) -f Dockerfile.${docker_arch} -t $(repo):${docker_arch}-latest .
     displayName: 'Building Docker image'
 
