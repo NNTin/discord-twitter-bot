@@ -43,6 +43,7 @@ jobs:
       CONSUMER_KEY: $(CI_CONSUMER_KEY)
       CONSUMER_SECRET: $(CI_CONSUMER_SECRET)
       WEBHOOK_URL: $(CI_WEBHOOK_URL)
+      TWITTER_ID: '3065618342'
 
 - job: 'Publish'
   dependsOn: 'Test'
