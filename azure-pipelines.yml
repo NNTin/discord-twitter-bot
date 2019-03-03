@@ -1,14 +1,14 @@
-variables:
-- group: dtb-variables
-
 jobs:
 
 - job: 'Test'
+  variables:
+  - group: dtb-variables
+
   strategy:
     matrix:
-      Python36-Linux-Style:
+      Python36-Windows-Style:
         PYTHON_VERSION: '3.6'
-        IMAGE_NAME: 'ubuntu-16.04'
+        IMAGE_NAME: 'vs2017-win2016'
         TOXENV: 'style'
       Python36-Windows:
         PYTHON_VERSION: '3.6'
