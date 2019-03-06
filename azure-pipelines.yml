@@ -47,7 +47,12 @@ jobs:
       TWITTER_ID: '3065618342'
 
 - job: 'ExtendedTest'
-  condition: and(succeeded(), not(eq(variables['build.reason'], 'PullRequest')))
+  condition: |
+    and
+    (
+      in(dependencies.BasicTest.result, 'Succeeded', 'SucceededWithIssues', 'Skipped'),
+      ne(variables['build.reason'], 'PullRequest')
+    )
   dependsOn: 'BasicTest'
   variables:
   - group: dtb-variables
@@ -88,8 +93,15 @@ jobs:
       TWITTER_ID: '3065618342'
 
 - job: 'DockerBuild'
-  condition: and(succeeded(), not(eq(variables['build.reason'], 'PullRequest')))
+  condition: |
+    and
+    (
+      in(dependencies.ExtendedTest.result, 'Succeeded', 'SucceededWithIssues'),
+      ne(variables['build.reason'], 'PullRequest')
+    )
   dependsOn: 'ExtendedTest'
+  variables:
+  - group: docker-variables
   strategy:
     matrix:
       a53-h3-h5:
@@ -121,16 +133,82 @@ jobs:
       scriptPath: ./azure/build.sh
 
   - script: |
-      docker build --pull --cache-from $(repo) -f Dockerfile.$(docker_arch) -t $(repo):$(docker_arch)-latest .
+      docker build --pull --cache-from $(repo) -f Dockerfile.$(docker_arch) -t $(repo):$(docker_arch)-dev .
     displayName: 'Building Docker image'
 
-- job: 'DockerPublish'
-  condition: and(succeeded(), or(eq(variables['build.sourceBranch'], 'refs/heads/master'),eq(variables['build.sourceBranch'], 'refs/heads/dev'),eq(variables['build.sourceBranch'], 'refs/heads/azure')))
+  - script: |
+      docker login -u $(USERNAME) -p $(PASSWORD)
+      docker push $(repo):$(docker_arch)-dev
+    condition: |
+      and
+      (
+        in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues'),
+        or
+        (
+          eq(variables['build.sourceBranch'], 'refs/heads/master'),
+          eq(variables['build.sourceBranch'], 'refs/heads/dev'),
+          eq(variables['build.sourceBranch'], 'refs/heads/azure')
+        )
+      )
+    displayName: 'Publishing Docker image'
+    env:
+      USERNAME: $(DOCKER_USERNAME)
+      PASSWORD: $(DOCKER_PASSWORD)
+
+- job: 'DockerManifest'
+  condition: |
+    and
+    (
+      in(dependencies.DockerBuild.result, 'Succeeded', 'SucceededWithIssues'),
+      ne(variables['build.reason'], 'PullRequest'),
+      or
+      (
+        eq(variables['build.sourceBranch'], 'refs/heads/dev'),
+        eq(variables['build.sourceBranch'], 'refs/heads/azure'),
+        eq(variables['build.sourceBranch'], 'refs/heads/master')
+      )
+    )
   dependsOn: 'DockerBuild'
+  variables:
+  - group: docker-variables
   steps:
   - script: |
-      echo "check if on master or dev branch"
-      echo "login into docker"
-      echo "docker pull the different arch images"
-      echo "create a multi arch manifest"
-    displayName: 'Placeholder'
+      docker login -u $(USERNAME) -p $(PASSWORD)
+    displayName: 'Logging into Docker'
+    env:
+      USERNAME: $(DOCKER_USERNAME)
+      PASSWORD: $(DOCKER_PASSWORD)
+  - script: |
+      docker pull $(repo):amd64-dev
+      docker pull $(repo):arm32v6-dev
+      docker pull $(repo):arm64v8-dev
+    displayName: 'Pulling Docker images'
+
+  - script: |
+      docker manifest create $(repo):dev $(repo):amd64-dev $(repo):arm32v6-dev $(repo):arm64v8-dev
+      docker manifest annotate $(repo):dev $(repo):arm32v6-dev --os linux --arch arm
+      docker manifest annotate $(repo):dev $(repo):arm64v8-dev --os linux --arch arm64 --variant armv8
+      docker manifest push $(repo):dev
+    displayName: 'Creating manifest and pushing'
+
+  - script: |
+      docker tag $(repo):amd64-dev $(repo):amd64
+      docker push $(repo):amd64
+      docker tag $(repo):arm32v6-dev $(repo):arm32v6
+      docker push $(repo):arm32v6
+      docker tag $(repo):arm64v8-dev $(repo):arm64v8
+      docker push $(repo):arm64v8
+      docker manifest create $(repo):latest $(repo):amd64 $(repo):arm32v6 $(repo):arm64v8
+      docker manifest annotate $(repo):latest $(repo):arm32v6 --os linux --arch arm
+      docker manifest annotate $(repo):latest $(repo):arm64v8 --os linux --arch arm64 --variant armv8
+      docker manifest push $(repo):latest
+    condition: |
+      and
+      (
+        in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues'),
+        or
+        (
+          eq(variables['build.sourceBranch'], 'refs/heads/master')
+        )
+      )
+    displayName: 'Creating manifest and pushing'
