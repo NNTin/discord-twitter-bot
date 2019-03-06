@@ -3,10 +3,8 @@ variables:
 
 jobs:
 
-- job: 'Test'
-  variables:
-  - group: dtb-variables
-
+- job: 'BasicTest'
+  condition: always()
   strategy:
     matrix:
       Python36-Windows-Style:
@@ -41,6 +39,47 @@ jobs:
       tox -e $(TOXENV)
     displayName: 'unittest'
     env:
+      ACCESS_TOKEN: 'X'
+      ACCESS_TOKEN_SECRET: 'X'
+      CONSUMER_KEY: 'X'
+      CONSUMER_SECRET: 'X'
+      WEBHOOK_URL: 'X'
+      TWITTER_ID: '3065618342'
+
+- job: 'ExtendedTest'
+  condition: and(succeeded(), not(eq(variables['build.reason'], 'PullRequest')))
+  dependsOn: 'BasicTest'
+  variables:
+  - group: dtb-variables
+  strategy:
+    matrix:
+      Python36-Windows:
+        PYTHON_VERSION: '3.6'
+        IMAGE_NAME: 'vs2017-win2016'
+        TOXENV: 'extended'
+      Python36-Linux:
+        PYTHON_VERSION: '3.6'
+        IMAGE_NAME: 'ubuntu-16.04'
+        TOXENV: 'extended'
+      Python36-MacOSX:
+        PYTHON_VERSION: '3.6'
+        IMAGE_NAME: 'macos-10.13'
+        TOXENV: 'extended'
+  pool:
+    vmImage: '$(IMAGE_NAME)'
+
+  steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '$(PYTHON_VERSION)'
+
+  - script: python -m pip install --upgrade pip && pip install setuptools tox
+    displayName: 'Install tox'
+
+  - script: |
+      tox -e $(TOXENV)
+    displayName: 'unittest'
+    env:
       ACCESS_TOKEN: $(CI_ACCESS_TOKEN)
       ACCESS_TOKEN_SECRET: $(CI_ACCESS_TOKEN_SECRET)
       CONSUMER_KEY: $(CI_CONSUMER_KEY)
@@ -49,7 +88,8 @@ jobs:
       TWITTER_ID: '3065618342'
 
 - job: 'DockerBuild'
-  dependsOn: 'Test'
+  condition: and(succeeded(), not(eq(variables['build.reason'], 'PullRequest')))
+  dependsOn: 'ExtendedTest'
   strategy:
     matrix:
       a53-h3-h5:
@@ -85,6 +125,7 @@ jobs:
     displayName: 'Building Docker image'
 
 - job: 'DockerPublish'
+  condition: and(succeeded(), or(eq(variables['build.sourceBranch'], 'refs/heads/master'),eq(variables['build.sourceBranch'], 'refs/heads/dev'),eq(variables['build.sourceBranch'], 'refs/heads/azure')))
   dependsOn: 'DockerBuild'
   steps:
   - script: |
