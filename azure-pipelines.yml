@@ -137,7 +137,7 @@ jobs:
     displayName: 'Building Docker image'
 
   - script: |
-      docker login -u $(USERNAME) -p $(PASSWORD)
+      docker login -u $env:USERNAME -p $env:PASSWORD
       docker push $(repo):$(docker_arch)-dev
     condition: |
       and
@@ -173,7 +173,7 @@ jobs:
   - group: docker-variables
   steps:
   - script: |
-      docker login -u $(USERNAME) -p $(PASSWORD)
+      docker login -u $env:USERNAME -p $env:PASSWORD
     displayName: 'Logging into Docker'
     env:
       USERNAME: $(DOCKER_USERNAME)
