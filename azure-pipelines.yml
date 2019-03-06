@@ -206,9 +206,6 @@ jobs:
       and
       (
         in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues'),
-        or
-        (
-          eq(variables['build.sourceBranch'], 'refs/heads/master')
-        )
+        eq(variables['build.sourceBranch'], 'refs/heads/master')
       )
     displayName: 'Creating manifest and pushing'
