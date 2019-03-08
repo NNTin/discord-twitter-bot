@@ -137,7 +137,7 @@ jobs:
     displayName: 'Building Docker image'
 
   - script: |
-      docker login -u $env:USERNAME -p $env:PASSWORD
+      docker login -u $(DOCKER_USERNAME) -p $(DOCKER_PASSWORD)
       docker push $(repo):$(docker_arch)-dev
     condition: |
       and
@@ -151,9 +151,6 @@ jobs:
         )
       )
     displayName: 'Publishing Docker image'
-    env:
-      USERNAME: $(DOCKER_USERNAME)
-      PASSWORD: $(DOCKER_PASSWORD)
 
 - job: 'DockerManifest'
   condition: |
@@ -173,11 +170,8 @@ jobs:
   - group: docker-variables
   steps:
   - script: |
-      docker login -u $env:USERNAME -p $env:PASSWORD
+      docker login -u $(DOCKER_USERNAME) -p $(DOCKER_PASSWORD)
     displayName: 'Logging into Docker'
-    env:
-      USERNAME: $(DOCKER_USERNAME)
-      PASSWORD: $(DOCKER_PASSWORD)
   - script: |
       docker pull $(repo):amd64-dev
       docker pull $(repo):arm32v6-dev
