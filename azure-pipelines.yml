@@ -3,18 +3,6 @@ variables:
 
 jobs:
 - job: 'DockerManifest'
-  condition: |
-    and
-    (
-      in(dependencies.DockerBuild.result, 'Succeeded', 'SucceededWithIssues'),
-      ne(variables['build.reason'], 'PullRequest'),
-      or
-      (
-        eq(variables['build.sourceBranch'], 'refs/heads/dev'),
-        eq(variables['build.sourceBranch'], 'refs/heads/azure'),
-        eq(variables['build.sourceBranch'], 'refs/heads/master')
-      )
-    )
   variables:
   - group: docker-variables
   steps:
