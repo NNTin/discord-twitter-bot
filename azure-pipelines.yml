@@ -7,8 +7,8 @@ jobs:
   - group: docker-variables
   steps:
   - script: |
-    mkdir -p ~/.docker
-    echo '{ "experimental": "enabled" }' > ~/.docker/config.json
+      mkdir -p ~/.docker
+      echo '{ "experimental": "enabled" }' > ~/.docker/config.json
     displayName: 'Enabling experimental mode in docker'
   - script: |
       echo $(DOCKER_PASSWORD) | docker login --username $(DOCKER_USERNAME) --password-stdin
