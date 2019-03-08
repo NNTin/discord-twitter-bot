@@ -191,6 +191,7 @@ jobs:
       docker push $(repo):arm32v6
       docker tag $(repo):arm64v8-dev $(repo):arm64v8
       docker push $(repo):arm64v8
+      export DOCKER_CLI_EXPERIMENTAL=enabled
       docker manifest create $(repo):latest $(repo):amd64 $(repo):arm32v6 $(repo):arm64v8
       docker manifest annotate $(repo):latest $(repo):arm32v6 --os linux --arch arm
       docker manifest annotate $(repo):latest $(repo):arm64v8 --os linux --arch arm64 --variant armv8
