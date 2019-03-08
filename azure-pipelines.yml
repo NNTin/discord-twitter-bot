@@ -137,7 +137,7 @@ jobs:
     displayName: 'Building Docker image'
 
   - script: |
-      docker login -u $(DOCKER_USERNAME) -p $(DOCKER_PASSWORD)
+      echo $(DOCKER_PASSWORD) | docker login --username $(DOCKER_USERNAME) --password-stdin
       docker push $(repo):$(docker_arch)-dev
     condition: |
       and
@@ -170,7 +170,7 @@ jobs:
   - group: docker-variables
   steps:
   - script: |
-      docker login -u $(DOCKER_USERNAME) -p $(DOCKER_PASSWORD)
+      echo $(DOCKER_PASSWORD) | docker login --username $(DOCKER_USERNAME) --password-stdin
     displayName: 'Logging into Docker'
   - script: |
       docker pull $(repo):amd64-dev
