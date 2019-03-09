@@ -1,7 +1,7 @@
 aiohttp==3.5.4
 async-timeout==3.0.1
 attrs==19.1.0
-certifi==2018.11.29
+certifi==2019.3.9
 chardet==3.0.4
 git+https://github.com/Rapptz/discord.py@rewrite#egg=discord.py
 idna==2.8
