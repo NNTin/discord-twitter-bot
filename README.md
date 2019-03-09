@@ -90,6 +90,10 @@ A: Heroku has a lot of bad reputation for being an inferior hosting service. The
 Q: Why add automated testing and automated docker image deployment for a relatively simple solo project? Isn't this overkill?  
 A: Continuous integration/deployment is incredible useful in bigger projects. It cuts down development time. I contributed to other FOSS projects that had CI/CD and I was interested how the flow was actually implemented.
 
+Q: Why Travis and Azure Pipelines?  
+I added Travis CI support first. [But then I learned about how they were acquired by another company and there was a massive layoff.](https://twitter.com/carmatrocity/status/1098538649908666368) I then looked for alternatives in case the Travis becomes less user friendly and Azure Pipelines seemed like a good choice. I will migrate from Travis to Azure Pipelines but I will keep both around for educational purposes.
+
+
 ## Credits
 Rokxx for providing the [dota 2 twitter list](https://twitter.com/rokxx/lists/dota-2/members).  
 JacobWolf for providing the [twitter lists](https://twitter.com/JacobWolf/lists) for CS:GO, LoL, Overwatch, CoD and SSMB.
