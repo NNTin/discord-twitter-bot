@@ -1,20 +1,20 @@
-__pycache__/
-*/__pycache__/
-.coverage
-.env
-.git/
-.gitattributes
-.gitignore
-.travis.yml
-app.json
-bot/config.json
-etc/
-img/
-issues.md
-make.bat
-Procfile
-runtime.txt
-tests/
-tox.ini
-venv/
+# Ignore everything
+**
 
+# Allow files
+!/Dockerfile
+!/LICENSE
+!/READNE.md
+!/requirements.txt
+!/tox.ini
+
+# Allow directories
+!/bot/**
+!/tests/**
+
+# Ignore files inside allowed directories
+**/*~
+**/*.log
+**/.DS_Store
+**/Thumbs.db
+**/config.json
