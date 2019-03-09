@@ -157,6 +157,7 @@ jobs:
     (
       in(dependencies.DockerBuild.result, 'Succeeded', 'SucceededWithIssues'),
       ne(variables['build.reason'], 'PullRequest')
+    )
 #  for now build docker image for every branch
 #      or
 #      (
@@ -164,7 +165,6 @@ jobs:
 #        eq(variables['build.sourceBranch'], 'refs/heads/azure'),
 #        eq(variables['build.sourceBranch'], 'refs/heads/master')
 #      )
-    )
   dependsOn: 'DockerBuild'
   variables:
   - group: docker-variables
