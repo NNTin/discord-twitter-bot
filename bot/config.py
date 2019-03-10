@@ -36,6 +36,7 @@ else:
                 "webhook_urls": os.environ.get("WEBHOOK_URL", "").replace(" ", "").split(","),
                 "twitter_ids": os.environ.get("TWITTER_ID", "").replace(" ", "").split(","),
                 "twitter_lists": os.environ.get("TWITTER_LIST", "").replace(" ", "").split(","),
+                "twitter_handles": os.environ.get("TWITTER_HANDLE", "").replace(" ", "").split(","),
                 "custom_message": os.environ.get("CUSTOM_MESSAGE", None),
                 "keyword_sets": [
                     keyword_set.split("+")

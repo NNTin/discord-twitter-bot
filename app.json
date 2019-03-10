@@ -33,6 +33,10 @@
       "description": "Example Twitter List: https://twitter.com/rokxx/lists/dota-2",
       "required": false
     },
+    "TWITTER_HANDLE": {
+      "description": "The Twitter handle is part of the link! https://twitter.com/<TWITTER_HANDLE>",
+      "required": false
+    },
     "INCLUDE_REPLY_TO_USER": {
       "description": "Include replies from other Twitter users tweeting TO your tracked twitter user?",
       "value": "True"
