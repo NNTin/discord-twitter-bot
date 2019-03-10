@@ -109,14 +109,7 @@ jobs:
   - script: docker run --rm --privileged multiarch/qemu-user-static:register
     displayName: 'Registering'
 
-  # https://github.com/multiarch/qemu-user-static/releases
   - script: |
-      wget -N https://github.com/multiarch/qemu-user-static/releases/download/v2.9.1-1/x86_64_qemu-aarch64-static.tar.gz
-      wget -N https://github.com/multiarch/qemu-user-static/releases/download/v2.9.1-1/x86_64_qemu-arm-static.tar.gz
-      wget -N https://github.com/multiarch/qemu-user-static/releases/download/v2.9.1-1/x86_64_qemu-x86_64-static.tar.gz
-      tar -xvf x86_64_qemu-aarch64-static.tar.gz
-      tar -xvf x86_64_qemu-arm-static.tar.gz
-      tar -xvf x86_64_qemu-x86_64-static.tar.gz
       docker pull $(repo):arm64v8-dev
       docker pull $(repo):arm32v6-dev
       docker pull $(repo):amd64-dev
@@ -127,7 +120,12 @@ jobs:
     inputs:
       scriptPath: ./azure/build.sh
 
+  # https://github.com/multiarch/qemu-user-static/releases
   - script: |
+      wget -N https://github.com/multiarch/qemu-user-static/releases/download/v2.9.1-1/qemu-aarch64-static.tar.gz
+      wget -N https://github.com/multiarch/qemu-user-static/releases/download/v2.9.1-1/qemu-arm-static.tar.gz
+      tar -xvf qemu-aarch64-static.tar.gz
+      tar -xvf qemu-arm-static.tar.gz
       docker build --pull --cache-from $(repo):arm64v8-dev -f Dockerfile.arm64v8 -t $(repo):arm64v8-dev .
       docker build --pull --cache-from $(repo):arm32v6-dev -f Dockerfile.arm32v6 -t $(repo):arm32v6-dev .
       docker build --pull --cache-from $(repo):amd64-dev -f Dockerfile.amd64 -t $(repo):amd64-dev .
@@ -156,22 +154,18 @@ jobs:
     and
     (
       in(dependencies.DockerBuild.result, 'Succeeded', 'SucceededWithIssues'),
-      ne(variables['build.reason'], 'PullRequest')
+      ne(variables['build.reason'], 'PullRequest'),
+      or
+      (
+        eq(variables['build.sourceBranch'], 'refs/heads/dev'),
+        eq(variables['build.sourceBranch'], 'refs/heads/azure'),
+        eq(variables['build.sourceBranch'], 'refs/heads/master')
+      )
     )
-#  for now build docker image for every branch
-#      or
-#      (
-#        eq(variables['build.sourceBranch'], 'refs/heads/dev'),
-#        eq(variables['build.sourceBranch'], 'refs/heads/azure'),
-#        eq(variables['build.sourceBranch'], 'refs/heads/master')
-#      )
   dependsOn: 'DockerBuild'
   variables:
   - group: docker-variables
   steps:
-  - script: |
-      echo $(DOCKER_PASSWORD) | docker login --username $(DOCKER_USERNAME) --password-stdin
-    displayName: 'Logging into Docker'
 
   - script: |
       docker pull $(repo):amd64-dev
@@ -179,53 +173,37 @@ jobs:
       docker pull $(repo):arm64v8-dev
     displayName: 'Pulling Docker images'
 
-#  TODO: Following two script steps are temporarily until docker manifest issue is resolved.
   - script: |
-      docker tag $(repo):amd64-dev $(repo):$(build.sourceBranchName)
-      docker push $(repo):$(build.sourceBranchName)
-    displayName: 'Pushing Docker branch image'
+      mkdir -p ~/.docker
+      echo '{ "experimental": "enabled" }' > ~/.docker/config.json
+    displayName: 'Enabling experimental mode in docker'
 
   - script: |
-      docker tag $(repo):amd64-dev $(repo):latest
-      docker push $(repo):
+      echo $(DOCKER_PASSWORD) | docker login --username $(DOCKER_USERNAME) --password-stdin
+      docker manifest create $(repo):dev $(repo):amd64-dev $(repo):arm32v6-dev $(repo):arm64v8-dev
+      docker manifest annotate $(repo):dev $(repo):arm32v6-dev --os linux --arch arm
+      docker manifest annotate $(repo):dev $(repo):arm64v8-dev --os linux --arch arm64 --variant armv8
+      docker manifest push $(repo):dev
+    displayName: 'Creating dev manifest and pushing'
+
+  - script: |
+      echo $(DOCKER_PASSWORD) | docker login --username $(DOCKER_USERNAME) --password-stdin
+      docker tag $(repo):amd64-dev $(repo):amd64
+      docker push $(repo):amd64
+      docker tag $(repo):arm32v6-dev $(repo):arm32v6
+      docker push $(repo):arm32v6
+      docker tag $(repo):arm64v8-dev $(repo):arm64v8
+      docker push $(repo):arm64v8
+      docker manifest create $(repo):latest $(repo):amd64 $(repo):arm32v6 $(repo):arm64v8
+      docker manifest annotate $(repo):latest $(repo):arm32v6 --os linux --arch arm
+      docker manifest annotate $(repo):latest $(repo):arm64v8 --os linux --arch arm64 --variant armv8
+      docker manifest push $(repo):latest
     condition: |
       and
       (
         in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues'),
         eq(variables['build.sourceBranch'], 'refs/heads/master')
       )
-    displayName: 'Pushing Docker latest image'
-
-#  TODO: Re-enable in future. GitHub issue https://github.com/docker/cli/issues/1724
-#  - script: |
-#      mkdir -p ~/.docker
-#      echo '{ "experimental": "enabled" }' > ~/.docker/config.json
-#    displayName: 'Enabling experimental mode in docker'
-#
-#  - script: |
-#      docker manifest create $(repo):dev $(repo):amd64-dev $(repo):arm32v6-dev $(repo):arm64v8-dev
-#      docker manifest annotate $(repo):dev $(repo):arm32v6-dev --os linux --arch arm
-#      docker manifest annotate $(repo):dev $(repo):arm64v8-dev --os linux --arch arm64 --variant armv8
-#      docker manifest push $(repo):dev
-#    displayName: 'Creating manifest and pushing'
-#
-#  - script: |
-#      docker tag $(repo):amd64-dev $(repo):amd64
-#      docker push $(repo):amd64
-#      docker tag $(repo):arm32v6-dev $(repo):arm32v6
-#      docker push $(repo):arm32v6
-#      docker tag $(repo):arm64v8-dev $(repo):arm64v8
-#      docker push $(repo):arm64v8
-#      docker manifest create $(repo):latest $(repo):amd64 $(repo):arm32v6 $(repo):arm64v8
-#      docker manifest annotate $(repo):latest $(repo):arm32v6 --os linux --arch arm
-#      docker manifest annotate $(repo):latest $(repo):arm64v8 --os linux --arch arm64 --variant armv8
-#      docker manifest push $(repo):latest
-#    condition: |
-#      and
-#      (
-#        in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues'),
-#        eq(variables['build.sourceBranch'], 'refs/heads/master')
-#      )
-#    displayName: 'Creating manifest and pushing'
-#    env:
-#      DOCKER_CLI_EXPERIMENTAL: 'enabled'
+    displayName: 'Creating release manifest and pushing'
+    env:
+      DOCKER_CLI_EXPERIMENTAL: 'enabled'
