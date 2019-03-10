@@ -11,10 +11,20 @@ class Converter:
     def convert(self) -> dict:
         tmp_twitter_ids = []
         for instance in self.config["Discord"]:
-            if "twitter_lists" in instance.keys() and not instance["twitter_lists"] in [None, "", [], [""]]:
+            if "twitter_lists" in instance.keys() and not instance["twitter_lists"] in [
+                None,
+                "",
+                [],
+                [""],
+            ]:
                 for twitter_list in instance["twitter_lists"]:
                     tmp_twitter_ids += self.twitter_list_to_id(twitter_list)
-            if "twitter_handles" in instance.keys() and not instance["twitter_handles"] in [None, "", [], [""]]:
+            if "twitter_handles" in instance.keys() and not instance["twitter_handles"] in [
+                None,
+                "",
+                [],
+                [""],
+            ]:
                 tmp_twitter_ids += self.twitter_handle_to_id(instance["twitter_handles"])
             instance["twitter_ids"].extend(
                 x for x in tmp_twitter_ids if x not in instance["twitter_ids"]
@@ -51,7 +61,7 @@ class Converter:
             try:
                 full_users.extend(
                     self.client.lookup_users(
-                        screen_names=twitter_handles[i * 100: min((i + 1) * 100, user_count)]
+                        screen_names=twitter_handles[i * 100 : min((i + 1) * 100, user_count)]
                     )
                 )
             except TweepError as e:
@@ -59,11 +69,11 @@ class Converter:
         return [user.id for user in full_users]
 
 
-
 if __name__ == "__main__":
     import sys
+
     sys.path.append("..")
     from config import config, auth
+
     c = Converter(config, auth)
     print(c.convert())
-
