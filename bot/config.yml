@@ -1,0 +1,83 @@
+######################################
+#### manual configuration example: ###
+#Twitter:
+#  access_token: XXX-XXX
+#  access_token_secret: XXX
+#  consumer_key: XXX
+#  consumer_secret: XXX
+#
+#Discord:
+#  - IncludeReplyToUser: false
+#    IncludeRetweet: false
+#    IncludeUserReply: true
+#    custom_message: 'A new tweet!'
+#    keyword_sets:
+#    - - 'League'    # tweet will be posted if tweet contains all 3 words (League of Legends), no particular order.
+#      - 'of'
+#      - 'Legends'
+#    - - 'Dota 2'    # tweet will be posted if tweet contains 'Dota 2' in this specific order
+#    - - 'MOBA'      # tweet will be posted if it contains 'MOBA'
+#    twitter_ids:
+#    - '123'         # define as many as you want with a dash (-) at the beginning
+#    - '456'
+#    twitter_handles:
+#    - 'discordapp'
+#    twitter_lists:
+#    - 'https://twitter.com/rokxx/lists/dota-2'
+#    webhook_urls:
+#    - 'https://discordapp.com/api/webhooks/123456/XXXX-XXXX'
+######################################
+
+# configuration through environment variables
+Twitter:
+  access_token: ${ACCESS_TOKEN}
+  access_token_secret: ${ACCESS_TOKEN_SECRET}
+  consumer_key: ${CONSUMER_KEY}
+  consumer_secret: ${CONSUMER_SECRET}
+
+Discord:
+  - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER}
+    IncludeRetweet: ${INCLUDE_RETWEET}
+    IncludeUserReply: ${INCLUDE_USER_REPLY}
+    custom_message: ${CUSTOM_MESSAGE}
+    keyword_sets: ${KEYWORDS}
+    twitter_ids: ${TWITTER_ID}
+    twitter_handles: ${TWITTER_HANDLE}
+    twitter_lists: ${TWITTER_LIST}
+    webhook_urls: ${WEBHOOK_URL}
+  - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_2}
+    IncludeRetweet: ${INCLUDE_RETWEET_2}
+    IncludeUserReply: ${INCLUDE_USER_REPLY_2}
+    custom_message: ${CUSTOM_MESSAGE_2}
+    keyword_sets: ${KEYWORDS_2}
+    twitter_ids: ${TWITTER_ID_2}
+    twitter_handles: ${TWITTER_HANDLE_2}
+    twitter_lists: ${TWITTER_LIST_2}
+    webhook_urls: ${WEBHOOK_URL_2}
+  - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_3}
+    IncludeRetweet: ${INCLUDE_RETWEET_3}
+    IncludeUserReply: ${INCLUDE_USER_REPLY_3}
+    custom_message: ${CUSTOM_MESSAGE_3}
+    keyword_sets: ${KEYWORDS_3}
+    twitter_ids: ${TWITTER_ID_3}
+    twitter_handles: ${TWITTER_HANDLE_3}
+    twitter_lists: ${TWITTER_LIST_3}
+    webhook_urls: ${WEBHOOK_URL_3}
+  - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_4}
+    IncludeRetweet: ${INCLUDE_RETWEET_4}
+    IncludeUserReply: ${INCLUDE_USER_REPLY_4}
+    custom_message: ${CUSTOM_MESSAGE_4}
+    keyword_sets: ${KEYWORDS_4}
+    twitter_ids: ${TWITTER_ID_4}
+    twitter_handles: ${TWITTER_HANDLE_4}
+    twitter_lists: ${TWITTER_LIST_4}
+    webhook_urls: ${WEBHOOK_URL_4}
+  - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_5}
+    IncludeRetweet: ${INCLUDE_RETWEET_5}
+    IncludeUserReply: ${INCLUDE_USER_REPLY_5}
+    custom_message: ${CUSTOM_MESSAGE_5}
+    keyword_sets: ${KEYWORDS_5}
+    twitter_ids: ${TWITTER_ID_5}
+    twitter_handles: ${TWITTER_HANDLE_5}
+    twitter_lists: ${TWITTER_LIST_5}
+    webhook_urls: ${WEBHOOK_URL_5}
