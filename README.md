@@ -56,10 +56,14 @@ ACCESS_TOKEN_SECRET=XXX
 CONSUMER_KEY=XXX
 CONSUMER_SECRET=XXX
 TWITTER_ID=123,456,789
+TWITTER_LIST=https://twitter.com/rokxx/lists/dota-2
+TWITTER_HANDLE=discordapp
 WEBHOOK_URL=https://discordapp.com/api/webhooks/123456789/XXXX-XXXX
 ```
 
 Optional environment variables: `INCLUDE_REPLY_TO_USER`, `INCLUDE_RETWEET`, `INCLUDE_USER_REPLY`, `CUSTOM_MESSAGE`, `KEYWORDS`
+
+One of the 3 environment variables are required: `TWITTER_ID`, `TWITTER_LIST` and `TWITTER_HANDLE`. You can specify all three.
 
 ## Normal Setup
 (**Warning:** This is only recommended for experienced users who have some basic experience with CLI.)
@@ -89,6 +93,10 @@ A: Heroku has a lot of bad reputation for being an inferior hosting service. The
 
 Q: Why add automated testing and automated docker image deployment for a relatively simple solo project? Isn't this overkill?  
 A: Continuous integration/deployment is incredible useful in bigger projects. It cuts down development time. I contributed to other FOSS projects that had CI/CD and I was interested how the flow was actually implemented.
+
+Q: Why Travis and Azure Pipelines?  
+I added Travis CI support first. [But then I learned about how they were acquired by another company and there was a massive layoff.](https://twitter.com/carmatrocity/status/1098538649908666368) I then looked for alternatives in case the Travis becomes less user friendly and Azure Pipelines seemed like a good choice. I have migrated from Travis to Azure Pipelines but I will keep both around for educational purposes.
+
 
 ## Credits
 Rokxx for providing the [dota 2 twitter list](https://twitter.com/rokxx/lists/dota-2/members).  

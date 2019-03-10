@@ -25,7 +25,23 @@
           },
           "twitter_ids": {
             "type": "array",
-            "minItems": 1,
+            "minItems": 0,
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "twitter_lists": {
+            "type": "array",
+            "minItems": 0,
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "twitter_handles": {
+            "type": "array",
+            "minItems": 0,
             "uniqueItems": true,
             "items": {
               "type": "string"
@@ -54,7 +70,7 @@
         },
         "additionalProperties": false,
         "required": [
-          "webhook_urls", "twitter_ids"
+          "webhook_urls"
         ]
       }
     },

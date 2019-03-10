@@ -1,4 +1,5 @@
 from bot.config import config
+from bot.utils.twitter_id_converter import Converter
 import tweepy
 import unittest
 import warnings
@@ -6,13 +7,13 @@ import warnings
 
 class TestTwitter(unittest.TestCase):
     def setUp(self):
-        auth = tweepy.OAuthHandler(
+        self.auth = tweepy.OAuthHandler(
             config["Twitter"]["consumer_key"], config["Twitter"]["consumer_secret"]
         )
-        auth.set_access_token(
+        self.auth.set_access_token(
             config["Twitter"]["access_token"], config["Twitter"]["access_token_secret"]
         )
-        self.client = tweepy.API(auth)
+        self.client = tweepy.API(self.auth)
 
     def test_login(self):
         self.client.verify_credentials()
@@ -36,6 +37,13 @@ class TestTwitter(unittest.TestCase):
         twitter_ids = []
         for element in config["Discord"]:
             twitter_ids.extend(x for x in element["twitter_ids"] if x not in twitter_ids)
+            if "twitter_lists" in element.keys() and not element["twitter_lists"] in [None, ""]:
+                for twitter_list in element["twitter_lists"]:
+                    twitter_ids.extend(
+                        x
+                        for x in Converter(None, self.auth).twitter_list_to_id(twitter_list)
+                        if x not in twitter_ids
+                    )
 
         valid_twitter_ids = []
 

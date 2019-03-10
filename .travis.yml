@@ -16,15 +16,11 @@ env:
     - CONSUMER_SECRET=X
     - ACCESS_TOKEN=X-X
     - ACCESS_TOKEN_SECRET=X
-    - DOCKER_USERNAME=nntin
-    - DOCKER_IMAGE_NAME=nntin/discord-twitter-bot
-    - secure: "Nwp138sYrukAR02hMCOMfKpvhRbPQbR7F91dmd6UPErFw23N0GMCTlz6c+qUuX8uNPum3yQQhZwFkggKBH2CCji62XAL3GtPr0o0evqlAi0jTHI60OvhTilgwFTc09Yt4NE7+HOWRZr+VKkOyAt1NwkqKHj1Cw5hnvnZUfSoqwZAfe/kZX4PCpDf6dhMvAvSZtrOg5A9IryWsTPQNPgO1C3kWNN1R40hF3idf2v7vNIFY2erRNRGDDAWwsJC/EG4k+wc8CgdS9LZU58RZAcNUKPsk2xix5SYBD2eMp2F2xouELhKGGDcrvuXgMC3QtoZfNxk2uQUvFroqfLMpI/tTiIj3GWbBq6nuzrorPhFw/IipVF4IaJHtU0rxA/SdsRR5CPjyX2RDIFq4WiQ+MhWJWQeBihFRg99dhdnlG04Qq0ct4h1ue/Ck0fzIRDqtoHdfmC7mNtL8O49YpDnWuXjdgytwYeylSLNvC0scFbhmeTo4gJVrvEq5CHTnsrHcZJQzfagSgh+EBBDOiFAt9AVLjRerfP3bpC/dPdGsW+HnYXDhIISIfBTR4T3pr/yE7v2cbICA3F4R9kU5S9OzyNO4PVVKP1ca66HgB31UjwxbQLb4NldYK7FxwRmjvsv8vmkILb7QkfJZV/hlen8NQF/wx2VfTwzLnIPDwKvNRzGkBw="
     - TWITTER_ID=3065618342
+#    - DOCKER_USERNAME=nntin
+#    - DOCKER_IMAGE_NAME=nntin/discord-twitter-bot
 script:
-  - python -m unittest discover -s tests/test_config
-  - python -m unittest discover -s tests/test_options
-  - python -m unittest discover -s tests/test_discord
-  - python -m unittest discover -s tests/test_python
+  - tox -e py36
 jobs:
   include:
     - stage: stylecheck
@@ -41,41 +37,43 @@ jobs:
       - secure: "HnLit3lxI9G+jYnEy64ddM8GfkVlzcyV23oZ2G2dDQjbNZZ08iAt2y4PyHq7OqOh+eTFfIPgVIhWA5tgMlcXz3rAsRK8eWmyeCy7ij7W72IRngWgm2cCS24EA7TysKZ8pweLBYbcG8EBmpSnChIH4r+jsD6Iw2/rSfK6GJ4Cf0+yoNBwBU8eWMph837eETFV2KZ/WNJr3BiydHSp8J83fAKnup0lnDts6k+ra1qmFmtYAH2eZWafX1WlEn80ozg0WaW6K6UkQIiwwmib8leA1AvQPzkFuonZjfxWVczEDqohnAnYFXegK7DQ7sbw2aMDMyF9fDUMUiQjwswWivRd+CICSIeSYoOeKKjRXhuZqlsagZ31BWsl4WW4J7hxwIo2RQREL5lYU65VM5ATID24wd3nKK+sFFNf46fSWcb8iAkfrIh6AjXYhSeytWnKCIMNtsqId4270wmRB4ayyC4nwF6uJIRM956hHEIKpnypX+WJXbfskpig4HK64e7XJNGyoljjL7qe4cz4YTGxgBSS35aQwHMAMMvGzmAQ+XffHnlASiArL4ZM76uQR/qXa2Q/YE4KOvEU1NSCsl17NNrI50NBCJhYdSnY4mjsGG0PdVI0WoS9egiRE0bqjMT5OWwP4cAyIDrgCbNs+hChHTvjvghGVia769qi+e6k2TsdCGY="
       deploy:
       - provider: script
-        script: python -m unittest discover -s tests/test_twitter && python -m unittest discover -s tests/test_webhook
+        script: tox -e extended
         on:
           all_branches: true
           repo: NNTin/discord-twitter-bot
-    - stage: docker
-      python: 3.6.6
-      before_script:
-      - docker pull "$DOCKER_IMAGE_NAME" || true
-      script:
-      - docker build --pull --cache-from "$DOCKER_IMAGE_NAME" -t temp-image .
-      after_script:
-      - docker images
-      before_deploy:
-      - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-      - export DOCKER_TAG="$TRAVIS_BRANCH-${TRAVIS_COMMIT::8}"
-      - docker tag temp-image "$DOCKER_IMAGE_NAME:$DOCKER_TAG"
-      - docker tag temp-image "$DOCKER_IMAGE_NAME:$TRAVIS_BRANCH"
-      - docker tag temp-image "$DOCKER_IMAGE_NAME:latest"
-      deploy:
-      - provider: script
-        script: docker push "$DOCKER_IMAGE_NAME:$DOCKER_TAG" && docker push "$DOCKER_IMAGE_NAME:$TRAVIS_BRANCH"
-        on:
-          all_branches: true
-          repo: NNTin/discord-twitter-bot
-      - provider: script
-        script: docker push "$DOCKER_IMAGE_NAME:latest"
-        on:
-          branch: master
-          repo: NNTin/discord-twitter-bot
-    - stage: docker test
-      before_deploy:
-      - export DOCKER_TAG="$TRAVIS_BRANCH-${TRAVIS_COMMIT::8}"
-      deploy:
-      - provider: script
-        script: docker pull "$DOCKER_IMAGE_NAME:$DOCKER_TAG"
-        on:
-          all_branches: true
-          repo: NNTin/discord-twitter-bot
+#    - stage: docker
+#      python: 3.6.6
+#      env:
+#      - secure: "Nwp138sYrukAR02hMCOMfKpvhRbPQbR7F91dmd6UPErFw23N0GMCTlz6c+qUuX8uNPum3yQQhZwFkggKBH2CCji62XAL3GtPr0o0evqlAi0jTHI60OvhTilgwFTc09Yt4NE7+HOWRZr+VKkOyAt1NwkqKHj1Cw5hnvnZUfSoqwZAfe/kZX4PCpDf6dhMvAvSZtrOg5A9IryWsTPQNPgO1C3kWNN1R40hF3idf2v7vNIFY2erRNRGDDAWwsJC/EG4k+wc8CgdS9LZU58RZAcNUKPsk2xix5SYBD2eMp2F2xouELhKGGDcrvuXgMC3QtoZfNxk2uQUvFroqfLMpI/tTiIj3GWbBq6nuzrorPhFw/IipVF4IaJHtU0rxA/SdsRR5CPjyX2RDIFq4WiQ+MhWJWQeBihFRg99dhdnlG04Qq0ct4h1ue/Ck0fzIRDqtoHdfmC7mNtL8O49YpDnWuXjdgytwYeylSLNvC0scFbhmeTo4gJVrvEq5CHTnsrHcZJQzfagSgh+EBBDOiFAt9AVLjRerfP3bpC/dPdGsW+HnYXDhIISIfBTR4T3pr/yE7v2cbICA3F4R9kU5S9OzyNO4PVVKP1ca66HgB31UjwxbQLb4NldYK7FxwRmjvsv8vmkILb7QkfJZV/hlen8NQF/wx2VfTwzLnIPDwKvNRzGkBw="
+#      before_script:
+#      - docker pull "$DOCKER_IMAGE_NAME" || true
+#      script:
+#      - docker build --pull --cache-from "$DOCKER_IMAGE_NAME" -t temp-image .
+#      after_script:
+#      - docker images
+#      before_deploy:
+#      - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+#      - export DOCKER_TAG="$TRAVIS_BRANCH-${TRAVIS_COMMIT::8}"
+#      - docker tag temp-image "$DOCKER_IMAGE_NAME:$DOCKER_TAG"
+#      - docker tag temp-image "$DOCKER_IMAGE_NAME:$TRAVIS_BRANCH"
+#      - docker tag temp-image "$DOCKER_IMAGE_NAME:latest"
+#      deploy:
+#      - provider: script
+#        script: docker push "$DOCKER_IMAGE_NAME:$DOCKER_TAG" && docker push "$DOCKER_IMAGE_NAME:$TRAVIS_BRANCH"
+#        on:
+#          all_branches: true
+#          repo: NNTin/discord-twitter-bot
+#      - provider: script
+#        script: docker push "$DOCKER_IMAGE_NAME:latest"
+#        on:
+#          branch: master
+#          repo: NNTin/discord-twitter-bot
+#    - stage: docker test
+#      before_deploy:
+#      - export DOCKER_TAG="$TRAVIS_BRANCH-${TRAVIS_COMMIT::8}"
+#      deploy:
+#      - provider: script
+#        script: docker pull "$DOCKER_IMAGE_NAME:$DOCKER_TAG"
+#        on:
+#          all_branches: true
+#          repo: NNTin/discord-twitter-bot

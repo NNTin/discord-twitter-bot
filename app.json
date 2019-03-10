@@ -26,7 +26,16 @@
       "description": "Discord webhook URL https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks"
     },
     "TWITTER_ID": {
-      "description": "Twitter ID(s) http://gettwitterid.com/ Separate multiple twitter IDs with a comma"
+      "description": "Preferred method: Twitter ID(s) http://gettwitterid.com/ Separate multiple twitter IDs with a comma.",
+      "required": false
+    },
+    "TWITTER_LIST": {
+      "description": "Example Twitter List: https://twitter.com/rokxx/lists/dota-2",
+      "required": false
+    },
+    "TWITTER_HANDLE": {
+      "description": "The Twitter handle is part of the link! https://twitter.com/<TWITTER_HANDLE>",
+      "required": false
     },
     "INCLUDE_REPLY_TO_USER": {
       "description": "Include replies from other Twitter users tweeting TO your tracked twitter user?",
