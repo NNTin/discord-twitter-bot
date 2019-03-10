@@ -1,7 +1,7 @@
 #!/usr/local/bin/python
 # -*- coding: utf-8 -*-
 from tweepy.streaming import StreamListener
-from tweepy import OAuthHandler, Stream
+from tweepy import Stream
 from time import gmtime, strftime
 from time import sleep
 import urllib3
@@ -12,9 +12,13 @@ try:
 except ModuleNotFoundError:
     from bot.utils.processor import Processor
 try:
-    from config import config
+    from config import config, auth
 except ModuleNotFoundError:
-    from bot.config import config
+    from bot.config import config, auth
+try:
+    from utils.twitter_id_converter import Converter
+except ModuleNotFoundError:
+    from bot.utils.twitter_id_converter import Converter
 
 
 class StdOutListener(StreamListener):
@@ -67,7 +71,7 @@ class StdOutListener(StreamListener):
 
 if __name__ == "__main__":
     print("Bot started.")
-
+    config = Converter(config, auth).convert()
     config["twitter_ids"] = []
     for element in config["Discord"]:
         config["twitter_ids"].extend(
@@ -77,10 +81,6 @@ if __name__ == "__main__":
     print("{} Twitter users are being followed.".format(len(config["twitter_ids"])))
 
     l = StdOutListener()
-    auth = OAuthHandler(config["Twitter"]["consumer_key"], config["Twitter"]["consumer_secret"])
-    auth.set_access_token(
-        config["Twitter"]["access_token"], config["Twitter"]["access_token_secret"]
-    )
     stream = Stream(auth, l)
 
     print("Twitter stream started.")

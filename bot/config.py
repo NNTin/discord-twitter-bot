@@ -1,6 +1,7 @@
 #!/usr/local/bin/python
 # -*- coding: utf-8 -*-
 import os
+from tweepy import OAuthHandler
 
 try:
     from utils.dataIO import fileIO
@@ -34,6 +35,7 @@ else:
                 else True,
                 "webhook_urls": os.environ.get("WEBHOOK_URL", "").replace(" ", "").split(","),
                 "twitter_ids": os.environ.get("TWITTER_ID", "").replace(" ", "").split(","),
+                "twitter_lists": os.environ.get("TWITTER_LIST", "").replace(" ", "").split(","),
                 "custom_message": os.environ.get("CUSTOM_MESSAGE", None),
                 "keyword_sets": [
                     keyword_set.split("+")
@@ -42,6 +44,9 @@ else:
             }
         ],
     }
+
+auth = OAuthHandler(config["Twitter"]["consumer_key"], config["Twitter"]["consumer_secret"])
+auth.set_access_token(config["Twitter"]["access_token"], config["Twitter"]["access_token_secret"])
 
 if __name__ == "__main__":
     print(config)
