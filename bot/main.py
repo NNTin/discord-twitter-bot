@@ -41,6 +41,9 @@ class StdOutListener(StreamListener):
             if not p.keyword_set_present():
                 continue
 
+            if p.blackword_set_present():
+                continue
+
             for wh_url in data_discord["webhook_urls"]:
                 p.create_embed()
                 p.attach_media()

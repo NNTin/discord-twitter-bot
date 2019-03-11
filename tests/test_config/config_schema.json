@@ -58,6 +58,17 @@
               }
             }
           },
+          "blackword_sets": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string"
+              }
+            }
+          },
           "IncludeReplyToUser": {
             "type": "boolean"
           },

@@ -1,5 +1,5 @@
 import unittest
-from bot.utils.processor import worth_posting, keyword_set_present
+from bot.utils.processor import worth_posting, keyword_set_present, blackword_set_present
 
 
 class TestOptions(unittest.TestCase):
@@ -92,12 +92,20 @@ class TestOptions(unittest.TestCase):
             keyword_set_present([["bye"], ["world"]], "Hello World!"), "Keyword present!"
         )
 
-    def test_keyword_set_present5(self):
+    def test_blackword_set_present1(self):
         self.assertFalse(
-            keyword_set_present([["hello", "nntin"]], "Hello World!"), "Keyword set not present"
+            blackword_set_present([[""]], "Hello World!"),
+            "Expecting false when no blackword set was supplied.",
         )
 
-    def test_keyword_set_present6(self):
+    def test_blackword_set_present2(self):
+        self.assertFalse(
+            blackword_set_present([["hello", "nntin"]], "Hello World!"),
+            "Blackword set not present",
+        )
+
+    def test_blackword_set_present3(self):
         self.assertTrue(
-            keyword_set_present([["bye", "world"], ["hello"]], "Hello World!"), "Keyword present!"
+            blackword_set_present([["bye", "world"], ["hello"]], "Hello World!"),
+            "Blackword  present!",
         )

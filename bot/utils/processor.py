@@ -88,6 +88,17 @@ def keyword_set_present(keyword_sets, text):
     return False
 
 
+def blackword_set_present(blackword_sets, text):
+    if blackword_sets == [[""]]:
+        return False
+    for blackword_set in blackword_sets:
+        blackword_present = [blackword.lower() in text.lower() for blackword in blackword_set]
+        blackword_set_present = all(blackword_present)
+        if blackword_set_present:
+            return True
+    return False
+
+
 class Processor:
     def __init__(self, status_tweet, discord_config):
         self.status_tweet = status_tweet
@@ -150,6 +161,9 @@ class Processor:
 
     def keyword_set_present(self):
         return keyword_set_present(self.discord_config.get("keyword_sets", [[""]]), self.text)
+
+    def blackword_set_present(self):
+        return blackword_set_present(self.discord_config.get("blackword_sets", [[""]]), self.text)
 
     def attach_media(self):
         if (
