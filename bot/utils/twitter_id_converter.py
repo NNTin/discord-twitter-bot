@@ -9,8 +9,8 @@ class Converter:
         self.client = API(auth)
 
     def convert(self) -> dict:
-        tmp_twitter_ids = []
         for instance in self.config["Discord"]:
+            tmp_twitter_ids = []
             if "twitter_lists" in instance.keys() and not instance["twitter_lists"] in [
                 None,
                 "",
@@ -26,6 +26,8 @@ class Converter:
                 [""],
             ]:
                 tmp_twitter_ids += self.twitter_handle_to_id(instance["twitter_handles"])
+            if "twitter_ids" not in instance:
+                instance["twitter_ids"] = list()
             instance["twitter_ids"].extend(
                 x for x in tmp_twitter_ids if x not in instance["twitter_ids"]
             )
@@ -37,6 +39,22 @@ class Converter:
                         amount=len(tmp_twitter_ids)
                     )
                 )
+
+        # throw out config that don't have a webhook url or twitter id
+        self.config["Discord"] = [
+            {
+                k: v
+                for k, v in instance.items()
+                if (
+                    instance.get("twitter_ids", [] is not [])
+                    and instance.get("webhook_urls", [] is not [])
+                )
+            }
+            for instance in self.config["Discord"]
+        ]
+        while {} in self.config["Discord"]:
+            self.config["Discord"].remove({})
+
         return self.config
 
     def twitter_list_to_id(self, twitter_list_url: str) -> list:
