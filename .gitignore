@@ -146,3 +146,4 @@ $RECYCLE.BIN/
 .idea/discord-twitter-bot.iml
 experiment/
 bot/config.json
+bot/.env

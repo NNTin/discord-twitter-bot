@@ -101,9 +101,9 @@ class Processor:
             twitter_ids=self.discord_config["twitter_ids"],
             in_reply_to_twitter_id=self.status_tweet["in_reply_to_user_id_str"],
             retweeted=self.status_tweet["retweeted"] or "retweeted_status" in self.status_tweet,
-            include_reply_to_user=self.discord_config["IncludeReplyToUser"],
-            include_user_reply=self.discord_config["IncludeUserReply"],
-            include_retweet=self.discord_config["IncludeRetweet"],
+            include_reply_to_user=self.discord_config.get("IncludeReplyToUser", True),
+            include_user_reply=self.discord_config.get("IncludeUserReply", True),
+            include_retweet=self.discord_config.get("IncludeRetweet", True),
         )
 
     def get_text(self):
@@ -149,7 +149,7 @@ class Processor:
         return unescape(self.text)
 
     def keyword_set_present(self):
-        return keyword_set_present(self.discord_config["keyword_sets"], self.text)
+        return keyword_set_present(self.discord_config.get("keyword_sets", [[""]]), self.text)
 
     def attach_media(self):
         if (
@@ -216,13 +216,9 @@ class Processor:
                 int(match.group("id")), match.group("token"), adapter=RequestsWebhookAdapter()
             )
             try:
-                if (
-                    "custom_message" in self.discord_config
-                    and self.discord_config["custom_message"] is not None
-                ):
-                    webhook.send(embed=self.embed, content=self.discord_config["custom_message"])
-                else:
-                    webhook.send(embed=self.embed)
+                webhook.send(
+                    embed=self.embed, content=self.discord_config.get("custom_message", None)
+                )
             except discord.errors.NotFound as error:
                 print(
                     f"---------Error---------\n"

@@ -72,6 +72,7 @@ class StdOutListener(StreamListener):
 if __name__ == "__main__":
     print("Bot started.")
     config = Converter(config, auth).convert()
+    print(config)
     config["twitter_ids"] = []
     for element in config["Discord"]:
         config["twitter_ids"].extend(

@@ -39,6 +39,14 @@
               "type": "string"
             }
           },
+          "twitter_handles": {
+            "type": "array",
+            "minItems": 0,
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
           "keyword_sets": {
             "type": "array",
             "uniqueItems": true,
@@ -62,7 +70,7 @@
         },
         "additionalProperties": false,
         "required": [
-          "webhook_urls"
+
         ]
       }
     },
