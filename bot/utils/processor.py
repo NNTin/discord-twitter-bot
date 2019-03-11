@@ -157,7 +157,8 @@ class Processor:
                 "#%s" % hashtag["text"],
                 "[#%s](https://twitter.com/hashtag/%s)" % (hashtag["text"], hashtag["text"]),
             )
-        return unescape(self.text)
+        self.text = unescape(self.text)
+        return self.text
 
     def keyword_set_present(self):
         return keyword_set_present(self.discord_config.get("keyword_sets", [[""]]), self.text)

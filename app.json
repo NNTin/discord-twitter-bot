@@ -37,17 +37,25 @@
       "description": "The Twitter handle is part of the link! https://twitter.com/<TWITTER_HANDLE>\nComma separate multiple twitter handles.\nThis can slow the start time of your bot. Configuring through TWITTER_ID is preferred.\nExample: `discordapp,dota2`",
       "required": false
     },
+    "TRACK": {
+      "description": "Useful when you want to subscribe to some #hashtags or get tweets that contain certain phrases.\nComma separate multiple. Use the hashtag # suffix if you want to filter for a hashtag.\nWarning: If you use a very simple word e.g. `twitter` it will flood your Discord, get rate limited by Discord and eventually get rate limited by Twitter as well.\nWarning: The tracking is applied to everyone. This means you will get tweets from entirely random people.\nExample: `#Heroku`",
+      "required": false
+    },
+    "LOCATION": {
+      "description": "Apply a location box. This is useful if you want to get tweets made from certain locations. E.g. city specific tweets.\nNote that when using TWITTER_ID/_LIST/_HANDLE, TRACK and LOCATION the tweets you will be getting are in a OR relationship. This means if anything applies the tweet will be posted.\nExample: \n`-122.75,36.8,-121.75,37.8` is a location box for San Francisco.\n`-74,40,-73,41` is a location box for New York City.\n`-122.75,36.8,-121.75,37.8,-74,40,-73,41` are location boxes for San Francisco and New York City.",
+      "required": false
+    },
     "INCLUDE_REPLY_TO_USER": {
       "description": "Include replies **from other** Twitter users tweeting **TO** your tracked twitter user?\nExample: `True`",
-      "value": "True"
+      "required": false
     },
     "INCLUDE_RETWEET": {
       "description": "Include retweets?\nExample: `False`",
-      "value": "False"
+      "required": false
     },
     "INCLUDE_USER_REPLY": {
       "description": "Include replies **FROM** your tracked twitter user to other twitter users\nExample: `True`",
-      "value": "True"
+      "required": false
     },
     "CUSTOM_MESSAGE": {
       "description": "OPTIONAL: Custom message. Useful for pinging @everyone, a role or individual discord members.\nExample: `A new tweet arived pinging role <@&123456> and user <@123456>`\nWith 123456 being the role or user id. You can get them by e.g. typing `\\@Linley#8686` the backslash \\ is important!",

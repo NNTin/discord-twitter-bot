@@ -21,16 +21,21 @@ class CustomFormatter:
         conversion = next(format_string, None)
         return self.convert_field(value, conversion)
 
+    # todo: determine if location box requires its own symbol conversion logic.
     def convert_field(self, value, conversion: str):
         if isinstance(value, str):
-            if conversion == "s" or conversion is None:  # string is alrdy a string
+            if conversion == "s":
+                return value.lower()
+            elif conversion is None:
                 return value
-            elif conversion == "b":  # turn string into a bool()
+            elif conversion == "b":
                 return self.to_bool(value)
-            elif conversion == "l":  # turn string into a list()
+            elif conversion == "l":
+                return value.lower().split(",")
+            elif conversion == "ll":
+                return [v.split("+") for v in value.lower().split(",")]
+            elif conversion == "wh":
                 return value.split(",")
-            elif conversion == "ll":  # turn string into a double list()
-                return [v.split("+") for v in value.split(",")]
             else:
                 raise ValueError("Unknown conversion specifier {0!s}".format(conversion))
         else:
@@ -73,3 +78,4 @@ auth.set_access_token(config["Twitter"]["access_token"], config["Twitter"]["acce
 
 if __name__ == "__main__":
     print(config)
+    print(config["Discord"][0]["track"])

@@ -41,6 +41,7 @@ class Converter:
                 )
 
         # throw out config that don't have a webhook url or twitter id
+        # todo: if track and location are implemented the twitter_ids field can be empty!
         self.config["Discord"] = [
             {
                 k: v

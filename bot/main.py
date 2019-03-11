@@ -22,13 +22,20 @@ except ModuleNotFoundError:
 
 
 class StdOutListener(StreamListener):
-    def __init__(self, api=None):
+    def __init__(self, _follow: list, _track: list, _location: list, api=None):
         super().__init__(api)
-
+        self.follow = _follow
+        self.track = _track
+        self.location = _location
         self.config_discord = config["Discord"]
 
     def _on_status(self, status):
         data = status._json
+
+        # text = Processor(status_tweet=data, discord_config={}).get_text()
+        # for e in track:
+        #    if e in text:
+        #        print(text)
 
         for data_discord in self.config_discord:
             p = Processor(status_tweet=data, discord_config=data_discord)
@@ -76,15 +83,17 @@ if __name__ == "__main__":
     print("Bot started.")
     config = Converter(config, auth).convert()
     print(config)
-    config["twitter_ids"] = []
+    follow = []
+    track = []
+    location = []
     for element in config["Discord"]:
-        config["twitter_ids"].extend(
-            x for x in element["twitter_ids"] if x not in config["twitter_ids"]
-        )
+        follow.extend(x for x in element["twitter_ids"] if x not in follow)
+        track.extend(x for x in element["track"] if x not in track)
+        # todo: location...
 
-    print("{} Twitter users are being followed.".format(len(config["twitter_ids"])))
+    print("{} Twitter users are being followed.".format(len(follow)))
 
-    l = StdOutListener()
+    l = StdOutListener(_follow=follow, _track=track, _location=location)
     stream = Stream(auth, l)
 
     print("Twitter stream started.")
@@ -101,7 +110,7 @@ if __name__ == "__main__":
             sleep(600)
 
         try:
-            stream.filter(follow=config["twitter_ids"])
+            stream.filter(follow=follow, track=track)
         except urllib3.exceptions.ProtocolError as error:
             print_error(_error=error)
         except ConnectionResetError as error:

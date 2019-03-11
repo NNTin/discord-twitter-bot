@@ -47,6 +47,22 @@
               "type": "string"
             }
           },
+          "track": {
+            "type": "array",
+            "minItems": 0,
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "location": {
+            "type": "array",
+            "minItems": 0,
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
           "keyword_sets": {
             "type": "array",
             "uniqueItems": true,
