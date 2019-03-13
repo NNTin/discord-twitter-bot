@@ -54,9 +54,14 @@ COLORS = [
 WH_REGEX = r"discordapp\.com\/api\/webhooks\/(?P<id>\d+)\/(?P<token>.+)"
 
 
-def worth_posting_location():
-    # todo: needed location, twitter location
-    raise NotImplemented("todo....")
+def worth_posting_location(location, coordinates):
+    location = [location[i : i + 4] for i in range(0, len(location), 4)]
+
+    for box in location:
+        for coordinate in coordinates:
+            if box[0] < coordinate[0] < box[2] and box[1] < coordinate[1] < box[3]:
+                return True
+    return False
 
 
 def worth_posting_track(track, hashtags, text):
@@ -120,6 +125,32 @@ class Processor:
         self.discord_config = discord_config
         self.text = ""
         self.embed = None
+
+    def worth_posting_location(self):
+        if (
+            self.status_tweet.get("coordinates", None) is not None
+            and self.status_tweet["coordinates"].get("coordinates", None) is not None
+        ):
+            coordinates = [self.status_tweet["coordinates"]["coordinates"]]
+        else:
+            coordinates = []
+
+        if (
+            self.status_tweet.get("place", None) is not None
+            and self.status_tweet["place"].get("bounding_box", None) is not None
+            and self.status_tweet["place"]["bounding_box"].get("coordinates", None) is not None
+        ):
+            tmp = self.status_tweet["place"]["bounding_box"]["coordinates"]
+
+        for (
+            tmp_
+        ) in tmp:  # for some reason Twitter API places the coordinates into a triple array.......
+            for c in tmp_:
+                coordinates.append(c)
+
+        return worth_posting_location(
+            location=self.discord_config.get("location", []), coordinates=coordinates
+        )
 
     def worth_posting_track(self):
         if "extended_tweet" in self.status_tweet:

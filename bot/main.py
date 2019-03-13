@@ -22,11 +22,8 @@ except ModuleNotFoundError:
 
 
 class StdOutListener(StreamListener):
-    def __init__(self, _follow: list, _track: list, _location: list, api=None):
+    def __init__(self, api=None):
         super().__init__(api)
-        self.follow = _follow
-        self.track = _track
-        self.location = _location
         self.config_discord = config["Discord"]
 
     def _on_status(self, status):
@@ -36,7 +33,11 @@ class StdOutListener(StreamListener):
             p = Processor(status_tweet=data, discord_config=data_discord)
             p.get_text()
 
-            if not p.worth_posting_follow() and not p.worth_posting_track():
+            if (
+                not p.worth_posting_follow()
+                and not p.worth_posting_track()
+                and not p.worth_posting_location()
+            ):
                 continue
 
             if not p.keyword_set_present():
@@ -45,7 +46,7 @@ class StdOutListener(StreamListener):
             if p.blackword_set_present():
                 continue
 
-            for wh_url in data_discord["webhook_urls"]:
+            for wh_url in data_discord.get("webhook_urls", []):
                 p.create_embed()
                 p.attach_media()
 
@@ -83,14 +84,14 @@ if __name__ == "__main__":
     for element in config["Discord"]:
         follow.extend(x for x in element.get("twitter_ids", []) if x not in follow)
         track.extend(x for x in element.get("track", []) if x not in track)
-        # todo: location...
+        location.extend(x for x in element.get("location", []))
 
     print(
-        "{} Twitter users are being followed. Tracked words are: {}".format(
-            len(follow), ", ".join(track)
+        "{} Twitter users are being followed.\nTracked words are: {}\nLocation box: {}".format(
+            len(follow), ", ".join(track) if track else "-", location
         )
     )
-    l = StdOutListener(_follow=follow, _track=track, _location=location)
+    l = StdOutListener()
     stream = Stream(auth, l)
 
     print("Twitter stream started.")
@@ -107,7 +108,7 @@ if __name__ == "__main__":
             sleep(600)
 
         try:
-            stream.filter(follow=follow, track=track)
+            stream.filter(follow=follow, track=track, locations=location)
         except urllib3.exceptions.ProtocolError as error:
             print_error(_error=error)
         except ConnectionResetError as error:

@@ -46,7 +46,7 @@ Discord:
     twitter_handles: ${TWITTER_HANDLE!l}
     twitter_lists: ${TWITTER_LIST!l}
     track: ${TRACK!l}
-    location: ${LOCATION!l}
+    location: ${LOCATION!fl}
     webhook_urls: ${WEBHOOK_URL!wh}
 
   - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_2!b}
@@ -59,7 +59,7 @@ Discord:
     twitter_handles: ${TWITTER_HANDLE_2!l}
     twitter_lists: ${TWITTER_LIST_2!l}
     track: ${TRACK_2!l}
-    location: ${LOCATION_2!l}
+    location: ${LOCATION_2!fl}
     webhook_urls: ${WEBHOOK_URL_2!wh}
 
   - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_3!b}
@@ -72,7 +72,7 @@ Discord:
     twitter_handles: ${TWITTER_HANDLE_3!l}
     twitter_lists: ${TWITTER_LIST_3!l}
     track: ${TRACK_3!l}
-    location: ${LOCATION_3!l}
+    location: ${LOCATION_3!fl}
     webhook_urls: ${WEBHOOK_URL_3!wh}
 
   - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_4!b}
@@ -85,7 +85,7 @@ Discord:
     twitter_handles: ${TWITTER_HANDLE_4!l}
     twitter_lists: ${TWITTER_LIST_4!l}
     track: ${TRACK_4!l}
-    location: ${LOCATION_4!l}
+    location: ${LOCATION_4!fl}
     webhook_urls: ${WEBHOOK_URL_4!wh}
 
   - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_5!b}
@@ -98,7 +98,7 @@ Discord:
     twitter_handles: ${TWITTER_HANDLE_5!l}
     twitter_lists: ${TWITTER_LIST_5!l}
     track: ${TRACK_5!l}
-    location: ${LOCATION_5!l}
+    location: ${LOCATION_5!fl}
     webhook_urls: ${WEBHOOK_URL_5!wh}
 
   - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_6!b}
@@ -111,7 +111,7 @@ Discord:
     twitter_handles: ${TWITTER_HANDLE_6!l}
     twitter_lists: ${TWITTER_LIST_6!l}
     track: ${TRACK_6!l}
-    location: ${LOCATION_6!l}
+    location: ${LOCATION_6!fl}
     webhook_urls: ${WEBHOOK_URL_6!wh}
 
   - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_7!b}
@@ -124,7 +124,7 @@ Discord:
     twitter_handles: ${TWITTER_HANDLE_7!l}
     twitter_lists: ${TWITTER_LIST_7!l}
     track: ${TRACK_7!l}
-    location: ${LOCATION_7!l}
+    location: ${LOCATION_7!fl}
     webhook_urls: ${WEBHOOK_URL_7!wh}
 
   - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_8!b}
@@ -137,7 +137,7 @@ Discord:
     twitter_handles: ${TWITTER_HANDLE_8!l}
     twitter_lists: ${TWITTER_LIST_8!l}
     track: ${TRACK_8!l}
-    location: ${LOCATION_8!l}
+    location: ${LOCATION_8!fl}
     webhook_urls: ${WEBHOOK_URL_8!wh}
 
   - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_9!b}
@@ -150,7 +150,7 @@ Discord:
     twitter_handles: ${TWITTER_HANDLE_9!l}
     twitter_lists: ${TWITTER_LIST_9!l}
     track: ${TRACK_9!l}
-    location: ${LOCATION_9!l}
+    location: ${LOCATION_9!fl}
     webhook_urls: ${WEBHOOK_URL_9!wh}
 
   - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_10!b}
@@ -163,5 +163,5 @@ Discord:
     twitter_handles: ${TWITTER_HANDLE_10!l}
     twitter_lists: ${TWITTER_LIST_10!l}
     track: ${TRACK_10!l}
-    location: ${LOCATION_10!l}
+    location: ${LOCATION_10!fl}
     webhook_urls: ${WEBHOOK_URL_10!wh}

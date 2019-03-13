@@ -42,7 +42,7 @@
       "required": false
     },
     "LOCATION": {
-      "description": "Apply a location box. This is useful if you want to get tweets made from certain locations. E.g. city specific tweets.\nNote that when using TWITTER_ID/_LIST/_HANDLE, TRACK and LOCATION the tweets you will be getting are in a OR relationship. This means if anything applies the tweet will be posted.\nExample: \n`-122.75,36.8,-121.75,37.8` is a location box for San Francisco.\n`-74,40,-73,41` is a location box for New York City.\n`-122.75,36.8,-121.75,37.8,-74,40,-73,41` are location boxes for San Francisco and New York City.",
+      "description": "Apply a location box. This is useful if you want to get tweets made from certain locations. E.g. city specific tweets.\nUse this website in order to determine the string: http://boundingbox.klokantech.com/\nNote that when using TWITTER_ID/_LIST/_HANDLE, TRACK and LOCATION the tweets you will be getting are in a OR relationship. This means if anything applies the tweet will be posted.\nExample: \n`-122.75,36.8,-121.75,37.8` is a location box for San Francisco.\n`-74,40,-73,41` is a location box for New York City.\n`-122.75,36.8,-121.75,37.8,-74,40,-73,41` are location boxes for San Francisco and New York City.",
       "required": false
     },
     "INCLUDE_REPLY_TO_USER": {

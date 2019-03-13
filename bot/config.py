@@ -36,6 +36,8 @@ class CustomFormatter:
                 return [v.split("+") for v in value.lower().split(",")]
             elif conversion == "wh":
                 return value.split(",")
+            elif conversion == "fl":
+                return [float(v) for v in value.replace(" ", "").split(",")]
             else:
                 raise ValueError("Unknown conversion specifier {0!s}".format(conversion))
         else:
@@ -78,4 +80,4 @@ auth.set_access_token(config["Twitter"]["access_token"], config["Twitter"]["acce
 
 if __name__ == "__main__":
     print(config)
-    print(config["Discord"][0]["track"])
+    print(config["Discord"][0].get("location"))

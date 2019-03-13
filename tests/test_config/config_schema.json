@@ -60,7 +60,7 @@
             "minItems": 0,
             "uniqueItems": true,
             "items": {
-              "type": "string"
+              "type": "number"
             }
           },
           "keyword_sets": {
