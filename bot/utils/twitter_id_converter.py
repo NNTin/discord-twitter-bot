@@ -40,17 +40,9 @@ class Converter:
                     )
                 )
 
-        # throw out config that don't have a webhook url or twitter id
-        # todo: if track and location are implemented the twitter_ids field can be empty!
+        # throw out config that don't have a webhook url
         self.config["Discord"] = [
-            {
-                k: v
-                for k, v in instance.items()
-                if (
-                    instance.get("twitter_ids", [] is not [])
-                    and instance.get("webhook_urls", [] is not [])
-                )
-            }
+            {k: v for k, v in instance.items() if instance.get("webhook_urls", [] is not [])}
             for instance in self.config["Discord"]
         ]
         while {} in self.config["Discord"]:

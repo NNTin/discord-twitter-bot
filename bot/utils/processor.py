@@ -54,7 +54,22 @@ COLORS = [
 WH_REGEX = r"discordapp\.com\/api\/webhooks\/(?P<id>\d+)\/(?P<token>.+)"
 
 
-def worth_posting(
+def worth_posting_location():
+    # todo: needed location, twitter location
+    raise NotImplemented("todo....")
+
+
+def worth_posting_track(track, hashtags, text):
+    for t in track:
+        if t.startswith("#"):
+            if t[1:] in map(lambda x: x["text"], hashtags):
+                return True
+        elif t in text:
+            return True
+    return False
+
+
+def worth_posting_follow(
     tweeter_id,
     twitter_ids,
     in_reply_to_twitter_id,
@@ -106,10 +121,26 @@ class Processor:
         self.text = ""
         self.embed = None
 
-    def worth_posting(self):
-        return worth_posting(
+    def worth_posting_track(self):
+        if "extended_tweet" in self.status_tweet:
+            hashtags = sorted(
+                self.status_tweet["extended_tweet"]["entities"]["hashtags"],
+                key=lambda k: k["text"],
+                reverse=True,
+            )
+        else:
+            hashtags = sorted(
+                self.status_tweet["entities"]["hashtags"], key=lambda k: k["text"], reverse=True
+            )
+
+        return worth_posting_track(
+            track=self.discord_config.get("track", []), hashtags=hashtags, text=self.text
+        )
+
+    def worth_posting_follow(self):
+        return worth_posting_follow(
             tweeter_id=self.status_tweet["user"]["id_str"],
-            twitter_ids=self.discord_config["twitter_ids"],
+            twitter_ids=self.discord_config.get("twitter_ids", []),
             in_reply_to_twitter_id=self.status_tweet["in_reply_to_user_id_str"],
             retweeted=self.status_tweet["retweeted"] or "retweeted_status" in self.status_tweet,
             include_reply_to_user=self.discord_config.get("IncludeReplyToUser", True),

@@ -32,18 +32,12 @@ class StdOutListener(StreamListener):
     def _on_status(self, status):
         data = status._json
 
-        # text = Processor(status_tweet=data, discord_config={}).get_text()
-        # for e in track:
-        #    if e in text:
-        #        print(text)
-
         for data_discord in self.config_discord:
             p = Processor(status_tweet=data, discord_config=data_discord)
-
-            if not p.worth_posting():
-                continue
-
             p.get_text()
+
+            if not p.worth_posting_follow() and not p.worth_posting_track():
+                continue
 
             if not p.keyword_set_present():
                 continue
@@ -87,12 +81,15 @@ if __name__ == "__main__":
     track = []
     location = []
     for element in config["Discord"]:
-        follow.extend(x for x in element["twitter_ids"] if x not in follow)
-        track.extend(x for x in element["track"] if x not in track)
+        follow.extend(x for x in element.get("twitter_ids", []) if x not in follow)
+        track.extend(x for x in element.get("track", []) if x not in track)
         # todo: location...
 
-    print("{} Twitter users are being followed.".format(len(follow)))
-
+    print(
+        "{} Twitter users are being followed. Tracked words are: {}".format(
+            len(follow), ", ".join(track)
+        )
+    )
     l = StdOutListener(_follow=follow, _track=track, _location=location)
     stream = Stream(auth, l)
 

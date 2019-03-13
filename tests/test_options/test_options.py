@@ -1,11 +1,12 @@
 import unittest
-from bot.utils.processor import worth_posting, keyword_set_present, blackword_set_present
+from bot.utils.processor import worth_posting_follow, keyword_set_present, blackword_set_present
 
 
 class TestOptions(unittest.TestCase):
+    # todo: unittest for track and location
     def test_worth_posting1(self):
         self.assertFalse(
-            worth_posting(
+            worth_posting_follow(
                 tweeter_id="000",
                 twitter_ids=["123", "456"],
                 in_reply_to_twitter_id="789",
@@ -19,7 +20,7 @@ class TestOptions(unittest.TestCase):
 
     def test_worth_posting2(self):
         self.assertFalse(
-            worth_posting(
+            worth_posting_follow(
                 tweeter_id="123",
                 twitter_ids=["123", "456"],
                 in_reply_to_twitter_id="789",
@@ -33,7 +34,7 @@ class TestOptions(unittest.TestCase):
 
     def test_worth_posting3(self):
         self.assertFalse(
-            worth_posting(
+            worth_posting_follow(
                 tweeter_id="789",
                 twitter_ids=["123", "456"],
                 in_reply_to_twitter_id="123",
@@ -47,7 +48,7 @@ class TestOptions(unittest.TestCase):
 
     def test_worth_posting4(self):
         self.assertTrue(
-            worth_posting(
+            worth_posting_follow(
                 tweeter_id="123",
                 twitter_ids=["123", "456"],
                 in_reply_to_twitter_id=None,
@@ -61,7 +62,7 @@ class TestOptions(unittest.TestCase):
 
     def test_worth_posting5(self):
         self.assertFalse(
-            worth_posting(
+            worth_posting_follow(
                 tweeter_id="123",
                 twitter_ids=["123", "456"],
                 in_reply_to_twitter_id=None,
