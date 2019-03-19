@@ -21,7 +21,6 @@ class CustomFormatter:
         conversion = next(format_string, None)
         return self.convert_field(value, conversion)
 
-    # todo: determine if location box requires its own symbol conversion logic.
     def convert_field(self, value, conversion: str):
         if isinstance(value, str):
             if conversion == "s":
@@ -45,7 +44,7 @@ class CustomFormatter:
 
 
 CONFIG_YAML = os.path.abspath(os.path.join(os.path.dirname(__file__), "config.yml"))
-DOTENV_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".env"))
+DOTENV_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), ".env"))
 
 load_dotenv(dotenv_path=DOTENV_PATH)
 config = dict()

@@ -141,6 +141,8 @@ class Processor:
             and self.status_tweet["place"]["bounding_box"].get("coordinates", None) is not None
         ):
             tmp = self.status_tweet["place"]["bounding_box"]["coordinates"]
+        else:
+            tmp = []
 
         for (
             tmp_
