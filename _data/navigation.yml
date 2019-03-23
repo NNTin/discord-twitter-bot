@@ -1,0 +1,49 @@
+# main links
+main:
+  - title: "About"
+    url: /about/
+  - title: "Installation"
+    url: /docs/installation
+  - title: "Configuration"
+    url: /docs/configuration
+  - title: "Discord Server"
+    url: "https://discord.gg/Dkg79tc"
+  - title: "Terms &amp; Privacy Policy"
+    url: /terms/
+
+
+# documentation links
+docs:
+  - title: Installation and Running
+    url: /docs/installation/
+    children:
+      - title: "Ubuntu"
+        url: /docs/inst-ubuntu/
+      - title: "Windows"
+        url: /docs/inst-windows/
+      - title: "MacOS"
+        url: /docs/inst-macos/
+      - title: "Heroku"
+        url: /docs/inst-heroku/
+      - title: "Docker"
+        url: /docs/inst-docker/
+      - title: "Raspbian"
+        url: /docs/inst-raspbian/
+  - title: Configuration
+    url: /docs/configuration/
+    children:
+      - title: "YAML Configuration"
+        url: /docs/conf-config-yaml/
+      - title: "Environment Variable"
+        url: /docs/conf-environment-variable/
+  - title: Extra
+    url: /docs/extra/
+    children:
+      - title: "FAQ"
+        url: /docs/faq
+      - title: "Troubleshooting"
+        url: /docs/troubleshooting
+      - title: "Known Issues"
+        url: /docs/issues
+      - title: "Resources & Credits"
+        url: /docs/resources

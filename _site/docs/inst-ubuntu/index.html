@@ -1,0 +1,618 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.2 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Installing the bot on Ubuntu - Discord Twitter Bot</title>
+<meta name="description" content="Ubuntu Installation and Running">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Discord Twitter Bot">
+<meta property="og:title" content="Installing the bot on Ubuntu">
+<meta property="og:url" content="http://localhost:4000/discord-twitter-bot/docs/inst-ubuntu/">
+
+
+  <meta property="og:description" content="Ubuntu Installation and Running">
+
+
+
+  <meta property="og:image" content="http://localhost:4000/discord-twitter-bot/assets/images/site-logo.png">
+
+
+
+  <meta name="twitter:site" content="@nntin">
+  <meta name="twitter:title" content="Installing the bot on Ubuntu">
+  <meta name="twitter:description" content="Ubuntu Installation and Running">
+  <meta name="twitter:url" content="http://localhost:4000/discord-twitter-bot/docs/inst-ubuntu/">
+
+  
+    <meta name="twitter:card" content="summary">
+    
+      <meta name="twitter:image" content="http://localhost:4000/discord-twitter-bot/assets/images/site-logo.png">
+    
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2019-03-23T14:30:42+01:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/discord-twitter-bot/docs/inst-ubuntu/">
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "http://localhost:4000/discord-twitter-bot",
+      "logo": "http://localhost:4000/discord-twitter-bot/assets/images/site-logo.png"
+    }
+  </script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Tin Nguyen",
+      "url": "http://localhost:4000/discord-twitter-bot",
+      "sameAs": ["https://twitter.com/t1nn3r"]
+    }
+  </script>
+
+
+
+  <meta name="google-site-verification" content="" />
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/discord-twitter-bot/feed.xml" type="application/atom+xml" rel="alternate" title="Discord Twitter Bot Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/discord-twitter-bot/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/discord-twitter-bot/">Discord Twitter Bot</a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/discord-twitter-bot/about/" >About</a>
+            </li><li class="masthead__menu-item">
+              <a href="/discord-twitter-bot/docs/installation" >Installation</a>
+            </li><li class="masthead__menu-item">
+              <a href="/discord-twitter-bot/docs/configuration" >Configuration</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://discord.gg/Dkg79tc" >Discord Server</a>
+            </li><li class="masthead__menu-item">
+              <a href="/discord-twitter-bot/terms/" >Terms &amp; Privacy Policy</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/discord-twitter-bot/docs/installation/"><span class="nav__sub-title">Installation and Running</span></a>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/discord-twitter-bot/docs/inst-ubuntu/" class="active">Ubuntu</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/discord-twitter-bot/docs/inst-windows/" class="">Windows</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/discord-twitter-bot/docs/inst-macos/" class="">MacOS</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/discord-twitter-bot/docs/inst-heroku/" class="">Heroku</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/discord-twitter-bot/docs/inst-docker/" class="">Docker</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/discord-twitter-bot/docs/inst-raspbian/" class="">Raspbian</a></li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          
+          
+
+          <a href="/discord-twitter-bot/docs/configuration/"><span class="nav__sub-title">Configuration</span></a>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/discord-twitter-bot/docs/conf-config-yaml/" class="">YAML Configuration</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/discord-twitter-bot/docs/conf-environment-variable/" class="">Environment Variable</a></li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          
+          
+
+          <a href="/discord-twitter-bot/docs/extra/"><span class="nav__sub-title">Extra</span></a>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/discord-twitter-bot/docs/faq" class="">FAQ</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/discord-twitter-bot/docs/troubleshooting" class="">Troubleshooting</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/discord-twitter-bot/docs/issues" class="">Known Issues</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/discord-twitter-bot/docs/resources" class="">Resources & Credits</a></li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Installing the bot on Ubuntu">
+    <meta itemprop="description" content="Ubuntu Installation and Running">
+    <meta itemprop="datePublished" content="March 23, 2019">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Installing the bot on Ubuntu
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#installing-python36-and-pip">Installing Python3.6 and pip</a>
+    <ul>
+      <li><a href="#ubuntu-1804--ubuntu-1604">Ubuntu 18.04 &amp; Ubuntu 16.04</a></li>
+      <li><a href="#ubuntu-1404">Ubuntu 14.04</a></li>
+    </ul>
+  </li>
+  <li><a href="#installing">Installing</a>
+    <ul>
+      <li><a href="#installing-the-bot-with-virtualenv">Installing the bot with virtualenv</a></li>
+      <li><a href="#installing-the-bot-without-virtualenv">Installing the bot without virtualenv</a></li>
+    </ul>
+  </li>
+  <li><a href="#configuring-the-bot">Configuring the bot</a></li>
+  <li><a href="#starting-the-bot">Starting the bot</a>
+    <ul>
+      <li><a href="#starting-the-bot-with-virtualenv">Starting the bot with virtualenv</a></li>
+      <li><a href="#starting-the-bot-without-virtualenv">Starting the bot without virtualenv</a></li>
+    </ul>
+  </li>
+  <li><a href="#misc">Misc</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <p><img class="doc-img" src="/discord-twitter-bot/assets/images/ubuntu.png" alt="Ubuntu" style="width: 75px; float: right;" /></p>
+
+<p>It’s recommended to install the Discord-Twitter-Bot via the command line.
+If you are running multiple python scripts on your server it is recommended
+to use <a href="#installing-the-bot-with-virtualenv">virtualenv</a>.</p>
+
+<h1 id="installing-python36-and-pip">Installing Python3.6 and pip</h1>
+<h2 id="ubuntu-1804--ubuntu-1604">Ubuntu 18.04 &amp; Ubuntu 16.04</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Install system dependencies</span>
+<span class="nb">sudo </span>apt-get update <span class="nt">-y</span>
+<span class="nb">sudo </span>apt-get install git python3.6 python3.6-pip
+<span class="nb">sudo </span>apt-get upgrade <span class="nt">-y</span>
+
+<span class="c"># Upgrading pip and installing venv</span>
+<span class="nb">sudo </span>python3.6 <span class="nt">-m</span> pip install <span class="nt">--upgrade</span> pip
+</code></pre></div></div>
+
+<h2 id="ubuntu-1404">Ubuntu 14.04</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Install system dependencies</span>
+<span class="nb">sudo </span>apt-get update <span class="nt">-y</span>
+<span class="nb">sudo </span>apt-get install git python3.6
+<span class="nb">sudo </span>apt-get upgrade <span class="nt">-y</span>
+
+<span class="c"># Install pip and installing venv</span>
+curl https://bootstrap.pypa.io/get-pip.py <span class="nt">-o</span> get-pip.py
+<span class="nb">sudo </span>python3.6 get-pip.py
+<span class="nb">sudo </span>python3.6 <span class="nt">-m</span> pip install <span class="nt">--upgrade</span> pip
+</code></pre></div></div>
+
+<h1 id="installing">Installing</h1>
+<h2 id="installing-the-bot-with-virtualenv">Installing the bot with virtualenv</h2>
+
+<p class="notice--success">When running Python scripts it is <a href="#installing-the-bot-with-virtualenv">recommended</a>
+to use virtualenv. Without virtualenv there is a risk of breaking your Python
+scripts when you install other Python scripts that depend on different Python
+packages versions.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Installing virtualenv</span>
+python3.6 <span class="nt">-m</span> pip install virtualenv
+
+<span class="c"># Clone the Discord-Twitter-Bot to your home directory</span>
+git clone https://github.com/nntin/discord-twitter-bot.git ~/discord-twitter-bot <span class="nt">-b</span> master
+<span class="nb">cd</span> ~/discord-twitter-bot
+
+<span class="c"># Creating the virtual environment and activating it</span>
+python3.6 <span class="nt">-m</span> pip venv venv
+<span class="nb">.</span> venv/bin/activate
+
+<span class="c"># Install Python dependencies</span>
+pip install <span class="nt">-r</span> requirements.txt
+
+<span class="c"># Exiting the virtual environment</span>
+deactivate
+</code></pre></div></div>
+
+<h2 id="installing-the-bot-without-virtualenv">Installing the bot without virtualenv</h2>
+
+<p class="notice--warning">This is <strong>NOT recommended</strong>. The installation step without virtualenv is
+easier at the expense of you accidentally breaking the Python script in the
+future, <a href="#installing-the-bot-with-virtualenv">see above</a> for installing with
+virtualenv.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Clone the Discord-Twitter-Bot to your home directory</span>
+git clone https://github.com/nntin/discord-twitter-bot.git ~/discord-twitter-bot <span class="nt">-b</span> master
+<span class="nb">cd</span> ~/discord-twitter-bot
+
+<span class="c"># Install Python dependencies</span>
+pip install <span class="nt">-r</span> requirements.txt
+</code></pre></div></div>
+
+<h1 id="configuring-the-bot">Configuring the bot</h1>
+
+<p class="notice--danger"><strong>Watch out!</strong> Before you can start the bot you need to
+<a href="/discord-twitter-bot/docs/configuration #">configure the bot first</a>. It needs
+to know which tweets it is supposed to post into your text channel.</p>
+
+<h1 id="starting-the-bot">Starting the bot</h1>
+
+<p class="notice--success">If everything was done correctly you can now start the bot.</p>
+
+<h2 id="starting-the-bot-with-virtualenv">Starting the bot with virtualenv</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> ~/discord-twitter-bot
+<span class="nb">.</span> venv/bin/activate
+python3.6 bot/main.py
+deactivate
+</code></pre></div></div>
+
+<h2 id="starting-the-bot-without-virtualenv">Starting the bot without virtualenv</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> ~/discord-twitter-bot
+python3.6 bot/main.py
+</code></pre></div></div>
+
+<h1 id="misc">Misc</h1>
+
+<p>Every system is a tiny bit different. You might already had Python3.6 or you
+have multiple Python versions.</p>
+
+<p>In this guide I wrote everywhere <code class="highlighter-rouge">python3.6</code> to ensure you really have the
+correct version. It is however possible that <code class="highlighter-rouge">python</code> and <code class="highlighter-rouge">python3</code> are using
+the same version as <code class="highlighter-rouge">python3.6</code>. Even if that is the case you should not use
+them interchangeably since it is possible you have the same version installed
+twice.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Check your Python version.</span>
+python <span class="nt">-V</span>
+python3 <span class="nt">-V</span>
+python3.6 <span class="nt">-V</span>
+
+<span class="c"># Check the location of your Python version.</span>
+<span class="c"># This is useful if you want to run your script in systemd</span>
+which python3.6
+</code></pre></div></div>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-03-23T14:30:42+01:00">March 23, 2019</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/discord-twitter-bot/docs/installation/" class="pagination--pager" title="Installation
+">Previous</a>
+    
+    
+      <a href="/discord-twitter-bot/docs/inst-windows/" class="pagination--pager" title="Windows
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <div align="center" style="margin: 1em 0;">
+        <ins class="adsbygoogle"
+             style="display:block; border-bottom: initial;"
+             data-ad-client="ca-pub-7328585512091257"
+             data-ad-slot="3049671934"
+             data-ad-format="auto"></ins>
+        </div>
+        <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><input type="text" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+    <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/t1nn3r" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/nntin" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/discord-twitter-bot/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Tin Nguyen. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/discord-twitter-bot/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+<script src="/discord-twitter-bot/assets/js/lunr/lunr.min.js"></script>
+<script src="/discord-twitter-bot/assets/js/lunr/lunr-store.js"></script>
+<script src="/discord-twitter-bot/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+
+  </body>
+</html>
