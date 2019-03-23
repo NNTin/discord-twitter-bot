@@ -5,33 +5,48 @@ excerpt: "Docker Installation and Running"
 toc: true
 ---
 
-TODO:
-Python installation.
-Pip installation.
-Requirements installation.
-Link configuration methods.
-Running the bot.
+<img class="doc-img" src="{{ site.baseurl }}/assets/images/docker.png" alt="Docker" style="width: 150px; float: right;"/>
+With Docker you don't have to worry about installing dependencies. It's
+already installed in form of an image. You just execute the image and get
+a Docker container.
 
-## Docker Setup
-(**Warning:** This is only recommended for experienced users who have some basic experience with Docker.)
+The requirement of this is you have Docker installed. Since installation steps
+vary a lot from system to system I won't provide a guide at this moment.
 
-```bash
-nano .env
+## Docker images
+[Docker images are available on Docker Hub.](https://cloud.docker.com/repository/docker/nntin/discord-twitter-bot/tags)
+The image is available as a multi-architecture image. This means it works
+on an arm architecture (e.g. Raspberry Pi) as well!
+
+There are 3 maintained tags:  
+* latest: stable release
+* dev: early release, should be stable
+* azure: work in progress, may be broken
+
+If you do not specify a tag you are automatically using latest.
+{: .notice--success}
+
+## Configuring the bot
+[Configure the bot first](/discord-twitter-bot/docs/configuration #). It needs
+to know which tweets it is supposed to post into your text channel.
+
+## Running the bot
+Depending on which configuration method you picked you have 2 options. Running
+the image by supplying an .env file or by mounting your custom
+[config.yml](https://github.com/NNTin/discord-twitter-bot/blob/azure/bot/config.yml)
+
+### .env file
+```
 docker run --env-file ./.env nntin/discord-twitter-bot
 ```
 
-.env file example
+### mounting config.yml
 ```bash
-ACCESS_TOKEN=XXX-XXX
-ACCESS_TOKEN_SECRET=XXX
-CONSUMER_KEY=XXX
-CONSUMER_SECRET=XXX
-TWITTER_ID=123,456,789
-TWITTER_LIST=https://twitter.com/rokxx/lists/dota-2
-TWITTER_HANDLE=discordapp
-WEBHOOK_URL=https://discordapp.com/api/webhooks/123456789/XXXX-XXXX
+docker run -v config.yml:/app/bot/config.yml:ro
 ```
 
-Optional environment variables: `INCLUDE_REPLY_TO_USER`, `INCLUDE_RETWEET`, `INCLUDE_USER_REPLY`, `CUSTOM_MESSAGE`, `KEYWORDS`
-
-One of the 3 environment variables are required: `TWITTER_ID`, `TWITTER_LIST` and `TWITTER_HANDLE`. You can specify all three.
+## Misc
+Out of all the installation methods this is by far my most favorite one.
+However I do know Docker is not for everyone. This is recommended for people
+who are already into Docker and maybe if you are struggling with the other
+installation guides.

@@ -45,7 +45,7 @@
 
 
 
-  <meta property="article:published_time" content="2019-03-23T14:54:44+01:00">
+  <meta property="article:published_time" content="2019-03-23T17:44:34+01:00">
 
 
 
@@ -368,16 +368,68 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
-              
+              <ul class="toc__menu">
+  <li><a href="#install-python">Install Python</a></li>
+  <li><a href="#downloading-the-discord-twitter-bot">Downloading the Discord-Twitter-Bot</a></li>
+  <li><a href="#configuring-the-bot">Configuring the bot</a></li>
+  <li><a href="#installing-dependencies-and-starting-the-bot">Installing dependencies and starting the bot</a></li>
+  <li><a href="#misc">Misc</a></li>
+</ul>
             </nav>
           </aside>
         
-        <p>TODO:
-Python installation.
-Pip installation.
-Requirements installation.
-Link configuration methods.
-Running the bot.</p>
+        <p><img class="doc-img" src="/discord-twitter-bot/assets/images/windows.png" alt="Windows" style="width: 100px; float: right;" /></p>
+
+<p>Discord-Twitter-Bot runs on all versions of Windows.</p>
+
+<h2 id="install-python">Install Python</h2>
+<p>This project requires Python &gt;=3.6.0. If you don’t have Python or you have
+the wrong version download Python <a href="https://www.python.org/downloads/">here</a>.</p>
+
+<p>You can check the version of your python in your command prompt with
+<code class="highlighter-rouge">python -V</code>.</p>
+
+<p>During the setup it is important that you tick <strong>Add Python 3.6 to PATH</strong>.</p>
+
+<p>Go into the command prompt again and check if the Python version is accessible
+there with <code class="highlighter-rouge">python -V</code>.<br />
+Windows is finnicky. Instead of <code class="highlighter-rouge">python</code> your variable may be called <code class="highlighter-rouge">py</code>,
+<code class="highlighter-rouge">py3</code> or <code class="highlighter-rouge">python3</code>.</p>
+
+<p class="notice--warning">In this documentation I will use <code class="highlighter-rouge">py -3.6</code> instead of <code class="highlighter-rouge">python</code>, <code class="highlighter-rouge">python3</code>,
+<code class="highlighter-rouge">py</code> and <code class="highlighter-rouge">py3</code>. This is an acceptable syntax that should always work.</p>
+
+<p class="notice--danger">Do not use <code class="highlighter-rouge">py -3.6</code>, <code class="highlighter-rouge">python</code>, <code class="highlighter-rouge">python3</code>, <code class="highlighter-rouge">py</code> and <code class="highlighter-rouge">py3</code> interchangeably.
+Stick to one else things can break.</p>
+
+<h2 id="downloading-the-discord-twitter-bot">Downloading the Discord-Twitter-Bot</h2>
+<p>You have two options here. Either through <code class="highlighter-rouge">git</code> or by downloading the <code class="highlighter-rouge">zip</code>
+and unpacking it e.g. with WinRAR.</p>
+
+<p>Git method:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/NNTin/discord-twitter-bot.git
+</code></pre></div></div>
+
+<p>Zip method:
+<a href="https://github.com/NNTin/discord-twitter-bot/archive/master.zip">Click to download</a>, then unpack it.</p>
+
+<h2 id="configuring-the-bot">Configuring the bot</h2>
+<p class="notice--danger"><strong>Watch out!</strong> Before you can start the bot you need to
+<a href="/discord-twitter-bot/docs/configuration #">configure the bot first</a>. It needs
+to know which tweets it is supposed to post into your text channel.</p>
+
+<h2 id="installing-dependencies-and-starting-the-bot">Installing dependencies and starting the bot</h2>
+<p>Open the command prompt, navigate to the folder and write</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>py <span class="nt">-36</span> <span class="nt">-m</span> pip install <span class="nt">-r</span> requirements.txt
+py <span class="nt">-36</span> bot/main.py
+</code></pre></div></div>
+
+<h2 id="misc">Misc</h2>
+<p>There is a reason why hardly most programs are run on Linux servers. The setup
+is more complicated and it consumes more computational resources and energy.</p>
+
+<p>If this is too hard for you I recommend reading through the other installation
+methods and doing them instead.</p>
 
         
       </section>
@@ -388,7 +440,7 @@ Running the bot.</p>
 
 
         
-          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-03-23T14:54:44+01:00">March 23, 2019</time></p>
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-03-23T17:44:34+01:00">March 23, 2019</time></p>
         
       </footer>
 

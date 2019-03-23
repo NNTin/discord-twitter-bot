@@ -1,12 +1,9 @@
 ---
 permalink: /about/
-title: "About"
+title: ""
 excerpt: "About myself and the discord-twitter-bot project"
-toc: true
+toc: false
 ---
-
-TODO:
-write about.md
 
 <h1 align="center">discord-twitter-bot</h1>
 <p align="center">Posts Twitter Tweets to Discord through Webhook</p>

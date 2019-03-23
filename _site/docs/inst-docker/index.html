@@ -45,7 +45,7 @@
 
 
 
-  <meta property="article:published_time" content="2019-03-23T14:54:44+01:00">
+  <meta property="article:published_time" content="2019-03-23T17:44:34+01:00">
 
 
 
@@ -369,39 +369,63 @@
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
               <ul class="toc__menu">
-  <li><a href="#docker-setup">Docker Setup</a></li>
+  <li><a href="#docker-images">Docker images</a></li>
+  <li><a href="#configuring-the-bot">Configuring the bot</a></li>
+  <li><a href="#running-the-bot">Running the bot</a>
+    <ul>
+      <li><a href="#env-file">.env file</a></li>
+      <li><a href="#mounting-configyml">mounting config.yml</a></li>
+    </ul>
+  </li>
+  <li><a href="#misc">Misc</a></li>
 </ul>
             </nav>
           </aside>
         
-        <p>TODO:
-Python installation.
-Pip installation.
-Requirements installation.
-Link configuration methods.
-Running the bot.</p>
+        <p><img class="doc-img" src="/discord-twitter-bot/assets/images/docker.png" alt="Docker" style="width: 150px; float: right;" />
+With Docker you don’t have to worry about installing dependencies. It’s
+already installed in form of an image. You just execute the image and get
+a Docker container.</p>
 
-<h2 id="docker-setup">Docker Setup</h2>
-<p>(<strong>Warning:</strong> This is only recommended for experienced users who have some basic experience with Docker.)</p>
+<p>The requirement of this is you have Docker installed. Since installation steps
+vary a lot from system to system I won’t provide a guide at this moment.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nano .env
-docker run <span class="nt">--env-file</span> ./.env nntin/discord-twitter-bot
+<h2 id="docker-images">Docker images</h2>
+<p><a href="https://cloud.docker.com/repository/docker/nntin/discord-twitter-bot/tags">Docker images are available on Docker Hub.</a>
+The image is available as a multi-architecture image. This means it works
+on an arm architecture (e.g. Raspberry Pi) as well!</p>
+
+<p>There are 3 maintained tags:</p>
+<ul>
+  <li>latest: stable release</li>
+  <li>dev: early release, should be stable</li>
+  <li>azure: work in progress, may be broken</li>
+</ul>
+
+<p class="notice--success">If you do not specify a tag you are automatically using latest.</p>
+
+<h2 id="configuring-the-bot">Configuring the bot</h2>
+<p><a href="/discord-twitter-bot/docs/configuration #">Configure the bot first</a>. It needs
+to know which tweets it is supposed to post into your text channel.</p>
+
+<h2 id="running-the-bot">Running the bot</h2>
+<p>Depending on which configuration method you picked you have 2 options. Running
+the image by supplying an .env file or by mounting your custom
+<a href="https://github.com/NNTin/discord-twitter-bot/blob/azure/bot/config.yml">config.yml</a></p>
+
+<h3 id="env-file">.env file</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run --env-file ./.env nntin/discord-twitter-bot
 </code></pre></div></div>
 
-<p>.env file example</p>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">ACCESS_TOKEN</span><span class="o">=</span>XXX-XXX
-<span class="nv">ACCESS_TOKEN_SECRET</span><span class="o">=</span>XXX
-<span class="nv">CONSUMER_KEY</span><span class="o">=</span>XXX
-<span class="nv">CONSUMER_SECRET</span><span class="o">=</span>XXX
-<span class="nv">TWITTER_ID</span><span class="o">=</span>123,456,789
-<span class="nv">TWITTER_LIST</span><span class="o">=</span>https://twitter.com/rokxx/lists/dota-2
-<span class="nv">TWITTER_HANDLE</span><span class="o">=</span>discordapp
-<span class="nv">WEBHOOK_URL</span><span class="o">=</span>https://discordapp.com/api/webhooks/123456789/XXXX-XXXX
+<h3 id="mounting-configyml">mounting config.yml</h3>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-v</span> config.yml:/app/bot/config.yml:ro
 </code></pre></div></div>
 
-<p>Optional environment variables: <code class="highlighter-rouge">INCLUDE_REPLY_TO_USER</code>, <code class="highlighter-rouge">INCLUDE_RETWEET</code>, <code class="highlighter-rouge">INCLUDE_USER_REPLY</code>, <code class="highlighter-rouge">CUSTOM_MESSAGE</code>, <code class="highlighter-rouge">KEYWORDS</code></p>
-
-<p>One of the 3 environment variables are required: <code class="highlighter-rouge">TWITTER_ID</code>, <code class="highlighter-rouge">TWITTER_LIST</code> and <code class="highlighter-rouge">TWITTER_HANDLE</code>. You can specify all three.</p>
+<h2 id="misc">Misc</h2>
+<p>Out of all the installation methods this is by far my most favorite one.
+However I do know Docker is not for everyone. This is recommended for people
+who are already into Docker and maybe if you are struggling with the other
+installation guides.</p>
 
         
       </section>
@@ -412,7 +436,7 @@ docker run <span class="nt">--env-file</span> ./.env nntin/discord-twitter-bot
 
 
         
-          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-03-23T14:54:44+01:00">March 23, 2019</time></p>
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-03-23T17:44:34+01:00">March 23, 2019</time></p>
         
       </footer>
 

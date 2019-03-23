@@ -5,14 +5,14 @@ excerpt: "Ubuntu Installation and Running"
 toc: true
 ---
 
-<img class="doc-img" src="{{ site.baseurl }}/assets/images/ubuntu.png" alt="Ubuntu" style="width: 75px; float: right;"/>
+<img class="doc-img" src="{{ site.baseurl }}/assets/images/ubuntu.png" alt="Ubuntu" style="width: 100px; float: right;"/>
 
 It's recommended to install the Discord-Twitter-Bot via the command line.
 If you are running multiple python scripts on your server it is recommended
 to use [virtualenv](#installing-the-bot-with-virtualenv).
 
-# Installing Python3.6 and pip
-## Ubuntu 18.04 & Ubuntu 16.04
+## Installing Python3.6 and pip
+### Ubuntu 18.04 & Ubuntu 16.04
 
 ```bash
 # Install system dependencies
@@ -24,7 +24,7 @@ sudo apt-get upgrade -y
 sudo python3.6 -m pip install --upgrade pip
 ```
 
-## Ubuntu 14.04
+### Ubuntu 14.04
 
 ```bash
 # Install system dependencies
@@ -39,15 +39,14 @@ sudo python3.6 -m pip install --upgrade pip
 ```
 
 
-# Installing
-## Installing the bot with virtualenv
-
+## Installing
 When running Python scripts it is [recommended](#installing-the-bot-with-virtualenv)
 to use virtualenv. Without virtualenv there is a risk of breaking your Python
 scripts when you install other Python scripts that depend on different Python
 packages versions.
 {: .notice--success}
 
+### Installing the bot with virtualenv
 ```bash
 # Installing virtualenv
 python3.6 -m pip install virtualenv
@@ -68,37 +67,32 @@ deactivate
 ```
 
 
-## Installing the bot without virtualenv
-
-This is **NOT recommended**. The installation step without virtualenv is
-easier at the expense of you accidentally breaking the Python script in the
-future, [see above](#installing-the-bot-with-virtualenv) for installing with
-virtualenv.
-{: .notice--warning}
-
+### Installing the bot without virtualenv
 ```bash
 # Clone the Discord-Twitter-Bot to your home directory
 git clone https://github.com/nntin/discord-twitter-bot.git ~/discord-twitter-bot -b master
 cd ~/discord-twitter-bot
 
 # Install Python dependencies
-pip install -r requirements.txt
+python3.6 -m pip install -r requirements.txt
 ```
 
-# Configuring the bot
+`python3.6 -m` is necessary. Else it is possible you are installing the
+dependencies on another Python version!
+{: .notice--warning}
 
+
+## Configuring the bot
 **Watch out!** Before you can start the bot you need to
 [configure the bot first](/discord-twitter-bot/docs/configuration #). It needs
 to know which tweets it is supposed to post into your text channel.
 {: .notice--danger}
 
-# Starting the bot
-
+## Starting the bot
 If everything was done correctly you can now start the bot.
 {: .notice--success}
 
-## Starting the bot with virtualenv
-
+### Starting the bot with virtualenv
 ```bash
 cd ~/discord-twitter-bot
 . venv/bin/activate
@@ -106,15 +100,13 @@ python3.6 bot/main.py
 deactivate
 ```
 
-## Starting the bot without virtualenv
-
+### Starting the bot without virtualenv
 ```bash
 cd ~/discord-twitter-bot
 python3.6 bot/main.py
 ```
 
-# Misc
-
+## Misc
 Every system is a tiny bit different. You might already had Python3.6 or you
 have multiple Python versions.
 

@@ -45,7 +45,7 @@
 
 
 
-  <meta property="article:published_time" content="2019-03-23T14:54:44+01:00">
+  <meta property="article:published_time" content="2019-03-23T17:44:34+01:00">
 
 
 
@@ -371,42 +371,36 @@
               <ul class="toc__menu">
   <li><a href="#heroku-deployment">Heroku Deployment</a></li>
   <li><a href="#yt-video-to-heroku-deployment">YT Video to Heroku Deployment</a></li>
+  <li><a href="#further-configuration">Further Configuration</a></li>
+  <li><a href="#misc">Misc</a></li>
 </ul>
             </nav>
           </aside>
         
-        <p>TODO:
-Python installation.
-Pip installation.
-Requirements installation.
-Link configuration methods.
-Running the bot.</p>
+        <p><img class="doc-img" src="/discord-twitter-bot/assets/images/heroku.png" alt="Heroku" style="width: 150px; float: right;" />
+This is by far the easiest installation method.</p>
 
 <h2 id="heroku-deployment">Heroku Deployment</h2>
-
-<p><a href="https://heroku.com/deploy"><img src="https://www.herokucdn.com/deploy/button.png" alt="Deploy" /></a></p>
+<p><a href="https://dashboard.heroku.com/new?button-url=https%3A%2F%2Fgithub.com%2FNNTin%2Fdiscord-twitter-bot&amp;template=https%3A%2F%2Fgithub.com%2FNNTin%2Fdiscord-twitter-bot"><img src="https://www.herokucdn.com/deploy/button.png" alt="Deploy" /></a></p>
 
 <p>Remember to <a href="https://i.imgur.com/zOfa0Qm.png">activate</a> the app. <a href="https://i.imgur.com/tWBoTuB.png">View the logs here.</a><br />
 Use this to initially deploy your discord-twitter-bot.</p>
 
-<p>To further configure the bot get Heroku CLI and run launcher.py. (<strong>Warning:</strong> This is not recommended for inexperienced users since a lot of things could go wrong.)</p>
-
-<div class="language-coffeescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">heroku</span> <span class="nx">login</span>
-<span class="nx">heroku</span> <span class="nx">create</span> <span class="o">&lt;</span><span class="nx">your</span> <span class="nx">heroku</span> <span class="nx">app</span> <span class="nx">name</span><span class="o">&gt;</span>
-<span class="nx">cd</span> <span class="o">&lt;</span><span class="nx">your</span> <span class="nx">heroku</span> <span class="nx">app</span> <span class="nx">name</span><span class="o">&gt;</span>
-<span class="nx">git</span> <span class="nx">remote</span> <span class="nx">add</span> <span class="nx">origin</span> <span class="na">https</span><span class="o">://</span><span class="nx">github</span><span class="p">.</span><span class="na">com</span><span class="o">/</span><span class="nx">NNTin</span><span class="o">/</span><span class="nx">discord</span><span class="o">-</span><span class="nx">twitter</span><span class="o">-</span><span class="nx">bot</span>
-<span class="nx">git</span> <span class="nx">pull</span> <span class="nx">origin</span> <span class="nx">master</span>
-<span class="nx">python</span> <span class="nx">bot</span><span class="o">/</span><span class="nx">launcher</span><span class="p">.</span><span class="na">py</span>
-<span class="nx">git</span> <span class="nx">add</span> <span class="p">.</span>
-<span class="nx">git</span> <span class="nx">commit</span> <span class="o">-</span><span class="nx">am</span> <span class="s">"updated configuration"</span>
-<span class="nx">git</span> <span class="nx">push</span> <span class="nx">heroku</span>
-</code></pre></div></div>
-
-<p>This will create a data.json and the bot will ignore any set environment variable.</p>
-
 <h2 id="yt-video-to-heroku-deployment">YT Video to Heroku Deployment</h2>
-
 <iframe width="640" height="360" src="https://www.youtube-nocookie.com/embed/NwPcXBvStSI?controls=0&amp;showinfo=0" frameborder="0" allowfullscreen=""></iframe>
+
+<h2 id="further-configuration">Further Configuration</h2>
+<p>You can go into the settings tab and edit the environment variables there.
+Head over to <a href="/discord-twitter-bot/docs/configuration #">Configuration</a> to
+see how environment variables work.<br />
+After editing the configuration you have to deactivate and activate the app.</p>
+
+<h2 id="misc">Misc</h2>
+<p>The ease of usage has a cost. First you need a verified credit card in order
+to host the bot 24/7. Although this doesn’t cost anything a lot of people
+don’t have access to a credit card.<br />
+Furthermore Heroku Dynos restart every 24 hours so it is possible it might
+be missing some tweets during the startup time.</p>
 
         
       </section>
@@ -417,7 +411,7 @@ Use this to initially deploy your discord-twitter-bot.</p>
 
 
         
-          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-03-23T14:54:44+01:00">March 23, 2019</time></p>
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-03-23T17:44:34+01:00">March 23, 2019</time></p>
         
       </footer>
 
