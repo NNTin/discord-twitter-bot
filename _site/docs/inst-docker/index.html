@@ -45,7 +45,7 @@
 
 
 
-  <meta property="article:published_time" content="2019-03-23T17:44:34+01:00">
+  <meta property="article:published_time" content="2019-03-26T22:31:35+01:00">
 
 
 
@@ -296,14 +296,19 @@
     
       <li>
         
-          
-          
-
-          <a href="/discord-twitter-bot/docs/extra/"><span class="nav__sub-title">Extra</span></a>
+          <span class="nav__sub-title">Extra</span>
         
 
         
         <ul>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/discord-twitter-bot/docs/faq" class="">systemd</a></li>
           
             
             
@@ -351,7 +356,7 @@
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
     <meta itemprop="headline" content="Docker">
     <meta itemprop="description" content="Docker Installation and Running">
-    <meta itemprop="datePublished" content="March 23, 2019">
+    <meta itemprop="datePublished" content="March 26, 2019">
     
 
     <div class="page__inner-wrap">
@@ -391,6 +396,7 @@ a Docker container.</p>
 vary a lot from system to system I won’t provide a guide at this moment.</p>
 
 <h2 id="docker-images">Docker images</h2>
+
 <p><a href="https://cloud.docker.com/repository/docker/nntin/discord-twitter-bot/tags">Docker images are available on Docker Hub.</a>
 The image is available as a multi-architecture image. This means it works
 on an arm architecture (e.g. Raspberry Pi) as well!</p>
@@ -405,23 +411,28 @@ on an arm architecture (e.g. Raspberry Pi) as well!</p>
 <p class="notice--success">If you do not specify a tag you are automatically using latest.</p>
 
 <h2 id="configuring-the-bot">Configuring the bot</h2>
+
 <p><a href="/discord-twitter-bot/docs/configuration #">Configure the bot first</a>. It needs
 to know which tweets it is supposed to post into your text channel.</p>
 
 <h2 id="running-the-bot">Running the bot</h2>
+
 <p>Depending on which configuration method you picked you have 2 options. Running
 the image by supplying an .env file or by mounting your custom
 <a href="https://github.com/NNTin/discord-twitter-bot/blob/azure/bot/config.yml">config.yml</a></p>
 
 <h3 id="env-file">.env file</h3>
+
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run --env-file ./.env nntin/discord-twitter-bot
 </code></pre></div></div>
 
 <h3 id="mounting-configyml">mounting config.yml</h3>
+
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-v</span> config.yml:/app/bot/config.yml:ro
 </code></pre></div></div>
 
 <h2 id="misc">Misc</h2>
+
 <p>Out of all the installation methods this is by far my most favorite one.
 However I do know Docker is not for everyone. This is recommended for people
 who are already into Docker and maybe if you are struggling with the other
@@ -436,7 +447,7 @@ installation guides.</p>
 
 
         
-          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-03-23T17:44:34+01:00">March 23, 2019</time></p>
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-03-26T22:31:35+01:00">March 26, 2019</time></p>
         
       </footer>
 

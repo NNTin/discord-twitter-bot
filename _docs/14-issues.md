@@ -21,3 +21,7 @@ There was one guy who had a Twitter account since 2009 and it took him 3 weeks t
 Meanwhile when he created a new account and applied for it it got accepted right away. Another guy had his app approved after he confirmed his e-mail.
 
 So my advice is to confirm e-mail and if that doesn't work create a (throwaway) Twitter account with confirmed e-mail and try again.
+
+#### How can I keep my bot running after closing the terminal
+
+[I've dedicated a page regarding that here.](/discord-twitter-bot/docs/systemd/)

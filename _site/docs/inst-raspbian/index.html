@@ -45,7 +45,7 @@
 
 
 
-  <meta property="article:published_time" content="2019-03-23T17:44:34+01:00">
+  <meta property="article:published_time" content="2019-03-26T22:31:35+01:00">
 
 
 
@@ -296,14 +296,19 @@
     
       <li>
         
-          
-          
-
-          <a href="/discord-twitter-bot/docs/extra/"><span class="nav__sub-title">Extra</span></a>
+          <span class="nav__sub-title">Extra</span>
         
 
         
         <ul>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/discord-twitter-bot/docs/faq" class="">systemd</a></li>
           
             
             
@@ -351,7 +356,7 @@
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
     <meta itemprop="headline" content="Raspbian">
     <meta itemprop="description" content="Raspbian Installation and Running">
-    <meta itemprop="datePublished" content="March 23, 2019">
+    <meta itemprop="datePublished" content="March 26, 2019">
     
 
     <div class="page__inner-wrap">
@@ -383,6 +388,7 @@ Although I no longer use Raspberry Pi for hosting scripts I first started out
 hosting my scripts on a Raspberry Pi.</p>
 
 <h2 id="installing-python36">Installing Python3.6</h2>
+
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Update system packages</span>
 <span class="nb">sudo </span>apt-get update <span class="nt">-y</span>
 <span class="nb">sudo </span>apt-get upgrade <span class="nt">-y</span>
@@ -394,6 +400,7 @@ hosting my scripts on a Raspberry Pi.</p>
 </code></pre></div></div>
 
 <h2 id="installing-the-bot">Installing the bot</h2>
+
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> ~
 git clone https://github.com/nntin/discord-twitter-bot.git discord-twitter-bot <span class="nt">-b</span> master
 <span class="nb">cd </span>discord-twitter-bot
@@ -402,17 +409,20 @@ git clone https://github.com/nntin/discord-twitter-bot.git discord-twitter-bot <
 </code></pre></div></div>
 
 <h2 id="configuring-the-bot">Configuring the bot</h2>
+
 <p class="notice--danger"><strong>Watch out!</strong> Before you can start the bot you need to
 <a href="/discord-twitter-bot/docs/configuration #">configure the bot first</a>. It needs
 to know which tweets it is supposed to post into your text channel.</p>
 
 <h2 id="starting-the-bot">Starting the bot</h2>
+
 <p>After you have set it all up you can run the script with:</p>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> ~/discord-twitter-bot
 python3.6 bot/main.py
 </code></pre></div></div>
 
 <h2 id="misc">Misc</h2>
+
 <p>If you have a stable internet connection and you are using your RPi e.g.
 for some home automation why not run this script on it?<br />
 It will have barely any effect on the CPU load since it is mostly just
@@ -427,7 +437,7 @@ doing API calls.</p>
 
 
         
-          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-03-23T17:44:34+01:00">March 23, 2019</time></p>
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-03-26T22:31:35+01:00">March 26, 2019</time></p>
         
       </footer>
 

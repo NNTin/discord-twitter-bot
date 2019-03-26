@@ -2,10 +2,10 @@
 title: "Environment Variable"
 permalink: /docs/conf-environment-variable/
 excerpt: "Configuring the discord-twitter-bot through .env"
-toc: true
+toc: false
 ---
 
-TODO:
-Write some text where the file is located.
-Write a quick start .env tutorial. Then go in depth explaining twitter id, twitter list, location, track, filtering, keywords, ... .  
-Finally show a .env as it is used in Discord server.
+This guide is only relevant for Heroku if you want to do **further** configuration.
+As in maintaining multiple different twitter feeds in multiple different text channels.   
+This guide has not been written yet. In the mean time try host the bot on Linux, Windows, MacOS or Docker
+and configure the bot through config.yml.

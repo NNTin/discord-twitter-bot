@@ -37,8 +37,9 @@ docs:
       - title: "Environment Variable"
         url: /docs/conf-environment-variable/
   - title: Extra
-    url: /docs/extra/
     children:
+      - title: "systemd"
+        url: /docs/faq
       - title: "FAQ"
         url: /docs/faq
       - title: "Troubleshooting"

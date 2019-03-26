@@ -10,6 +10,7 @@ Since I do not have a Mac I cannot tell if these install instructions work.
 I am relying on your feedback to keep this page up to date.
 
 ## Installation
+
 ```bash
 # Install Homebrew
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -32,12 +33,14 @@ python3 -m pip install -r requirements.txt
 ```
 
 ## Configuring the bot
+
 **Watch out!** Before you can start the bot you need to
 [configure the bot first](/discord-twitter-bot/docs/configuration #). It needs
 to know which tweets it is supposed to post into your text channel.
 {: .notice--danger}
 
 ## Running the bot
+
 Open the command prompt, navigate to the folder and write
 ```bash
 cd desktop/discord-twitter-bot

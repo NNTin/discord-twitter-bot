@@ -68,6 +68,7 @@ deactivate
 
 
 ### Installing the bot without virtualenv
+
 ```bash
 # Clone the Discord-Twitter-Bot to your home directory
 git clone https://github.com/nntin/discord-twitter-bot.git ~/discord-twitter-bot -b master
@@ -81,18 +82,20 @@ python3.6 -m pip install -r requirements.txt
 dependencies on another Python version!
 {: .notice--warning}
 
-
 ## Configuring the bot
+
 **Watch out!** Before you can start the bot you need to
 [configure the bot first](/discord-twitter-bot/docs/configuration #). It needs
 to know which tweets it is supposed to post into your text channel.
 {: .notice--danger}
 
 ## Starting the bot
+
 If everything was done correctly you can now start the bot.
 {: .notice--success}
 
 ### Starting the bot with virtualenv
+
 ```bash
 cd ~/discord-twitter-bot
 . venv/bin/activate
@@ -101,12 +104,14 @@ deactivate
 ```
 
 ### Starting the bot without virtualenv
+
 ```bash
 cd ~/discord-twitter-bot
 python3.6 bot/main.py
 ```
 
 ## Misc
+
 Every system is a tiny bit different. You might already had Python3.6 or you
 have multiple Python versions.
 

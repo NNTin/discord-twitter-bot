@@ -3,55 +3,55 @@ title: "Installation"
 permalink: /docs/installation/
 excerpt: "Installation Quick Start"
 feature_row:
-- image_path: assets/images/ubuntu.png
-  alt: "Ubuntu"
-  title: "Ubuntu"
-  excerpt: "Classic Linux distribution."
-  url: "/docs/inst-ubuntu/"
-  btn_label: "Read More"
-  btn_class: "btn--primary"
-- image_path: /assets/images/windows.png
-  alt: "Windows"
-  title: "Windows"
-  excerpt: "Everyone has a Windows machine."
-  url: "/docs/inst-windows/"
-  btn_label: "Read More"
-  btn_class: "btn--primary"
-- image_path: /assets/images/macos.png
-  alt: "Mac OS"
-  title: "Mac OS"
-  excerpt: "Set it up on Mac OS."
-  url: "/docs/inst-macos/"
-  btn_label: "Read More"
-  btn_class: "btn--primary"
+  - image_path: assets/images/ubuntu.png
+    alt: "Ubuntu"
+    title: "Ubuntu"
+    excerpt: "Classic Linux distribution."
+    url: "/docs/inst-ubuntu/"
+    btn_label: "Read More"
+    btn_class: "btn--primary"
+  - image_path: /assets/images/windows.png
+    alt: "Windows"
+    title: "Windows"
+    excerpt: "Everyone has a Windows machine."
+    url: "/docs/inst-windows/"
+    btn_label: "Read More"
+    btn_class: "btn--primary"
+  - image_path: /assets/images/macos.png
+    alt: "Mac OS"
+    title: "Mac OS"
+    excerpt: "Set it up on Mac OS."
+    url: "/docs/inst-macos/"
+    btn_label: "Read More"
+    btn_class: "btn--primary"
 feature_row2:
-- image_path: /assets/images/heroku.png
-  alt: "Heroku"
-  title: "Heroku"
-  excerpt: 'This set up is the user-friendliest. No knowledge about command line, git, python is required!'
-  url: "/docs/inst-heroku/"
-  btn_label: "Read More"
-  btn_class: "btn--primary"
+  - image_path: /assets/images/heroku.png
+    alt: "Heroku"
+    title: "Heroku"
+    excerpt: 'This set up is the user-friendliest. No knowledge about command line, git, python is required!'
+    url: "/docs/inst-heroku/"
+    btn_label: "Read More"
+    btn_class: "btn--primary"
 feature_row3:
-- image_path: /assets/images/docker.png
-  alt: "Docker"
-  title: "Docker"
-  excerpt: 'Docker is easy to set up for power users.'
-  url: "/docs/inst-docker/"
-  btn_label: "Read More"
-  btn_class: "btn--primary"
+  - image_path: /assets/images/docker.png
+    alt: "Docker"
+    title: "Docker"
+    excerpt: 'Docker is easy to set up for power users.'
+    url: "/docs/inst-docker/"
+    btn_label: "Read More"
+    btn_class: "btn--primary"
 feature_row4:
-- image_path: /assets/images/raspbian.png
-  alt: "Raspbian"
-  title: "Raspbian"
-  excerpt: 'For the tinkerers out there.'
-  url: "/docs/inst-raspbian/"
-  btn_label: "Read More"
-  btn_class: "btn--primary"
+  - image_path: /assets/images/raspbian.png
+    alt: "Raspbian"
+    title: "Raspbian"
+    excerpt: 'For the tinkerers out there.'
+    url: "/docs/inst-raspbian/"
+    btn_label: "Read More"
+    btn_class: "btn--primary"
 toc: true
 ---
 
-# Intro
+## Intro
 
 This project requires Python >=3.6.0. It is untested against Python >=3.7.0.
 
@@ -63,7 +63,7 @@ and can be installed from [PyPI.org](https://pypi.org/).
 
 <br>
 
-# Install it now
+## Install it now
 
 {% include feature_row %}
 
@@ -73,7 +73,7 @@ and can be installed from [PyPI.org](https://pypi.org/).
 
 {% include feature_row id="feature_row4" type="left" %}
 
-# Recommendation
+## Recommendation
 
 Heroku has the easiest installation. However it requires a verified credit
 card to unlock 1000 free dyno hours per month enabling you hosting the bot

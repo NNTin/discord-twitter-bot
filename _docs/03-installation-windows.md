@@ -10,6 +10,7 @@ toc: true
 Discord-Twitter-Bot runs on all versions of Windows.
 
 ## Install Python
+
 This project requires Python >=3.6.0. If you don't have Python or you have
 the wrong version download Python [here](https://www.python.org/downloads/).  
 
@@ -32,6 +33,7 @@ Stick to one else things can break.
 {: .notice--danger}
 
 ## Downloading the Discord-Twitter-Bot
+
 You have two options here. Either through `git` or by downloading the `zip`
 and unpacking it e.g. with WinRAR.
 
@@ -44,12 +46,14 @@ Zip method:
 [Click to download](https://github.com/NNTin/discord-twitter-bot/archive/master.zip), then unpack it.
 
 ## Configuring the bot
+
 **Watch out!** Before you can start the bot you need to
 [configure the bot first](/discord-twitter-bot/docs/configuration #). It needs
 to know which tweets it is supposed to post into your text channel.
 {: .notice--danger}
 
 ## Installing dependencies and starting the bot
+
 Open the command prompt, navigate to the folder and write
 ```bash
 py -36 -m pip install -r requirements.txt
@@ -57,6 +61,7 @@ py -36 bot/main.py
 ```
 
 ## Misc
+
 There is a reason why hardly most programs are run on Linux servers. The setup
 is more complicated and it consumes more computational resources and energy.
 

@@ -9,19 +9,19 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Extra - Discord Twitter Bot</title>
-<meta name="description" content="Configuring the discord-twitter-bot through .env">
+<!-- begin _includes/seo.html --><title>systemd - Discord Twitter Bot</title>
+<meta name="description" content="Set it up as a service with systemd">
 
 
 
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Discord Twitter Bot">
-<meta property="og:title" content="Extra">
-<meta property="og:url" content="http://localhost:4000/discord-twitter-bot/docs/extra/">
+<meta property="og:title" content="systemd">
+<meta property="og:url" content="http://localhost:4000/discord-twitter-bot/docs/systemd/">
 
 
-  <meta property="og:description" content="Configuring the discord-twitter-bot through .env">
+  <meta property="og:description" content="Set it up as a service with systemd">
 
 
 
@@ -30,9 +30,9 @@
 
 
   <meta name="twitter:site" content="@nntin">
-  <meta name="twitter:title" content="Extra">
-  <meta name="twitter:description" content="Configuring the discord-twitter-bot through .env">
-  <meta name="twitter:url" content="http://localhost:4000/discord-twitter-bot/docs/extra/">
+  <meta name="twitter:title" content="systemd">
+  <meta name="twitter:description" content="Set it up as a service with systemd">
+  <meta name="twitter:url" content="http://localhost:4000/discord-twitter-bot/docs/systemd/">
 
   
     <meta name="twitter:card" content="summary">
@@ -45,7 +45,7 @@
 
 
 
-  <meta property="article:published_time" content="2019-03-23T17:44:34+01:00">
+  <meta property="article:published_time" content="2019-03-26T22:31:35+01:00">
 
 
 
@@ -56,7 +56,7 @@
   
 
 
-<link rel="canonical" href="http://localhost:4000/discord-twitter-bot/docs/extra/">
+<link rel="canonical" href="http://localhost:4000/discord-twitter-bot/docs/systemd/">
 
 
 
@@ -296,14 +296,19 @@
     
       <li>
         
-          
-          
-
-          <a href="/discord-twitter-bot/docs/extra/"><span class="nav__sub-title">Extra</span></a>
+          <span class="nav__sub-title">Extra</span>
         
 
         
         <ul>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/discord-twitter-bot/docs/faq" class="">systemd</a></li>
           
             
             
@@ -349,15 +354,15 @@
 
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Extra">
-    <meta itemprop="description" content="Configuring the discord-twitter-bot through .env">
-    <meta itemprop="datePublished" content="March 23, 2019">
+    <meta itemprop="headline" content="systemd">
+    <meta itemprop="description" content="Set it up as a service with systemd">
+    <meta itemprop="datePublished" content="March 26, 2019">
     
 
     <div class="page__inner-wrap">
       
         <header>
-          <h1 id="page-title" class="page__title" itemprop="headline">Extra
+          <h1 id="page-title" class="page__title" itemprop="headline">systemd
 </h1>
           
         </header>
@@ -365,8 +370,36 @@
 
       <section class="page__content" itemprop="text">
         
-        <p>TODO:
-Maybe remove this page -&gt; unnecessary.</p>
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#intro">Intro</a></li>
+  <li><a href="#main-body">Main Body</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <h2 id="intro">Intro</h2>
+
+<p>Are you wondering how you can keep the bot running after closing the terminal? This page
+addresses that problem.</p>
+
+<p>You may be already familiar with tmux or screen. And although those allow you to keep
+your program running they face 2 major problems:<br />
+After your VPS restarts your script is no longer running. Furthermore if your script runs
+into an error, e.g. it lost internet connection, it will stop functioning.</p>
+
+<p>Systemd solves it. It runs in the background, starts up the service even after a server
+restart and when an error happens you can set it to rerun the script.</p>
+
+<p>This guide is written for Linux users!</p>
+
+<h2 id="main-body">Main Body</h2>
+
+<p>This part hasn’t been written yet. In the mean time please do your own research. Systemd
+is widely used so you will find a lot of resources. Developers make use of it very
+extensively.</p>
 
         
       </section>
@@ -377,7 +410,7 @@ Maybe remove this page -&gt; unnecessary.</p>
 
 
         
-          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-03-23T17:44:34+01:00">March 23, 2019</time></p>
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-03-26T22:31:35+01:00">March 26, 2019</time></p>
         
       </footer>
 

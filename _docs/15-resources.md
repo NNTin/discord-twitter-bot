@@ -4,12 +4,12 @@ permalink: /docs/resources/
 excerpt: "Used Resources and Credits"
 toc: false
 links:
-- label: "Rokxx"
-  icon: "fab fa-fw fa-twitter-square"
-  url: "https://twitter.com/rokxx"
-- label: "JacobWolf"
-  icon: "fab fa-fw fa-twitter-square"
-  url: "https://twitter.com/JacobWolf"
+  - label: "Rokxx"
+    icon: "fab fa-fw fa-twitter-square"
+    url: "https://twitter.com/rokxx/lists"
+  - label: "JacobWolf"
+    icon: "fab fa-fw fa-twitter-square"
+    url: "https://twitter.com/JacobWolf/lists"
 ---
 
 ## Useful links
@@ -26,10 +26,8 @@ I would like to thank especially.
 
 ## Twitter Lists
 {% for link in page.links %}
-{% if link.label and link.url %}
 <a href="{{ link.url }}" rel="nofollow noopener noreferrer"><i class="{{ link.icon | default: 'fas fa-link' }}" aria-hidden="true"></i> {{ link.label }}</a>
-{% endif %}
 {% endfor %}
 
-## Jekyll
+## This website
 <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.

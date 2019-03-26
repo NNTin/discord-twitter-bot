@@ -45,7 +45,7 @@
 
 
 
-  <meta property="article:published_time" content="2019-03-23T17:44:34+01:00">
+  <meta property="article:published_time" content="2019-03-26T22:31:35+01:00">
 
 
 
@@ -296,14 +296,19 @@
     
       <li>
         
-          
-          
-
-          <a href="/discord-twitter-bot/docs/extra/"><span class="nav__sub-title">Extra</span></a>
+          <span class="nav__sub-title">Extra</span>
         
 
         
         <ul>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/discord-twitter-bot/docs/faq" class="">systemd</a></li>
           
             
             
@@ -351,7 +356,7 @@
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
     <meta itemprop="headline" content="Configuration">
     <meta itemprop="description" content="Configuring the discord-twitter-bot">
-    <meta itemprop="datePublished" content="March 23, 2019">
+    <meta itemprop="datePublished" content="March 26, 2019">
     
 
     <div class="page__inner-wrap">
@@ -365,9 +370,263 @@
 
       <section class="page__content" itemprop="text">
         
-        <p>TODO:
-Write small description about the configuration methods.<br />
-Maybe remove this page -&gt; unnecessary.</p>
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#intro">Intro</a></li>
+  <li><a href="#">YAML</a></li>
+  <li><a href="#">Docker</a></li>
+  <li><a href="#recommendation">Recommendation</a></li>
+  <li><a href="#getting-twitter-api-credentials">Getting Twitter API Credentials</a></li>
+  <li><a href="#explanation-of-the-variables">Explanation of the variables</a>
+    <ul>
+      <li><a href="#includereplytouser">IncludeReplyToUser</a></li>
+      <li><a href="#includeuserreply">IncludeUserReply</a></li>
+      <li><a href="#includeretweet">IncludeRetweet</a></li>
+      <li><a href="#custom_message">custom_message</a></li>
+      <li><a href="#keyword_sets">keyword_sets</a></li>
+      <li><a href="#blackword_sets">blackword_sets</a></li>
+      <li><a href="#twitter_ids">twitter_ids</a></li>
+      <li><a href="#twitter_handles">twitter_handles</a></li>
+      <li><a href="#twitter_lists">twitter_lists</a></li>
+      <li><a href="#track">track</a></li>
+      <li><a href="#location">location</a></li>
+      <li><a href="#webhook_urls">webhook_urls</a></li>
+    </ul>
+  </li>
+  <li><a href="#discord-server-example">Discord Server Example</a>
+    <ul>
+      <li><a href="#discordapp">discordapp</a></li>
+      <li><a href="#dota-2-lol-csgo">dota-2, lol, csgo</a></li>
+      <li><a href="#vietnam">vietnam</a></li>
+      <li><a href="#python">python</a></li>
+    </ul>
+  </li>
+</ul>
+            </nav>
+          </aside>
+        
+        <h2 id="intro">Intro</h2>
+
+<p>There are 2 methods to configure the bot: Editing config.yml or using
+environment variables.</p>
+
+<div class="feature__wrapper">
+
+  
+
+    
+
+    <div class="feature__item--left">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/discord-twitter-bot/assets/images/yaml.png" alt="YAML" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">YAML</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>Configure the bot through YAML. This is easy to read but you need to follow the syntax closely!</p>
+
+            </div>
+          
+
+          
+            <p><a href="/discord-twitter-bot/docs/conf-config-yaml/" class="btn btn--primary">Read More</a></p>
+          
+        </div>
+      </div>
+    </div>
+  
+
+</div>
+
+<div class="feature__wrapper">
+
+  
+
+    
+
+    <div class="feature__item--right">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/discord-twitter-bot/assets/images/dotenv.png" alt="Docker" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">Docker</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>Not recommended but in some cases you don’t have any other option.</p>
+
+            </div>
+          
+
+          
+            <p><a href="/discord-twitter-bot/docs/conf-environment-variable/" class="btn btn--primary">Read More</a></p>
+          
+        </div>
+      </div>
+    </div>
+  
+
+</div>
+
+<p>If at any point you run into a problem please check out <a href="/discord-twitter-bot/docs/troubleshooting/">troubleshooting</a> first.<br />
+I’ve poured a lot of time into writing this guide and it feels bad if people ask questions
+that has been already answered in this guide.<br />
+If you’ve read something in this guide and did not understand it please feel free to reach out to me.</p>
+
+<h2 id="recommendation">Recommendation</h2>
+
+<p>The recommended configuration method is by editing
+the config.yml file. However that option is not always available so you could
+use the default config.yml file and fill it with environment variables. E.g.
+when deploying the bot via Heroku.<br />
+In all the other scenarios you can edit config.yml.</p>
+
+<h2 id="getting-twitter-api-credentials">Getting Twitter API Credentials</h2>
+
+<p>TODO.</p>
+
+<h2 id="explanation-of-the-variables">Explanation of the variables</h2>
+
+<p>With the exception of the <code class="highlighter-rouge">webhook_urls</code> none of the other variables are mandatory.<br />
+You could just define a webhook url and a twitter id and it will post just fine. Or a
+webhook url and a location box.</p>
+
+<h3 id="includereplytouser">IncludeReplyToUser</h3>
+
+<p>If you are tracking a twitter user through <code class="highlighter-rouge">twitter_ids</code>, <code class="highlighter-rouge">twitter_lists</code> or <code class="highlighter-rouge">twitter_handles</code>
+this variable determines if tweets <strong>from random twitter user to your followed twitter user</strong>
+should be displayed or not.</p>
+
+<h3 id="includeuserreply">IncludeUserReply</h3>
+
+<p>If you are tracking a twitter user through <code class="highlighter-rouge">twitter_ids</code>, <code class="highlighter-rouge">twitter_lists</code> or <code class="highlighter-rouge">twitter_handles</code>
+this variable determines if tweets <strong>from your followed twitter user to random twitter user</strong>
+should be displayed or not.</p>
+
+<h3 id="includeretweet">IncludeRetweet</h3>
+
+<p>This variable determines whether a retweet should be displayed or not.</p>
+
+<h3 id="custom_message">custom_message</h3>
+
+<p>If you want to supply a custom message you can do it here. This could be used to ping
+certain roles or users.<br />
+Ping yourself on Discord and put the escape letter in front of the mention.<br />
+If you for example send <code class="highlighter-rouge">I'm pinging \@Linley#8686</code> in chat you will see<br />
+<code class="highlighter-rouge">I'm pinging &lt;@77488778255540224&gt;</code>.<br />
+This is the syntax you are going to need to provide in <code class="highlighter-rouge">custom_message</code> if you
+want to ping a user. You can try it with roles as well.</p>
+
+<h3 id="keyword_sets">keyword_sets</h3>
+
+<p>The tweet will be only be posted when certain keywords are present. You can make it
+only post when a combination of keywords are present or if a single out of many keywords are present.</p>
+
+<p>You can imagine it if any <strong>set</strong> of the keyword sets are present it will be posted. A
+set can contain a single keyword but it could also contain multiple keywords.</p>
+
+<h3 id="blackword_sets">blackword_sets</h3>
+
+<p>Same as <code class="highlighter-rouge">keyword_sets</code> but the opposite scenario. Don’t post the tweet when a blackword
+set is present.</p>
+
+<h3 id="twitter_ids">twitter_ids</h3>
+
+<p>This is the recommended way of following certain Twitter users. A twitter handle can
+change so it’s not reliable. Twitter lists may change unbeknownst to you. You can get
+the twitter id from <a href="http://gettwitterid.com/">here</a>.</p>
+
+<p>Furthermore when you define <code class="highlighter-rouge">twitter_handles</code> or <code class="highlighter-rouge">twitter_lists</code> they will be converted
+to <code class="highlighter-rouge">twitter_ids</code> which can take a while. To minimize the script boot time you should
+try configure it through twitter_ids.</p>
+
+<h3 id="twitter_handles">twitter_handles</h3>
+
+<p>A more user friendly way of defining the value. The twitter handle is part of the link
+when you visit a Twitter Profile. When you ping a Twitter user you do <code class="highlighter-rouge">@twitter_handle</code>.
+Don’t confuse it with someone’s Twitter name which can be different from the Twitter
+handle.</p>
+
+<h3 id="twitter_lists">twitter_lists</h3>
+
+<p>If you are maintaining or know someone who is maintaining a Twitter list you could use that.</p>
+
+<p>Here is an example how it could look like:<br />
+https://twitter.com/rokxx/lists/dota-2</p>
+
+<h3 id="track">track</h3>
+
+<p>If you want to get tweets beyond from certain users you can use this. But beware if you
+use a really common word you will get a lot of tweets which will lead to being rate limited
+by Discord.<br />
+You can make it only retrieve hashtags by prefixing it with a hashtag #.</p>
+
+<h3 id="location">location</h3>
+
+<p>If you want to get location based tweets you can define a location box. <a href="http://boundingbox.klokantech.com/">Use this website</a>.<br />
+Beware. Don’t use a location box that is too big. You will be rate limited by Discord.<br />
+Bear in mind that not everyone reveals their geolocation.</p>
+
+<h3 id="webhook_urls">webhook_urls</h3>
+
+<p>This is what enables the bot to post in your text channel. <a href="https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks">Discord has written a nice article about it.</a></p>
+
+<h2 id="discord-server-example">Discord Server Example</h2>
+
+<p>In order for the following links to work you have to be part of my Discord Server. <a href="https://discord.gg/Dkg79tc">Join here</a><br />
+It is explained in the next pages how the config.yml or .env file have to look like to reproduce
+those twitter feeds.</p>
+
+<h3 id="discordapp">discordapp</h3>
+
+<p><a href="https://discordapp.com/channels/295528852518731786/557231331658956831/">#discordapp</a></p>
+
+<p>Set to follow <a href="https://twitter.com/discordapp">@discordapp</a>. <code class="highlighter-rouge">IncludeRetweet</code>, <code class="highlighter-rouge">IncludeUserReply</code>, <code class="highlighter-rouge">IncludeReplyToUser</code> is set
+to <code class="highlighter-rouge">True</code>. This was configured through the variable <code class="highlighter-rouge">twitter_ids</code></p>
+
+<h3 id="dota-2-lol-csgo">dota-2, lol, csgo</h3>
+
+<p><a href="https://discordapp.com/channels/295528852518731786/557231354316718080">#dota-2</a><br />
+<a href="https://discordapp.com/channels/295528852518731786/557231372499025922">#lol</a><br />
+<a href="https://discordapp.com/channels/295528852518731786/557231389540352000">#csgo</a></p>
+
+<p><code class="highlighter-rouge">IncludeRetweet</code>, <code class="highlighter-rouge">IncludeUserReply</code>, <code class="highlighter-rouge">IncludeReplyToUser</code> is set to <code class="highlighter-rouge">False</code>.<br />
+This was configured through <code class="highlighter-rouge">twitter_lists</code>. The twitter list URLs can be found <a href="/discord-twitter-bot/docs/resources/">here</a>.</p>
+
+<h3 id="vietnam">vietnam</h3>
+
+<p><a href="https://discordapp.com/channels/295528852518731786/557231418346962957">#vietnam</a></p>
+
+<p>I’ve defined 4 webhooks for this channel. Each webhook represents a city in Vietnam. Those are
+the cities Saigon, Da Nang, Hue and Hanoi.</p>
+
+<p>For each webhook I provided a location box.</p>
+
+<h3 id="python">python</h3>
+
+<p><a href="https://discordapp.com/channels/295528852518731786/557231451020722186">#python</a></p>
+
+<p>This channel posts any tweet that says <code class="highlighter-rouge">python</code> on Twitter. If I would have written
+<code class="highlighter-rouge">#python</code> it would explicitly only look for the hashtag. I chose not to since the tweets
+that were posted were very infrequent.</p>
 
         
       </section>
@@ -378,7 +637,7 @@ Maybe remove this page -&gt; unnecessary.</p>
 
 
         
-          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-03-23T17:44:34+01:00">March 23, 2019</time></p>
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-03-26T22:31:35+01:00">March 26, 2019</time></p>
         
       </footer>
 
