@@ -74,8 +74,8 @@ algolia:
 
 # SEO Related
 google_site_verification : "5adwWu1Il2BlnJLPyh_fSwTS5Ryo4WOjBN3Re8GMWcI" # Replace this with your ID, or delete
-bing_site_verification   :
-yandex_site_verification :
+bing_site_verification   : "CF2874E36A519C7DA6004102D14D34BF"
+yandex_site_verification : "7383154948f00efd"
 naver_site_verification  :
 
 # Social Sharing

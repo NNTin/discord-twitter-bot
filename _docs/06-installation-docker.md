@@ -47,7 +47,7 @@ docker run --env-file ./.env nntin/discord-twitter-bot
 ### mounting config.yml
 
 ```bash
-docker run -v config.yml:/app/bot/config.yml:ro
+docker run -v config.yml:/app/bot/config.yml:ro nntin/discord-twitter-bot
 ```
 
 ## Misc
