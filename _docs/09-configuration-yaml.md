@@ -17,7 +17,7 @@ You define a string by putting them in "quotation marks" or 'single quotes'.
 You define a list/array element by using dashes - **OR** you define a list/array element
 by putting them in square brackets []. Comma separate multiple.
 
-Be careful how you use those dashes. They are important to make your configuration work.
+Be mindful of the dashes and indentation. They are crucial to make your configuration work.
 {: .notice--danger}
 
 ## Configuration
@@ -51,7 +51,7 @@ Discord:
   - IncludeReplyToUser: true
     IncludeRetweet: true
     IncludeUserReply: true
-    twitter_ids: 3065618342
+    twitter_ids: ['3065618342']
     webhook_urls: ['https://discordapp.com/api/webhooks/123456/XXXXXX']
 ```
 
@@ -129,7 +129,7 @@ Discord:
   - IncludeReplyToUser: true
     IncludeRetweet: true
     IncludeUserReply: true
-    twitter_ids: 3065618342
+    twitter_ids: ['3065618342']
     webhook_urls: ['https://discordapp.com/api/webhooks/123456/XXXXXX']
   - IncludeReplyToUser: false
     IncludeRetweet: false
