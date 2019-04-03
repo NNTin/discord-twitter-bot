@@ -11,93 +11,36 @@
   <a href="https://hub.docker.com/r/nntin/discord-twitter-bot"><img alt="Docker Pulls" src="https://img.shields.io/docker/pulls/nntin/discord-twitter-bot.svg"></a>
 </p>
 
-## Preview
-[![](img/gif.gif)](https://discord.gg/Dkg79tc)
+# About
 
-## Heroku Deployment
+This is a powerful twitter bot for discord. It allows you to follow up to 5000 Twitter users, track 400 words and 25 location boxes posting the content to as many Discord channels as you want. Furthermore you can customize which tweets to show.
 
-[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+[**Read the documentation**](http://nntin.github.io/discord-twitter-bot/about/)
 
-Remember to [activate](https://i.imgur.com/zOfa0Qm.png) the app. [View the logs here.](https://i.imgur.com/tWBoTuB.png)  
-Use this to initially deploy your discord-twitter-bot.
+# Installation
 
-To further configure the bot get Heroku CLI and run launcher.py. (**Warning:** This is not recommended for inexperienced users since a lot of things could go wrong.)
+Installation can be quick and easy through Heroku (one-click deployment, [see video](https://www.youtube.com/watch?v=NwPcXBvStSI)). A multi-architecture Docker image is also provided for the Docker people.
 
-```coffeescript
-heroku login
-heroku create <your heroku app name>
-cd <your heroku app name>
-git remote add origin https://github.com/NNTin/discord-twitter-bot
-git pull origin master
-python bot/launcher.py
-git add .
-git commit -am "updated configuration"
-git push heroku
-```
+Installations have been written for:
 
-This will create a data.json and the bot will ignore any set environment variable.
+* [Ubuntu](http://nntin.github.io/discord-twitter-bot/docs/inst-ubuntu/)
+* [Windows](http://nntin.github.io/discord-twitter-bot/docs/inst-windows/)
+* [Mac OS](http://nntin.github.io/discord-twitter-bot/docs/inst-macos/)
+* [Heroku](http://nntin.github.io/discord-twitter-bot/docs/inst-heroku/)
+* [Docker](http://nntin.github.io/discord-twitter-bot/docs/inst-docker/)
+* [Raspbian](http://nntin.github.io/discord-twitter-bot/docs/inst-raspbian/)
 
-## YT Video to Heroku Deployment
+# Configuration
 
-[![YT Video](https://img.youtube.com/vi/NwPcXBvStSI/0.jpg)](https://www.youtube.com/watch?v=NwPcXBvStSI)
+If you are using Heroku you already have a running bot. However it only supports a single Twitter feed.   
+The [configuration page](http://nntin.github.io/discord-twitter-bot/docs/configuration/) gives you an insight how to configure your bot. 
 
-## Docker Setup
-(**Warning:** This is only recommended for experienced users who have some basic experience with Docker.)
+The configuration is written very extensively explaining what each variable does. There are 2 ways to configure the bot. Either through [config.yml](http://nntin.github.io/discord-twitter-bot/docs/conf-config-yaml/) or through the use of [environment variables](http://nntin.github.io/discord-twitter-bot/docs/conf-environment-variable/).
 
-```bash
-nano .env
-docker run --env-file ./.env nntin/discord-twitter-bot
-```
+# See it in action
 
-.env file example
-```
-ACCESS_TOKEN=XXX-XXX
-ACCESS_TOKEN_SECRET=XXX
-CONSUMER_KEY=XXX
-CONSUMER_SECRET=XXX
-TWITTER_ID=123,456,789
-TWITTER_LIST=https://twitter.com/rokxx/lists/dota-2
-TWITTER_HANDLE=discordapp
-WEBHOOK_URL=https://discordapp.com/api/webhooks/123456789/XXXX-XXXX
-```
-
-Optional environment variables: `INCLUDE_REPLY_TO_USER`, `INCLUDE_RETWEET`, `INCLUDE_USER_REPLY`, `CUSTOM_MESSAGE`, `KEYWORDS`
-
-One of the 3 environment variables are required: `TWITTER_ID`, `TWITTER_LIST` and `TWITTER_HANDLE`. You can specify all three.
-
-## Normal Setup
-(**Warning:** This is only recommended for experienced users who have some basic experience with CLI.)
-
-Get Python >=3.6.0
-
-```
-git clone https://github.com/NNTin/discord-twitter-bot.git
-cd discord-twitter-bot      # ^ download the project and cd into it
-python3 -m venv venv        # optional virtual environment, recommended
-source venv/bin/activate    # only run if you did venv
-python3 bot/launcher.py     # configure the bot, this create a config.json
-python3 bot/main.py         # run the bot
-```
-
-Once you have set everything up you can run main.py directly. (Useful in combination with systemd, Upstart, PM2, etc.)
-
-![](https://i.imgur.com/TdJahu9.png)
-
-Useful links:
-* [Twitter API](https://developer.twitter.com/en/apps)
-* [What's a webhook?](https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks)
-
-##  Why?
-Q: Why Heroku?  
-A: Heroku has a lot of bad reputation for being an inferior hosting service. The heroku dynos restart roughly every 24 hours and data are lost. However Heroku can be incredibly user friendly once it is properly set up. No knowledge about git, ssh and python is required. I personally don't host anything on Heroku but I appreciate Heroku since it is a free hosting solution and it can be very user friendly (but not developer friendly).
-
-Q: Why add automated testing and automated docker image deployment for a relatively simple solo project? Isn't this overkill?  
-A: Continuous integration/deployment is incredible useful in bigger projects. It cuts down development time. I contributed to other FOSS projects that had CI/CD and I was interested how the flow was actually implemented.
-
-Q: Why Travis and Azure Pipelines?  
-I added Travis CI support first. [But then I learned about how they were acquired by another company and there was a massive layoff.](https://twitter.com/carmatrocity/status/1098538649908666368) I then looked for alternatives in case the Travis becomes less user friendly and Azure Pipelines seemed like a good choice. I have migrated from Travis to Azure Pipelines but I will keep both around for educational purposes.
-
-
-## Credits
-Rokxx for providing the [dota 2 twitter list](https://twitter.com/rokxx/lists/dota-2/members).  
-JacobWolf for providing the [twitter lists](https://twitter.com/JacobWolf/lists) for CS:GO, LoL, Overwatch, CoD and SSMB.
+Visit [my server](https://discord.gg/Dkg79tc) to see live twitter feeds. There I am mirroring the tweets of 
+* [@discordapp](https://discordapp.com/channels/295528852518731786/557231331658956831/),
+* [dota 2](https://discordapp.com/channels/295528852518731786/557231354316718080), [lol](https://discordapp.com/channels/295528852518731786/557231372499025922) and [csgo](https://discordapp.com/channels/295528852518731786/557231389540352000) related tweets,
+* tweets made in [Vietnam](https://discordapp.com/channels/295528852518731786/557231418346962957) and 
+* tweets mentioning [Python](https://discordapp.com/channels/295528852518731786/557231451020722186).
