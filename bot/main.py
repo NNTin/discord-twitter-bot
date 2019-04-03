@@ -19,6 +19,10 @@ try:
     from utils.twitter_id_converter import Converter
 except ModuleNotFoundError:
     from bot.utils.twitter_id_converter import Converter
+try:
+    from utils.startup import pprint
+except ModuleNotFoundError:
+    from bot.utils.startup import pprint
 
 
 class StdOutListener(StreamListener):
@@ -86,11 +90,8 @@ if __name__ == "__main__":
         track.extend(x for x in element.get("track", []) if x not in track)
         location.extend(x for x in element.get("location", []))
 
-    print(
-        "{} Twitter users are being followed.\nTracked words are: {}\nLocation box: {}".format(
-            len(follow), ", ".join(track) if track else "-", location
-        )
-    )
+    pprint(config)
+
     l = StdOutListener()
     stream = Stream(auth, l)
 

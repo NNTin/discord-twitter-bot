@@ -79,4 +79,3 @@ auth.set_access_token(config["Twitter"]["access_token"], config["Twitter"]["acce
 
 if __name__ == "__main__":
     print(config)
-    print(config["Discord"][0].get("location"))

@@ -45,6 +45,20 @@ class Converter:
             {k: v for k, v in instance.items() if instance.get("webhook_urls", [] is not [])}
             for instance in self.config["Discord"]
         ]
+
+        # throw out config that have empty twitter_ids, track and location
+        self.config["Discord"] = [
+            {
+                k: v
+                for k, v in instance.items()
+                if instance.get("twitter_ids", [] is not [])
+                and instance.get("track", [] is not [])
+                and instance.get("location", [] is not [])
+            }
+            for instance in self.config["Discord"]
+        ]
+
+        # throw out empty config
         while {} in self.config["Discord"]:
             self.config["Discord"].remove({})
 
