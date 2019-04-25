@@ -169,10 +169,10 @@ Discord:
 
 ```
 Twitter:
-  access_token: XXX-XXX
-  access_token_secret: XXX
-  consumer_key: XXX
-  consumer_secret: XXX
+  access_token: 'XXX-XXX'
+  access_token_secret: 'XXX'
+  consumer_key: 'XXX'
+  consumer_secret: 'XXX'
 
 Discord:
   - IncludeReplyToUser: false
