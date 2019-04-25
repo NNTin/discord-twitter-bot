@@ -42,7 +42,7 @@ class Converter:
 
         # throw out config that don't have a webhook url
         self.config["Discord"] = [
-            {k: v for k, v in instance.items() if instance.get("webhook_urls", [] is not [])}
+            {k: v for k, v in instance.items() if instance.get("webhook_urls", [])}
             for instance in self.config["Discord"]
         ]
 
@@ -51,9 +51,9 @@ class Converter:
             {
                 k: v
                 for k, v in instance.items()
-                if instance.get("twitter_ids", [] is not [])
-                or instance.get("track", [] is not [])
-                or instance.get("location", [] is not [])
+                if instance.get("twitter_ids", [])
+                or instance.get("track", [])
+                or instance.get("location", [])
             }
             for instance in self.config["Discord"]
         ]

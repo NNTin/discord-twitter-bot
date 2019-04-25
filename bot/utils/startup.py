@@ -165,3 +165,13 @@ def pprint(config):
     while i < len(INFOS):
         print(bordered(*INFOS[i : i + 2], ascii_border=ascii_border))
         i += 2
+
+if __name__ == '__main__':
+    import sys
+
+    sys.path.append("..")
+    from config import config, auth
+    from bot.utils.twitter_id_converter import Converter
+
+    c = Converter(config, auth)
+    pprint(c.convert())
