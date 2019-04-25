@@ -47,7 +47,34 @@
               "type": "string"
             }
           },
+          "track": {
+            "type": "array",
+            "minItems": 0,
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "location": {
+            "type": "array",
+            "minItems": 0,
+            "uniqueItems": true,
+            "items": {
+              "type": "number"
+            }
+          },
           "keyword_sets": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "blackword_sets": {
             "type": "array",
             "uniqueItems": true,
             "items": {

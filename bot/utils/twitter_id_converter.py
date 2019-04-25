@@ -40,18 +40,25 @@ class Converter:
                     )
                 )
 
-        # throw out config that don't have a webhook url or twitter id
+        # throw out config that don't have a webhook url
+        self.config["Discord"] = [
+            {k: v for k, v in instance.items() if instance.get("webhook_urls", [])}
+            for instance in self.config["Discord"]
+        ]
+
+        # throw out config that have empty twitter_ids, track and location
         self.config["Discord"] = [
             {
                 k: v
                 for k, v in instance.items()
-                if (
-                    instance.get("twitter_ids", [] is not [])
-                    and instance.get("webhook_urls", [] is not [])
-                )
+                if instance.get("twitter_ids", [])
+                or instance.get("track", [])
+                or instance.get("location", [])
             }
             for instance in self.config["Discord"]
         ]
+
+        # throw out empty config
         while {} in self.config["Discord"]:
             self.config["Discord"].remove({})
 

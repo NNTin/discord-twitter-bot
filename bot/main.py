@@ -19,12 +19,15 @@ try:
     from utils.twitter_id_converter import Converter
 except ModuleNotFoundError:
     from bot.utils.twitter_id_converter import Converter
+try:
+    from utils.startup import pprint
+except ModuleNotFoundError:
+    from bot.utils.startup import pprint
 
 
 class StdOutListener(StreamListener):
     def __init__(self, api=None):
         super().__init__(api)
-
         self.config_discord = config["Discord"]
 
     def _on_status(self, status):
@@ -32,16 +35,22 @@ class StdOutListener(StreamListener):
 
         for data_discord in self.config_discord:
             p = Processor(status_tweet=data, discord_config=data_discord)
-
-            if not p.worth_posting():
-                continue
-
             p.get_text()
+
+            if (
+                not p.worth_posting_follow()
+                and not p.worth_posting_track()
+                and not p.worth_posting_location()
+            ):
+                continue
 
             if not p.keyword_set_present():
                 continue
 
-            for wh_url in data_discord["webhook_urls"]:
+            if p.blackword_set_present():
+                continue
+
+            for wh_url in data_discord.get("webhook_urls", []):
                 p.create_embed()
                 p.attach_media()
 
@@ -73,13 +82,15 @@ if __name__ == "__main__":
     print("Bot started.")
     config = Converter(config, auth).convert()
     print(config)
-    config["twitter_ids"] = []
+    follow = []
+    track = []
+    location = []
     for element in config["Discord"]:
-        config["twitter_ids"].extend(
-            x for x in element["twitter_ids"] if x not in config["twitter_ids"]
-        )
+        follow.extend(x for x in element.get("twitter_ids", []) if x not in follow)
+        track.extend(x for x in element.get("track", []) if x not in track)
+        location.extend(x for x in element.get("location", []))
 
-    print("{} Twitter users are being followed.".format(len(config["twitter_ids"])))
+    pprint(config)
 
     l = StdOutListener()
     stream = Stream(auth, l)
@@ -98,7 +109,7 @@ if __name__ == "__main__":
             sleep(600)
 
         try:
-            stream.filter(follow=config["twitter_ids"])
+            stream.filter(follow=follow, track=track, locations=location)
         except urllib3.exceptions.ProtocolError as error:
             print_error(_error=error)
         except ConnectionResetError as error:

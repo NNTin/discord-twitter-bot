@@ -23,14 +23,20 @@ class CustomFormatter:
 
     def convert_field(self, value, conversion: str):
         if isinstance(value, str):
-            if conversion == "s" or conversion is None:  # string is alrdy a string
+            if conversion == "s":
+                return value.lower()
+            elif conversion is None:
                 return value
-            elif conversion == "b":  # turn string into a bool()
+            elif conversion == "b":
                 return self.to_bool(value)
-            elif conversion == "l":  # turn string into a list()
+            elif conversion == "l":
+                return value.lower().split(",")
+            elif conversion == "ll":
+                return [v.split("+") for v in value.lower().split(",")]
+            elif conversion == "wh":
                 return value.split(",")
-            elif conversion == "ll":  # turn string into a double list()
-                return [v.split("+") for v in value.split(",")]
+            elif conversion == "fl":
+                return [float(v) for v in value.replace(" ", "").split(",")]
             else:
                 raise ValueError("Unknown conversion specifier {0!s}".format(conversion))
         else:
@@ -38,7 +44,7 @@ class CustomFormatter:
 
 
 CONFIG_YAML = os.path.abspath(os.path.join(os.path.dirname(__file__), "config.yml"))
-DOTENV_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".env"))
+DOTENV_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), ".env"))
 
 load_dotenv(dotenv_path=DOTENV_PATH)
 config = dict()
