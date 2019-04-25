@@ -166,7 +166,8 @@ def pprint(config):
         print(bordered(*INFOS[i : i + 2], ascii_border=ascii_border))
         i += 2
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     import sys
 
     sys.path.append("..")
