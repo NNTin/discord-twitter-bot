@@ -16,3 +16,7 @@ class TestConfig(unittest.TestCase):
         os.chdir(os.path.dirname(__file__))
         schema = read_json("config_schema.json")
         self.assertIsNone(validate(config, schema), "JSON Validation passed.")
+
+    def test_location_validation(self):
+        for d in config["Discord"]:
+            self.assertTrue(len(d.get("location", [])) % 4 == 0)

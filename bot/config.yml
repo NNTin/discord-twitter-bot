@@ -1,0 +1,167 @@
+######################################
+#### manual configuration example: ###
+#Twitter:
+#  access_token: XXX-XXX
+#  access_token_secret: XXX
+#  consumer_key: XXX
+#  consumer_secret: XXX
+#
+#Discord:
+#  - IncludeReplyToUser: false
+#    IncludeRetweet: false
+#    IncludeUserReply: true
+#    custom_message: 'A new tweet!'
+#    keyword_sets:
+#    - - 'League'    # tweet will be posted if tweet contains all 3 words {League of Legends}, no particular order.
+#      - 'of'
+#      - 'Legends'
+#    - - 'Dota 2'    # tweet will be posted if tweet contains 'Dota 2' in this specific order
+#    - - 'MOBA'      # tweet will be posted if it contains 'MOBA'
+#    twitter_ids:
+#    - '123'         # define as many as you want with a dash {-} at the beginning
+#    - '456'
+#    twitter_handles:
+#    - 'discordapp'
+#    twitter_lists:
+#    - 'https://twitter.com/rokxx/lists/dota-2'
+#    webhook_urls:
+#    - 'https://discordapp.com/api/webhooks/123456/XXXX-XXXX'
+######################################
+
+# configuration through environment variables
+Twitter:
+  access_token: ${ACCESS_TOKEN}
+  access_token_secret: ${ACCESS_TOKEN_SECRET}
+  consumer_key: ${CONSUMER_KEY}
+  consumer_secret: ${CONSUMER_SECRET}
+
+Discord:
+  - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER!b}
+    IncludeRetweet: ${INCLUDE_RETWEET!b}
+    IncludeUserReply: ${INCLUDE_USER_REPLY!b}
+    custom_message: ${CUSTOM_MESSAGE}
+    keyword_sets: ${KEYWORDS!ll}
+    blackword_sets: ${BLACKWORDS!ll}
+    twitter_ids: ${TWITTER_ID!l}
+    twitter_handles: ${TWITTER_HANDLE!l}
+    twitter_lists: ${TWITTER_LIST!l}
+    track: ${TRACK!l}
+    location: ${LOCATION!fl}
+    webhook_urls: ${WEBHOOK_URL!wh}
+
+  - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_2!b}
+    IncludeRetweet: ${INCLUDE_RETWEET_2!b}
+    IncludeUserReply: ${INCLUDE_USER_REPLY_2!b}
+    custom_message: ${CUSTOM_MESSAGE_2}
+    keyword_sets: ${KEYWORDS_2!ll}
+    blackword_sets: ${BLACKWORDS_2!ll}
+    twitter_ids: ${TWITTER_ID_2!l}
+    twitter_handles: ${TWITTER_HANDLE_2!l}
+    twitter_lists: ${TWITTER_LIST_2!l}
+    track: ${TRACK_2!l}
+    location: ${LOCATION_2!fl}
+    webhook_urls: ${WEBHOOK_URL_2!wh}
+
+  - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_3!b}
+    IncludeRetweet: ${INCLUDE_RETWEET_3!b}
+    IncludeUserReply: ${INCLUDE_USER_REPLY_3!b}
+    custom_message: ${CUSTOM_MESSAGE_3}
+    keyword_sets: ${KEYWORDS_3!ll}
+    blackword_sets: ${BLACKWORDS_3!ll}
+    twitter_ids: ${TWITTER_ID_3!l}
+    twitter_handles: ${TWITTER_HANDLE_3!l}
+    twitter_lists: ${TWITTER_LIST_3!l}
+    track: ${TRACK_3!l}
+    location: ${LOCATION_3!fl}
+    webhook_urls: ${WEBHOOK_URL_3!wh}
+
+  - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_4!b}
+    IncludeRetweet: ${INCLUDE_RETWEET_4!b}
+    IncludeUserReply: ${INCLUDE_USER_REPLY_4!b}
+    custom_message: ${CUSTOM_MESSAGE_4}
+    keyword_sets: ${KEYWORDS_4!ll}
+    blackword_sets: ${BLACKWORDS_4!ll}
+    twitter_ids: ${TWITTER_ID_4!l}
+    twitter_handles: ${TWITTER_HANDLE_4!l}
+    twitter_lists: ${TWITTER_LIST_4!l}
+    track: ${TRACK_4!l}
+    location: ${LOCATION_4!fl}
+    webhook_urls: ${WEBHOOK_URL_4!wh}
+
+  - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_5!b}
+    IncludeRetweet: ${INCLUDE_RETWEET_5!b}
+    IncludeUserReply: ${INCLUDE_USER_REPLY_5!b}
+    custom_message: ${CUSTOM_MESSAGE_5}
+    keyword_sets: ${KEYWORDS_5!ll}
+    blackword_sets: ${BLACKWORDS_5!ll}
+    twitter_ids: ${TWITTER_ID_5!l}
+    twitter_handles: ${TWITTER_HANDLE_5!l}
+    twitter_lists: ${TWITTER_LIST_5!l}
+    track: ${TRACK_5!l}
+    location: ${LOCATION_5!fl}
+    webhook_urls: ${WEBHOOK_URL_5!wh}
+
+  - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_6!b}
+    IncludeRetweet: ${INCLUDE_RETWEET_6!b}
+    IncludeUserReply: ${INCLUDE_USER_REPLY_6!b}
+    custom_message: ${CUSTOM_MESSAGE_6}
+    keyword_sets: ${KEYWORDS_6!ll}
+    blackword_sets: ${BLACKWORDS_6!ll}
+    twitter_ids: ${TWITTER_ID_6!l}
+    twitter_handles: ${TWITTER_HANDLE_6!l}
+    twitter_lists: ${TWITTER_LIST_6!l}
+    track: ${TRACK_6!l}
+    location: ${LOCATION_6!fl}
+    webhook_urls: ${WEBHOOK_URL_6!wh}
+
+  - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_7!b}
+    IncludeRetweet: ${INCLUDE_RETWEET_7!b}
+    IncludeUserReply: ${INCLUDE_USER_REPLY_7!b}
+    custom_message: ${CUSTOM_MESSAGE_7}
+    keyword_sets: ${KEYWORDS_7!ll}
+    blackword_sets: ${BLACKWORDS_7!ll}
+    twitter_ids: ${TWITTER_ID_7!l}
+    twitter_handles: ${TWITTER_HANDLE_7!l}
+    twitter_lists: ${TWITTER_LIST_7!l}
+    track: ${TRACK_7!l}
+    location: ${LOCATION_7!fl}
+    webhook_urls: ${WEBHOOK_URL_7!wh}
+
+  - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_8!b}
+    IncludeRetweet: ${INCLUDE_RETWEET_8!b}
+    IncludeUserReply: ${INCLUDE_USER_REPLY_8!b}
+    custom_message: ${CUSTOM_MESSAGE_8}
+    keyword_sets: ${KEYWORDS_8!ll}
+    blackword_sets: ${BLACKWORDS_8!ll}
+    twitter_ids: ${TWITTER_ID_8!l}
+    twitter_handles: ${TWITTER_HANDLE_8!l}
+    twitter_lists: ${TWITTER_LIST_8!l}
+    track: ${TRACK_8!l}
+    location: ${LOCATION_8!fl}
+    webhook_urls: ${WEBHOOK_URL_8!wh}
+
+  - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_9!b}
+    IncludeRetweet: ${INCLUDE_RETWEET_9!b}
+    IncludeUserReply: ${INCLUDE_USER_REPLY_9!b}
+    custom_message: ${CUSTOM_MESSAGE_9}
+    keyword_sets: ${KEYWORDS_9!ll}
+    blackword_sets: ${BLACKWORDS_9!ll}
+    twitter_ids: ${TWITTER_ID_9!l}
+    twitter_handles: ${TWITTER_HANDLE_9!l}
+    twitter_lists: ${TWITTER_LIST_9!l}
+    track: ${TRACK_9!l}
+    location: ${LOCATION_9!fl}
+    webhook_urls: ${WEBHOOK_URL_9!wh}
+
+  - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_10!b}
+    IncludeRetweet: ${INCLUDE_RETWEET_10!b}
+    IncludeUserReply: ${INCLUDE_USER_REPLY_10!b}
+    custom_message: ${CUSTOM_MESSAGE_10}
+    keyword_sets: ${KEYWORDS_10!ll}
+    blackword_sets: ${BLACKWORDS_10!ll}
+    twitter_ids: ${TWITTER_ID_10!l}
+    twitter_handles: ${TWITTER_HANDLE_10!l}
+    twitter_lists: ${TWITTER_LIST_10!l}
+    track: ${TRACK_10!l}
+    location: ${LOCATION_10!fl}
+    webhook_urls: ${WEBHOOK_URL_10!wh}

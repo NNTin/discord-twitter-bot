@@ -54,7 +54,27 @@ COLORS = [
 WH_REGEX = r"discordapp\.com\/api\/webhooks\/(?P<id>\d+)\/(?P<token>.+)"
 
 
-def worth_posting(
+def worth_posting_location(location, coordinates):
+    location = [location[i : i + 4] for i in range(0, len(location), 4)]
+
+    for box in location:
+        for coordinate in coordinates:
+            if box[0] < coordinate[0] < box[2] and box[1] < coordinate[1] < box[3]:
+                return True
+    return False
+
+
+def worth_posting_track(track, hashtags, text):
+    for t in track:
+        if t.startswith("#"):
+            if t[1:] in map(lambda x: x["text"], hashtags):
+                return True
+        elif t in text:
+            return True
+    return False
+
+
+def worth_posting_follow(
     tweeter_id,
     twitter_ids,
     in_reply_to_twitter_id,
@@ -88,6 +108,17 @@ def keyword_set_present(keyword_sets, text):
     return False
 
 
+def blackword_set_present(blackword_sets, text):
+    if blackword_sets == [[""]]:
+        return False
+    for blackword_set in blackword_sets:
+        blackword_present = [blackword.lower() in text.lower() for blackword in blackword_set]
+        blackword_set_present = all(blackword_present)
+        if blackword_set_present:
+            return True
+    return False
+
+
 class Processor:
     def __init__(self, status_tweet, discord_config):
         self.status_tweet = status_tweet
@@ -95,15 +126,59 @@ class Processor:
         self.text = ""
         self.embed = None
 
-    def worth_posting(self):
-        return worth_posting(
+    def worth_posting_location(self):
+        if (
+            self.status_tweet.get("coordinates", None) is not None
+            and self.status_tweet["coordinates"].get("coordinates", None) is not None
+        ):
+            coordinates = [self.status_tweet["coordinates"]["coordinates"]]
+        else:
+            coordinates = []
+
+        if (
+            self.status_tweet.get("place", None) is not None
+            and self.status_tweet["place"].get("bounding_box", None) is not None
+            and self.status_tweet["place"]["bounding_box"].get("coordinates", None) is not None
+        ):
+            tmp = self.status_tweet["place"]["bounding_box"]["coordinates"]
+        else:
+            tmp = []
+
+        for (
+            tmp_
+        ) in tmp:  # for some reason Twitter API places the coordinates into a triple array.......
+            for c in tmp_:
+                coordinates.append(c)
+
+        return worth_posting_location(
+            location=self.discord_config.get("location", []), coordinates=coordinates
+        )
+
+    def worth_posting_track(self):
+        if "extended_tweet" in self.status_tweet:
+            hashtags = sorted(
+                self.status_tweet["extended_tweet"]["entities"]["hashtags"],
+                key=lambda k: k["text"],
+                reverse=True,
+            )
+        else:
+            hashtags = sorted(
+                self.status_tweet["entities"]["hashtags"], key=lambda k: k["text"], reverse=True
+            )
+
+        return worth_posting_track(
+            track=self.discord_config.get("track", []), hashtags=hashtags, text=self.text
+        )
+
+    def worth_posting_follow(self):
+        return worth_posting_follow(
             tweeter_id=self.status_tweet["user"]["id_str"],
-            twitter_ids=self.discord_config["twitter_ids"],
+            twitter_ids=self.discord_config.get("twitter_ids", []),
             in_reply_to_twitter_id=self.status_tweet["in_reply_to_user_id_str"],
             retweeted=self.status_tweet["retweeted"] or "retweeted_status" in self.status_tweet,
-            include_reply_to_user=self.discord_config["IncludeReplyToUser"],
-            include_user_reply=self.discord_config["IncludeUserReply"],
-            include_retweet=self.discord_config["IncludeRetweet"],
+            include_reply_to_user=self.discord_config.get("IncludeReplyToUser", True),
+            include_user_reply=self.discord_config.get("IncludeUserReply", True),
+            include_retweet=self.discord_config.get("IncludeRetweet", True),
         )
 
     def get_text(self):
@@ -146,10 +221,14 @@ class Processor:
                 "#%s" % hashtag["text"],
                 "[#%s](https://twitter.com/hashtag/%s)" % (hashtag["text"], hashtag["text"]),
             )
-        return unescape(self.text)
+        self.text = unescape(self.text)
+        return self.text
 
     def keyword_set_present(self):
-        return keyword_set_present(self.discord_config["keyword_sets"], self.text)
+        return keyword_set_present(self.discord_config.get("keyword_sets", [[""]]), self.text)
+
+    def blackword_set_present(self):
+        return blackword_set_present(self.discord_config.get("blackword_sets", [[""]]), self.text)
 
     def attach_media(self):
         if (
@@ -216,13 +295,9 @@ class Processor:
                 int(match.group("id")), match.group("token"), adapter=RequestsWebhookAdapter()
             )
             try:
-                if (
-                    "custom_message" in self.discord_config
-                    and self.discord_config["custom_message"] is not None
-                ):
-                    webhook.send(embed=self.embed, content=self.discord_config["custom_message"])
-                else:
-                    webhook.send(embed=self.embed)
+                webhook.send(
+                    embed=self.embed, content=self.discord_config.get("custom_message", None)
+                )
             except discord.errors.NotFound as error:
                 print(
                     f"---------Error---------\n"
