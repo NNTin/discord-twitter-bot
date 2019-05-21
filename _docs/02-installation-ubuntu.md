@@ -85,7 +85,7 @@ dependencies on another Python version!
 ## Configuring the bot
 
 **Watch out!** Before you can start the bot you need to
-[configure the bot first](/discord-twitter-bot/docs/configuration #). It needs
+[configure the bot first](/discord-twitter-bot/docs/configuration). It needs
 to know which tweets it is supposed to post into your text channel.
 {: .notice--danger}
 

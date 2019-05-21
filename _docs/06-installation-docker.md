@@ -29,7 +29,7 @@ If you do not specify a tag you are automatically using latest.
 
 ## Configuring the bot
 
-[Configure the bot first](/discord-twitter-bot/docs/configuration #). It needs
+[Configure the bot first](/discord-twitter-bot/docs/configuration). It needs
 to know which tweets it is supposed to post into your text channel.
 
 ## Running the bot

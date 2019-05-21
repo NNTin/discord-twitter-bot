@@ -22,7 +22,7 @@ Use this to initially deploy your discord-twitter-bot.
 ## Further Configuration
 
 You can go into the settings tab and edit the environment variables there.
-Head over to [Configuration](/discord-twitter-bot/docs/conf-environment-variable/ #) to
+Head over to [Configuration](/discord-twitter-bot/docs/conf-environment-variable/) to
 see how environment variables work.  
 After editing the configuration you have to deactivate and activate the app.
 
