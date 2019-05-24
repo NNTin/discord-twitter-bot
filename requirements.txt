@@ -26,5 +26,5 @@ filelock==3.0.10
 jsonschema==3.0.1
 pluggy==0.9.0
 py==1.8.0
-tox==3.9.0
+tox==3.12.1
 virtualenv==16.4.3
