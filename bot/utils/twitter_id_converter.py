@@ -91,7 +91,7 @@ class Converter:
                 )
             except TweepError as e:
                 print(e)
-        return [user.id for user in full_users]
+        return [user.id_str for user in full_users]
 
 
 if __name__ == "__main__":
