@@ -1,7 +1,8 @@
 aiohttp==3.6.1
 async-timeout==3.0.1
-attrs==19.1.0
 certifi==2019.9.11
+attrs==19.2.0
+certifi==2019.3.9
 chardet==3.0.4
 discord.py==1.2.3
 idna==2.8
