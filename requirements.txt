@@ -7,7 +7,7 @@ discord.py==1.2.3
 idna==2.8
 idna-ssl==1.1.0
 multidict==4.5.2
-oauthlib==3.0.1
+oauthlib==3.1.0
 PySocks==1.6.8
 python-dotenv==0.10.3
 PyYAML==3.13
