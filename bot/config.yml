@@ -36,9 +36,9 @@ Twitter:
   consumer_secret: ${CONSUMER_SECRET}
 
 Discord:
-  - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER!b}
-    IncludeRetweet: ${INCLUDE_RETWEET!b}
-    IncludeUserReply: ${INCLUDE_USER_REPLY!b}
+  - IncludeReplyToUser: false
+    IncludeRetweet: false
+    IncludeUserReply: false
     custom_message: ${CUSTOM_MESSAGE}
     keyword_sets: ${KEYWORDS!ll}
     blackword_sets: ${BLACKWORDS!ll}
@@ -49,9 +49,9 @@ Discord:
     location: ${LOCATION!fl}
     webhook_urls: ${WEBHOOK_URL!wh}
 
-  - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_2!b}
-    IncludeRetweet: ${INCLUDE_RETWEET_2!b}
-    IncludeUserReply: ${INCLUDE_USER_REPLY_2!b}
+  - IncludeReplyToUser: false
+    IncludeRetweet: false
+    IncludeUserReply: false
     custom_message: ${CUSTOM_MESSAGE_2}
     keyword_sets: ${KEYWORDS_2!ll}
     blackword_sets: ${BLACKWORDS_2!ll}
@@ -62,9 +62,9 @@ Discord:
     location: ${LOCATION_2!fl}
     webhook_urls: ${WEBHOOK_URL_2!wh}
 
-  - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_3!b}
-    IncludeRetweet: ${INCLUDE_RETWEET_3!b}
-    IncludeUserReply: ${INCLUDE_USER_REPLY_3!b}
+  - IncludeReplyToUser: false
+    IncludeRetweet: false
+    IncludeUserReply: false
     custom_message: ${CUSTOM_MESSAGE_3}
     keyword_sets: ${KEYWORDS_3!ll}
     blackword_sets: ${BLACKWORDS_3!ll}
@@ -75,9 +75,9 @@ Discord:
     location: ${LOCATION_3!fl}
     webhook_urls: ${WEBHOOK_URL_3!wh}
 
-  - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_4!b}
-    IncludeRetweet: ${INCLUDE_RETWEET_4!b}
-    IncludeUserReply: ${INCLUDE_USER_REPLY_4!b}
+  - IncludeReplyToUser: false
+    IncludeRetweet: false
+    IncludeUserReply: false
     custom_message: ${CUSTOM_MESSAGE_4}
     keyword_sets: ${KEYWORDS_4!ll}
     blackword_sets: ${BLACKWORDS_4!ll}
@@ -88,9 +88,9 @@ Discord:
     location: ${LOCATION_4!fl}
     webhook_urls: ${WEBHOOK_URL_4!wh}
 
-  - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_5!b}
-    IncludeRetweet: ${INCLUDE_RETWEET_5!b}
-    IncludeUserReply: ${INCLUDE_USER_REPLY_5!b}
+  - IncludeReplyToUser: false
+    IncludeRetweet: false
+    IncludeUserReply: false
     custom_message: ${CUSTOM_MESSAGE_5}
     keyword_sets: ${KEYWORDS_5!ll}
     blackword_sets: ${BLACKWORDS_5!ll}
@@ -101,9 +101,9 @@ Discord:
     location: ${LOCATION_5!fl}
     webhook_urls: ${WEBHOOK_URL_5!wh}
 
-  - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_6!b}
-    IncludeRetweet: ${INCLUDE_RETWEET_6!b}
-    IncludeUserReply: ${INCLUDE_USER_REPLY_6!b}
+  - IncludeReplyToUser: false
+    IncludeRetweet: false
+    IncludeUserReply: false
     custom_message: ${CUSTOM_MESSAGE_6}
     keyword_sets: ${KEYWORDS_6!ll}
     blackword_sets: ${BLACKWORDS_6!ll}
@@ -114,9 +114,9 @@ Discord:
     location: ${LOCATION_6!fl}
     webhook_urls: ${WEBHOOK_URL_6!wh}
 
-  - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_7!b}
-    IncludeRetweet: ${INCLUDE_RETWEET_7!b}
-    IncludeUserReply: ${INCLUDE_USER_REPLY_7!b}
+  - IncludeReplyToUser: false
+    IncludeRetweet: false
+    IncludeUserReply: false
     custom_message: ${CUSTOM_MESSAGE_7}
     keyword_sets: ${KEYWORDS_7!ll}
     blackword_sets: ${BLACKWORDS_7!ll}
@@ -127,9 +127,9 @@ Discord:
     location: ${LOCATION_7!fl}
     webhook_urls: ${WEBHOOK_URL_7!wh}
 
-  - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_8!b}
-    IncludeRetweet: ${INCLUDE_RETWEET_8!b}
-    IncludeUserReply: ${INCLUDE_USER_REPLY_8!b}
+  - IncludeReplyToUser: false
+    IncludeRetweet: false
+    IncludeUserReply: false
     custom_message: ${CUSTOM_MESSAGE_8}
     keyword_sets: ${KEYWORDS_8!ll}
     blackword_sets: ${BLACKWORDS_8!ll}
@@ -140,9 +140,9 @@ Discord:
     location: ${LOCATION_8!fl}
     webhook_urls: ${WEBHOOK_URL_8!wh}
 
-  - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_9!b}
-    IncludeRetweet: ${INCLUDE_RETWEET_9!b}
-    IncludeUserReply: ${INCLUDE_USER_REPLY_9!b}
+  - IncludeReplyToUser: false
+    IncludeRetweet: false
+    IncludeUserReply: false
     custom_message: ${CUSTOM_MESSAGE_9}
     keyword_sets: ${KEYWORDS_9!ll}
     blackword_sets: ${BLACKWORDS_9!ll}
@@ -153,9 +153,9 @@ Discord:
     location: ${LOCATION_9!fl}
     webhook_urls: ${WEBHOOK_URL_9!wh}
 
-  - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_10!b}
-    IncludeRetweet: ${INCLUDE_RETWEET_10!b}
-    IncludeUserReply: ${INCLUDE_USER_REPLY_10!b}
+  - IncludeReplyToUser: false
+    IncludeRetweet: false
+    IncludeUserReply: false
     custom_message: ${CUSTOM_MESSAGE_10}
     keyword_sets: ${KEYWORDS_10!ll}
     blackword_sets: ${BLACKWORDS_10!ll}
