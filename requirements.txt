@@ -10,7 +10,7 @@ multidict==4.5.2
 oauthlib==3.0.1
 PySocks==1.6.8
 python-dotenv==0.10.1
-PyYAML==3.13
+PyYAML==5.1
 requests==2.21.0
 requests-oauthlib==1.2.0
 six==1.12.0
