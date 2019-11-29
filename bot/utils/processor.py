@@ -243,7 +243,9 @@ class Processor:
                 "extended_tweet" in self.status_tweet["retweeted_status"]
                 and "media" in self.status_tweet["retweeted_status"]["extended_tweet"]["entities"]
             ):
-                for media in self.status_tweet["retweeted_status"]["extended_tweet"]["entities"]["media"]:
+                for media in self.status_tweet["retweeted_status"]["extended_tweet"]["entities"][
+                    "media"
+                ]:
                     if media["type"] == "photo":
                         self.embed.set_image(url=media["media_url_https"])
                     elif media["type"] == "video":
@@ -304,7 +306,6 @@ class Processor:
                         pass
                     elif media["type"] == "animated_gif":
                         pass
-            
 
     def create_embed(self):
         self.embed = Embed(
