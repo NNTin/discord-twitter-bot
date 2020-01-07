@@ -2,7 +2,7 @@ black==18.9b0
 discord.py==1.2.3
 jsonschema==3.0.2
 python-dotenv==0.10.3
-PyYAML==3.13
+PyYAML==5.3
 tox==3.14.0
 tweepy==3.8.0
 virtualenv==16.7.5
