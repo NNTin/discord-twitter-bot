@@ -1,0 +1,21 @@
+# Ignore everything
+**
+
+# Allow files
+!/Dockerfile
+!/LICENSE
+!/READNE.md
+!/requirements.txt
+!/tox.ini
+!/qemu-*-static
+
+# Allow directories
+!/bot/**
+!/tests/**
+
+# Ignore files inside allowed directories
+**/*~
+**/*.log
+**/.DS_Store
+**/Thumbs.db
+**/config.json

@@ -6,7 +6,7 @@ import requests
 class TestWebhook(unittest.TestCase):
     def test_webhook(self):
         r = [
-            [requests.get(wh_url).status_code for wh_url in discord["webhook_urls"]]
+            [requests.get(wh_url).status_code for wh_url in discord.get("webhook_urls", [])]
             for discord in config["Discord"]
         ]
         for arr in r:

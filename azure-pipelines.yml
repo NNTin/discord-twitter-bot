@@ -1,0 +1,209 @@
+variables:
+  repo: 'nntin/discord-twitter-bot'
+
+jobs:
+
+- job: 'BasicTest'
+  condition: always()
+  strategy:
+    matrix:
+      Python36-Windows-Style:
+        PYTHON_VERSION: '3.6'
+        IMAGE_NAME: 'vs2017-win2016'
+        TOXENV: 'style'
+      Python36-Windows:
+        PYTHON_VERSION: '3.6'
+        IMAGE_NAME: 'vs2017-win2016'
+        TOXENV: 'py36'
+      Python36-Linux:
+        PYTHON_VERSION: '3.6'
+        IMAGE_NAME: 'ubuntu-16.04'
+        TOXENV: 'py36'
+      Python36-MacOSX:
+        PYTHON_VERSION: '3.6'
+        IMAGE_NAME: 'macos-10.13'
+        TOXENV: 'py36'
+
+  pool:
+    vmImage: '$(IMAGE_NAME)'
+
+  steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '$(PYTHON_VERSION)'
+
+  - script: python -m pip install --upgrade pip && pip install setuptools tox
+    displayName: 'Install tox'
+
+  - script: |
+      tox -e $(TOXENV)
+    displayName: 'unittest'
+    env:
+      ACCESS_TOKEN: 'X'
+      ACCESS_TOKEN_SECRET: 'X'
+      CONSUMER_KEY: 'X'
+      CONSUMER_SECRET: 'X'
+      WEBHOOK_URL: 'X'
+      TWITTER_ID: '3065618342'
+
+- job: 'ExtendedTest'
+  condition: |
+    and
+    (
+      in(dependencies.BasicTest.result, 'Succeeded', 'SucceededWithIssues', 'Skipped'),
+      ne(variables['build.reason'], 'PullRequest')
+    )
+  dependsOn: 'BasicTest'
+  variables:
+  - group: dtb-variables
+  strategy:
+    matrix:
+      Python36-Windows:
+        PYTHON_VERSION: '3.6'
+        IMAGE_NAME: 'vs2017-win2016'
+        TOXENV: 'extended'
+      Python36-Linux:
+        PYTHON_VERSION: '3.6'
+        IMAGE_NAME: 'ubuntu-16.04'
+        TOXENV: 'extended'
+      Python36-MacOSX:
+        PYTHON_VERSION: '3.6'
+        IMAGE_NAME: 'macos-10.13'
+        TOXENV: 'extended'
+  pool:
+    vmImage: '$(IMAGE_NAME)'
+
+  steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '$(PYTHON_VERSION)'
+
+  - script: python -m pip install --upgrade pip && pip install setuptools tox
+    displayName: 'Install tox'
+
+  - script: |
+      tox -e $(TOXENV)
+    displayName: 'unittest'
+    env:
+      ACCESS_TOKEN: $(CI_ACCESS_TOKEN)
+      ACCESS_TOKEN_SECRET: $(CI_ACCESS_TOKEN_SECRET)
+      CONSUMER_KEY: $(CI_CONSUMER_KEY)
+      CONSUMER_SECRET: $(CI_CONSUMER_SECRET)
+      WEBHOOK_URL: $(CI_WEBHOOK_URL)
+      TWITTER_ID: '3065618342'
+
+- job: 'DockerBuild'
+  condition: |
+    and
+    (
+      in(dependencies.ExtendedTest.result, 'Succeeded', 'SucceededWithIssues'),
+      ne(variables['build.reason'], 'PullRequest')
+    )
+  dependsOn: 'ExtendedTest'
+  variables:
+  - group: docker-variables
+  pool:
+    vmImage: 'Ubuntu-16.04'
+
+  steps:
+  - script: docker run --rm --privileged multiarch/qemu-user-static:register
+    displayName: 'Registering'
+
+  - script: |
+      docker pull $(repo):arm64v8-dev
+      docker pull $(repo):arm32v6-dev
+      docker pull $(repo):amd64-dev
+    displayName: 'Fetching...'
+
+  - task: ShellScript@2
+    displayName: 'Run build script'
+    inputs:
+      scriptPath: ./azure/build.sh
+
+  # https://github.com/multiarch/qemu-user-static/releases
+  - script: |
+      wget -N https://github.com/multiarch/qemu-user-static/releases/download/v2.9.1-1/qemu-aarch64-static.tar.gz
+      wget -N https://github.com/multiarch/qemu-user-static/releases/download/v2.9.1-1/qemu-arm-static.tar.gz
+      tar -xvf qemu-aarch64-static.tar.gz
+      tar -xvf qemu-arm-static.tar.gz
+      docker build --pull --cache-from $(repo):arm64v8-dev -f Dockerfile.arm64v8 -t $(repo):arm64v8-dev .
+      docker build --pull --cache-from $(repo):arm32v6-dev -f Dockerfile.arm32v6 -t $(repo):arm32v6-dev .
+      docker build --pull --cache-from $(repo):amd64-dev -f Dockerfile.amd64 -t $(repo):amd64-dev .
+    displayName: 'Building Docker image'
+
+  - script: |
+      echo $(DOCKER_PASSWORD) | docker login --username $(DOCKER_USERNAME) --password-stdin
+      docker push $(repo):arm64v8-dev
+      docker push $(repo):arm32v6-dev
+      docker push $(repo):amd64-dev
+    condition: |
+      and
+      (
+        in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues'),
+        or
+        (
+          eq(variables['build.sourceBranch'], 'refs/heads/master'),
+          eq(variables['build.sourceBranch'], 'refs/heads/dev'),
+          eq(variables['build.sourceBranch'], 'refs/heads/azure')
+        )
+      )
+    displayName: 'Publishing Docker image'
+
+- job: 'DockerManifest'
+  condition: |
+    and
+    (
+      in(dependencies.DockerBuild.result, 'Succeeded', 'SucceededWithIssues'),
+      ne(variables['build.reason'], 'PullRequest'),
+      or
+      (
+        eq(variables['build.sourceBranch'], 'refs/heads/dev'),
+        eq(variables['build.sourceBranch'], 'refs/heads/azure'),
+        eq(variables['build.sourceBranch'], 'refs/heads/master')
+      )
+    )
+  dependsOn: 'DockerBuild'
+  variables:
+  - group: docker-variables
+  steps:
+
+  - script: |
+      docker pull $(repo):amd64-dev
+      docker pull $(repo):arm32v6-dev
+      docker pull $(repo):arm64v8-dev
+    displayName: 'Pulling Docker images'
+
+  - script: |
+      mkdir -p ~/.docker
+      echo '{ "experimental": "enabled" }' > ~/.docker/config.json
+    displayName: 'Enabling experimental mode in docker'
+
+  - script: |
+      echo $(DOCKER_PASSWORD) | docker login --username $(DOCKER_USERNAME) --password-stdin
+      docker manifest create $(repo):dev $(repo):amd64-dev $(repo):arm32v6-dev $(repo):arm64v8-dev
+      docker manifest annotate $(repo):dev $(repo):arm32v6-dev --os linux --arch arm
+      docker manifest annotate $(repo):dev $(repo):arm64v8-dev --os linux --arch arm64 --variant armv8
+      docker manifest push $(repo):dev
+    displayName: 'Creating dev manifest and pushing'
+
+  - script: |
+      echo $(DOCKER_PASSWORD) | docker login --username $(DOCKER_USERNAME) --password-stdin
+      docker tag $(repo):amd64-dev $(repo):amd64
+      docker push $(repo):amd64
+      docker tag $(repo):arm32v6-dev $(repo):arm32v6
+      docker push $(repo):arm32v6
+      docker tag $(repo):arm64v8-dev $(repo):arm64v8
+      docker push $(repo):arm64v8
+      docker manifest create $(repo):latest $(repo):amd64 $(repo):arm32v6 $(repo):arm64v8
+      docker manifest annotate $(repo):latest $(repo):arm32v6 --os linux --arch arm
+      docker manifest annotate $(repo):latest $(repo):arm64v8 --os linux --arch arm64 --variant armv8
+      docker manifest push $(repo):latest
+    condition: |
+      and
+      (
+        in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues'),
+        eq(variables['build.sourceBranch'], 'refs/heads/master')
+      )
+    displayName: 'Creating release manifest and pushing'
+    env:
+      DOCKER_CLI_EXPERIMENTAL: 'enabled'
