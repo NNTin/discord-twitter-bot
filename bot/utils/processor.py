@@ -51,7 +51,7 @@ COLORS = [
     0x005C73,
     0x7C29A6,
 ]
-WH_REGEX = r"discordapp\.com\/api\/webhooks\/(?P<id>\d+)\/(?P<token>.+)"
+WH_REGEX = r"discord(app)?\.com\/api\/webhooks\/(?P<id>\d+)\/(?P<token>.+)"
 
 
 def worth_posting_location(location, coordinates):
@@ -182,7 +182,14 @@ class Processor:
         )
 
     def get_text(self):
-        if "extended_tweet" in self.status_tweet:
+        if "retweeted_status" in self.status_tweet:
+            if "extended_tweet" in self.status_tweet["retweeted_status"]:
+                self.text = self.status_tweet["retweeted_status"]["extended_tweet"]["full_text"]
+            elif "full_text" in self.status_tweet["retweeted_status"]:
+                self.text = self.status_tweet["retweeted_status"]["full_text"]
+            else:
+                self.text = self.status_tweet["retweeted_status"]["text"]
+        elif "extended_tweet" in self.status_tweet:
             self.text = self.status_tweet["extended_tweet"]["full_text"]
         elif "full_text" in self.status_tweet:
             self.text = self.status_tweet["full_text"]
@@ -231,38 +238,74 @@ class Processor:
         return blackword_set_present(self.discord_config.get("blackword_sets", [[""]]), self.text)
 
     def attach_media(self):
-        if (
-            "extended_tweet" in self.status_tweet
-            and "media" in self.status_tweet["extended_tweet"]["entities"]
-        ):
-            for media in self.status_tweet["extended_tweet"]["entities"]["media"]:
-                if media["type"] == "photo":
-                    self.embed.set_image(url=media["media_url_https"])
-                elif media["type"] == "video":
-                    pass
-                elif media["type"] == "animated_gif":
-                    pass
+        if "retweeted_status" in self.status_tweet:
+            if (
+                "extended_tweet" in self.status_tweet["retweeted_status"]
+                and "media" in self.status_tweet["retweeted_status"]["extended_tweet"]["entities"]
+            ):
+                for media in self.status_tweet["retweeted_status"]["extended_tweet"]["entities"][
+                    "media"
+                ]:
+                    if media["type"] == "photo":
+                        self.embed.set_image(url=media["media_url_https"])
+                    elif media["type"] == "video":
+                        pass
+                    elif media["type"] == "animated_gif":
+                        pass
 
-        if "media" in self.status_tweet["entities"]:
-            for media in self.status_tweet["entities"]["media"]:
-                if media["type"] == "photo":
-                    self.embed.set_image(url=media["media_url_https"])
-                elif media["type"] == "video":
-                    pass
-                elif media["type"] == "animated_gif":
-                    pass
+            if "media" in self.status_tweet["retweeted_status"]["entities"]:
+                for media in self.status_tweet["retweeted_status"]["entities"]["media"]:
+                    if media["type"] == "photo":
+                        self.embed.set_image(url=media["media_url_https"])
+                    elif media["type"] == "video":
+                        pass
+                    elif media["type"] == "animated_gif":
+                        pass
 
-        if (
-            "extended_entities" in self.status_tweet
-            and "media" in self.status_tweet["extended_entities"]
-        ):
-            for media in self.status_tweet["extended_entities"]["media"]:
-                if media["type"] == "photo":
-                    self.embed.set_image(url=media["media_url_https"])
-                elif media["type"] == "video":
-                    pass
-                elif media["type"] == "animated_gif":
-                    pass
+            if (
+                "extended_entities" in self.status_tweet["retweeted_status"]
+                and "media" in self.status_tweet["retweeted_status"]["extended_entities"]
+            ):
+                for media in self.status_tweet["retweeted_status"]["extended_entities"]["media"]:
+                    if media["type"] == "photo":
+                        self.embed.set_image(url=media["media_url_https"])
+                    elif media["type"] == "video":
+                        pass
+                    elif media["type"] == "animated_gif":
+                        pass
+        else:
+            if (
+                "extended_tweet" in self.status_tweet
+                and "media" in self.status_tweet["extended_tweet"]["entities"]
+            ):
+                for media in self.status_tweet["extended_tweet"]["entities"]["media"]:
+                    if media["type"] == "photo":
+                        self.embed.set_image(url=media["media_url_https"])
+                    elif media["type"] == "video":
+                        pass
+                    elif media["type"] == "animated_gif":
+                        pass
+
+            if "media" in self.status_tweet["entities"]:
+                for media in self.status_tweet["entities"]["media"]:
+                    if media["type"] == "photo":
+                        self.embed.set_image(url=media["media_url_https"])
+                    elif media["type"] == "video":
+                        pass
+                    elif media["type"] == "animated_gif":
+                        pass
+
+            if (
+                "extended_entities" in self.status_tweet
+                and "media" in self.status_tweet["extended_entities"]
+            ):
+                for media in self.status_tweet["extended_entities"]["media"]:
+                    if media["type"] == "photo":
+                        self.embed.set_image(url=media["media_url_https"])
+                    elif media["type"] == "video":
+                        pass
+                    elif media["type"] == "animated_gif":
+                        pass
 
     def create_embed(self):
         self.embed = Embed(
