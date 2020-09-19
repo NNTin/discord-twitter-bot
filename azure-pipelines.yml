@@ -9,19 +9,19 @@ jobs:
     matrix:
       Python36-Windows-Style:
         PYTHON_VERSION: '3.6'
-        IMAGE_NAME: 'vs2017-win2016'
+        IMAGE_NAME: 'windows-latest'
         TOXENV: 'style'
       Python36-Windows:
         PYTHON_VERSION: '3.6'
-        IMAGE_NAME: 'vs2017-win2016'
+        IMAGE_NAME: 'windows-latest'
         TOXENV: 'py36'
       Python36-Linux:
         PYTHON_VERSION: '3.6'
-        IMAGE_NAME: 'ubuntu-16.04'
+        IMAGE_NAME: 'ubuntu-latest'
         TOXENV: 'py36'
       Python36-MacOSX:
         PYTHON_VERSION: '3.6'
-        IMAGE_NAME: 'macos-10.13'
+        IMAGE_NAME: 'macOS-latest'
         TOXENV: 'py36'
 
   pool:
