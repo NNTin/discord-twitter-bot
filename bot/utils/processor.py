@@ -177,7 +177,8 @@ class Processor:
 
         return worth_posting_track(
             track=self.discord_config.get("track", []),
-            hashtags=hashtags, text=self.text,
+            hashtags=hashtags,
+            text=self.text,
             retweeted=self.status_tweet["retweeted"] or "retweeted_status" in self.status_tweet,
             include_retweet=self.discord_config.get("IncludeRetweet", True),
         )
