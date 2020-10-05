@@ -54,22 +54,28 @@ COLORS = [
 WH_REGEX = r"discord(app)?\.com\/api\/webhooks\/(?P<id>\d+)\/(?P<token>.+)"
 
 
-def worth_posting_location(location, coordinates):
+def worth_posting_location(location, coordinates, retweeted, include_retweet):
     location = [location[i : i + 4] for i in range(0, len(location), 4)]
 
     for box in location:
         for coordinate in coordinates:
             if box[0] < coordinate[0] < box[2] and box[1] < coordinate[1] < box[3]:
+                if not include_retweet and retweeted:
+                    return False
                 return True
     return False
 
 
-def worth_posting_track(track, hashtags, text):
+def worth_posting_track(track, hashtags, text, retweeted, include_retweet):
     for t in track:
         if t.startswith("#"):
             if t[1:] in map(lambda x: x["text"], hashtags):
+                if not include_retweet and retweeted:
+                    return False
                 return True
         elif t in text:
+            if not include_retweet and retweeted:
+                return False
             return True
     return False
 
@@ -151,7 +157,10 @@ class Processor:
                 coordinates.append(c)
 
         return worth_posting_location(
-            location=self.discord_config.get("location", []), coordinates=coordinates
+            location=self.discord_config.get("location", []),
+            coordinates=coordinates,
+            retweeted=self.status_tweet["retweeted"] or "retweeted_status" in self.status_tweet,
+            include_retweet=self.discord_config.get("IncludeRetweet", True),
         )
 
     def worth_posting_track(self):
@@ -167,7 +176,11 @@ class Processor:
             )
 
         return worth_posting_track(
-            track=self.discord_config.get("track", []), hashtags=hashtags, text=self.text
+            track=self.discord_config.get("track", []),
+            hashtags=hashtags,
+            text=self.text,
+            retweeted=self.status_tweet["retweeted"] or "retweeted_status" in self.status_tweet,
+            include_retweet=self.discord_config.get("IncludeRetweet", True),
         )
 
     def worth_posting_follow(self):
