@@ -1,5 +1,5 @@
 black==18.9b0
-discord.py==1.5.0
+discord.py==1.5.1
 jsonschema==3.2.0
 python-dotenv==0.14.0
 PyYAML==5.3.1
