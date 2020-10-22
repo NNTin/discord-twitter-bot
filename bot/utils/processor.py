@@ -209,14 +209,14 @@ class Processor:
         else:
             self.text = self.status_tweet["text"]
 
-        for url in self.status_tweet["entities"]["urls"]:
+        for url in self.status_tweet["entities"].get("urls", []):
             if url["expanded_url"] is None:
                 continue
             self.text = self.text.replace(
                 url["url"], "[%s](%s)" % (url["display_url"], url["expanded_url"])
             )
 
-        for userMention in self.status_tweet["entities"]["user_mentions"]:
+        for userMention in self.status_tweet["entities"].get("user_mentions", []):
             self.text = self.text.replace(
                 "@%s" % userMention["screen_name"],
                 "[@%s](https://twitter.com/%s)"
@@ -225,7 +225,7 @@ class Processor:
 
         if "extended_tweet" in self.status_tweet:
             for hashtag in sorted(
-                self.status_tweet["extended_tweet"]["entities"]["hashtags"],
+                self.status_tweet["extended_tweet"]["entities"].get("hashtags", []),
                 key=lambda k: k["text"],
                 reverse=True,
             ):
@@ -235,7 +235,9 @@ class Processor:
                 )
 
         for hashtag in sorted(
-            self.status_tweet["entities"]["hashtags"], key=lambda k: k["text"], reverse=True
+            self.status_tweet["entities"].get("hashtags", []),
+            key=lambda k: k["text"],
+            reverse=True,
         ):
             self.text = self.text.replace(
                 "#%s" % hashtag["text"],
@@ -250,8 +252,47 @@ class Processor:
     def blackword_set_present(self):
         return blackword_set_present(self.discord_config.get("blackword_sets", [[""]]), self.text)
 
+    def attach_field(self):
+        if self.discord_config.get("IncludeQuote", True) and "quoted_status" in self.status_tweet:
+            if self.status_tweet["quoted_status"].get("text"):
+                text = self.status_tweet["quoted_status"]["text"]
+                for url in self.status_tweet["quoted_status"]["entities"].get("urls", []):
+                    if url["expanded_url"] is None:
+                        continue
+                    text = text.replace(
+                        url["url"], "[%s](%s)" % (url["display_url"], url["expanded_url"])
+                    )
+
+                for userMention in self.status_tweet["quoted_status"]["entities"].get(
+                    "user_mentions", []
+                ):
+                    text = text.replace(
+                        "@%s" % userMention["screen_name"],
+                        "[@%s](https://twitter.com/%s)"
+                        % (userMention["screen_name"], userMention["screen_name"]),
+                    )
+
+                for hashtag in sorted(
+                    self.status_tweet["quoted_status"]["entities"].get("hashtags", []),
+                    key=lambda k: k["text"],
+                    reverse=True,
+                ):
+                    text = text.replace(
+                        "#%s" % hashtag["text"],
+                        "[#%s](https://twitter.com/hashtag/%s)"
+                        % (hashtag["text"], hashtag["text"]),
+                    )
+
+                text = unescape(text)
+                self.embed.add_field(
+                    name=self.status_tweet["quoted_status"]["user"]["screen_name"], value=text
+                )
+
     def attach_media(self):
-        if "retweeted_status" in self.status_tweet:
+        if (
+            self.discord_config.get("IncludeAttachment", True)
+            and "retweeted_status" in self.status_tweet
+        ):
             if (
                 "extended_tweet" in self.status_tweet["retweeted_status"]
                 and "media" in self.status_tweet["retweeted_status"]["extended_tweet"]["entities"]
