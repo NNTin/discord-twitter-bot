@@ -142,6 +142,8 @@ def pprint(config):
             ("Include Reply To User", instance.get("IncludeReplyToUser", True)),
             ("Include User Reply", instance.get("IncludeUserReply", True)),
             ("Include Retweet", instance.get("IncludeRetweet", True)),
+            ("Include Quote", instance.get("IncludeQuote", True)),
+            ("Include Attachment", instance.get("IncludeAttachment", True)),
             ("Custom Message", True if instance.get("custom_message", "") is not "" else False),
             ("Keyword Sets", True if instance.get("keyword_sets", "") is not "" else False),
             ("Blackword Sets", True if instance.get("blackword_sets", "") is not "" else False),
