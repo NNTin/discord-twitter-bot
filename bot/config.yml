@@ -39,6 +39,8 @@ Discord:
   - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER!b}
     IncludeRetweet: ${INCLUDE_RETWEET!b}
     IncludeUserReply: ${INCLUDE_USER_REPLY!b}
+    IncludeAttachment: ${INCLUDE_ATTACHMENT!b}
+    IncludeQuote: ${INCLUDE_QUOTE!b}
     custom_message: ${CUSTOM_MESSAGE}
     keyword_sets: ${KEYWORDS!ll}
     blackword_sets: ${BLACKWORDS!ll}
@@ -52,6 +54,8 @@ Discord:
   - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_2!b}
     IncludeRetweet: ${INCLUDE_RETWEET_2!b}
     IncludeUserReply: ${INCLUDE_USER_REPLY_2!b}
+    IncludeAttachment: ${INCLUDE_ATTACHMENT_2!b}
+    IncludeQuote: ${INCLUDE_QUOTE_2!b}
     custom_message: ${CUSTOM_MESSAGE_2}
     keyword_sets: ${KEYWORDS_2!ll}
     blackword_sets: ${BLACKWORDS_2!ll}
@@ -65,6 +69,8 @@ Discord:
   - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_3!b}
     IncludeRetweet: ${INCLUDE_RETWEET_3!b}
     IncludeUserReply: ${INCLUDE_USER_REPLY_3!b}
+    IncludeAttachment: ${INCLUDE_ATTACHMENT_3!b}
+    IncludeQuote: ${INCLUDE_QUOTE_3!b}
     custom_message: ${CUSTOM_MESSAGE_3}
     keyword_sets: ${KEYWORDS_3!ll}
     blackword_sets: ${BLACKWORDS_3!ll}
@@ -78,6 +84,8 @@ Discord:
   - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_4!b}
     IncludeRetweet: ${INCLUDE_RETWEET_4!b}
     IncludeUserReply: ${INCLUDE_USER_REPLY_4!b}
+    IncludeAttachment: ${INCLUDE_ATTACHMENT_4!b}
+    IncludeQuote: ${INCLUDE_QUOTE_4!b}
     custom_message: ${CUSTOM_MESSAGE_4}
     keyword_sets: ${KEYWORDS_4!ll}
     blackword_sets: ${BLACKWORDS_4!ll}
@@ -91,6 +99,8 @@ Discord:
   - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_5!b}
     IncludeRetweet: ${INCLUDE_RETWEET_5!b}
     IncludeUserReply: ${INCLUDE_USER_REPLY_5!b}
+    IncludeAttachment: ${INCLUDE_ATTACHMENT_5!b}
+    IncludeQuote: ${INCLUDE_QUOTE_5!b}
     custom_message: ${CUSTOM_MESSAGE_5}
     keyword_sets: ${KEYWORDS_5!ll}
     blackword_sets: ${BLACKWORDS_5!ll}
@@ -104,6 +114,8 @@ Discord:
   - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_6!b}
     IncludeRetweet: ${INCLUDE_RETWEET_6!b}
     IncludeUserReply: ${INCLUDE_USER_REPLY_6!b}
+    IncludeAttachment: ${INCLUDE_ATTACHMENT_6!b}
+    IncludeQuote: ${INCLUDE_QUOTE_6!b}
     custom_message: ${CUSTOM_MESSAGE_6}
     keyword_sets: ${KEYWORDS_6!ll}
     blackword_sets: ${BLACKWORDS_6!ll}
@@ -117,6 +129,8 @@ Discord:
   - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_7!b}
     IncludeRetweet: ${INCLUDE_RETWEET_7!b}
     IncludeUserReply: ${INCLUDE_USER_REPLY_7!b}
+    IncludeAttachment: ${INCLUDE_ATTACHMENT_7!b}
+    IncludeQuote: ${INCLUDE_QUOTE_7!b}
     custom_message: ${CUSTOM_MESSAGE_7}
     keyword_sets: ${KEYWORDS_7!ll}
     blackword_sets: ${BLACKWORDS_7!ll}
@@ -130,6 +144,8 @@ Discord:
   - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_8!b}
     IncludeRetweet: ${INCLUDE_RETWEET_8!b}
     IncludeUserReply: ${INCLUDE_USER_REPLY_8!b}
+    IncludeAttachment: ${INCLUDE_ATTACHMENT_8!b}
+    IncludeQuote: ${INCLUDE_QUOTE_8!b}
     custom_message: ${CUSTOM_MESSAGE_8}
     keyword_sets: ${KEYWORDS_8!ll}
     blackword_sets: ${BLACKWORDS_8!ll}
@@ -143,6 +159,8 @@ Discord:
   - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_9!b}
     IncludeRetweet: ${INCLUDE_RETWEET_9!b}
     IncludeUserReply: ${INCLUDE_USER_REPLY_9!b}
+    IncludeAttachment: ${INCLUDE_ATTACHMENT_9!b}
+    IncludeQuote: ${INCLUDE_QUOTE_9!b}
     custom_message: ${CUSTOM_MESSAGE_9}
     keyword_sets: ${KEYWORDS_9!ll}
     blackword_sets: ${BLACKWORDS_9!ll}
@@ -156,6 +174,8 @@ Discord:
   - IncludeReplyToUser: ${INCLUDE_REPLY_TO_USER_10!b}
     IncludeRetweet: ${INCLUDE_RETWEET_10!b}
     IncludeUserReply: ${INCLUDE_USER_REPLY_10!b}
+    IncludeAttachment: ${INCLUDE_ATTACHMENT_10!b}
+    IncludeQuote: ${INCLUDE_QUOTE_10!b}
     custom_message: ${CUSTOM_MESSAGE_10}
     keyword_sets: ${KEYWORDS_10!ll}
     blackword_sets: ${BLACKWORDS_10!ll}
