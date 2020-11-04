@@ -35,7 +35,6 @@ class StdOutListener(StreamListener):
 
         for data_discord in self.config_discord:
             p = Processor(status_tweet=data, discord_config=data_discord)
-            p.get_text()
 
             if (
                 not p.worth_posting_follow()

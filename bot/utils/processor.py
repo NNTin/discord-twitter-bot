@@ -130,7 +130,10 @@ class Processor:
         self.status_tweet = status_tweet
         self.discord_config = discord_config
         self.text = ""
+        self.url = ""
+        self.user = ""
         self.embed = None
+        self.initialize()
 
     def worth_posting_location(self):
         if (
@@ -194,7 +197,7 @@ class Processor:
             include_retweet=self.discord_config.get("IncludeRetweet", True),
         )
 
-    def get_text(self):
+    def initialize(self):
         if "retweeted_status" in self.status_tweet:
             if "extended_tweet" in self.status_tweet["retweeted_status"]:
                 self.text = self.status_tweet["retweeted_status"]["extended_tweet"]["full_text"]
@@ -244,7 +247,10 @@ class Processor:
                 "[#%s](https://twitter.com/hashtag/%s)" % (hashtag["text"], hashtag["text"]),
             )
         self.text = unescape(self.text)
-        return self.text
+        self.url = "https://twitter.com/{}/status/{}".format(
+            self.status_tweet["user"]["screen_name"], self.status_tweet["id_str"]
+        )
+        self.user = self.status_tweet["user"]["name"]
 
     def keyword_set_present(self):
         return keyword_set_present(self.discord_config.get("keyword_sets", [[""]]), self.text)
@@ -392,9 +398,19 @@ class Processor:
                 int(match.group("id")), match.group("token"), adapter=RequestsWebhookAdapter()
             )
             try:
-                webhook.send(
-                    embed=self.embed, content=self.discord_config.get("custom_message", None)
-                )
+                if self.discord_config.get("CreateEmbed", True):
+                    webhook.send(
+                        embed=self.embed,
+                        content=self.discord_config.get("custom_message", None).format(
+                            user=self.user, text=self.text, url=self.url
+                        ),
+                    )
+                else:
+                    webhook.send(
+                        content=self.discord_config.get("custom_message", None).format(
+                            user=self.user, text=self.text, url=self.url
+                        )
+                    )
             except discord.errors.NotFound as error:
                 print(
                     f"---------Error---------\n"

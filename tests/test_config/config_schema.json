@@ -94,10 +94,13 @@
           "IncludeUserReply": {
             "type": "boolean"
           },
+          "IncludeAttachment": {
+            "type": "boolean"
+          },
           "IncludeQuote": {
             "type": "boolean"
           },
-          "IncludeAttachment": {
+          "CreateEmbed": {
             "type": "boolean"
           }
         },
