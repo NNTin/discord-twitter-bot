@@ -401,13 +401,13 @@ class Processor:
                 if self.discord_config.get("CreateEmbed", True):
                     webhook.send(
                         embed=self.embed,
-                        content=self.discord_config.get("custom_message", None).format(
+                        content=self.discord_config.get("custom_message", "").format(
                             user=self.user, text=self.text, url=self.url
                         ),
                     )
                 else:
                     webhook.send(
-                        content=self.discord_config.get("custom_message", None).format(
+                        content=self.discord_config.get("custom_message", "").format(
                             user=self.user, text=self.text, url=self.url
                         )
                     )
