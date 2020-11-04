@@ -47,18 +47,30 @@
     },
     "INCLUDE_REPLY_TO_USER": {
       "description": "Include replies **from other** Twitter users tweeting **TO** your tracked twitter user?\nExample: `True`",
-      "required": false
+      "value": "true"
     },
     "INCLUDE_RETWEET": {
-      "description": "Include retweets?\nExample: `False`",
-      "required": false
+      "description": "Include retweets?\nExample: `False`\nWhether the bot should show retweets.",
+      "value": "true"
     },
     "INCLUDE_USER_REPLY": {
       "description": "Include replies **FROM** your tracked twitter user to other twitter users\nExample: `True`",
-      "required": false
+      "value": "true"
+    },
+    "INCLUDE_ATTACHMENT": {
+      "description": "Include attachments?\nExample: `False`\nIf the tweet contains media the bot will try to attach an image.",
+      "value": "true"
+    },
+    "INCLUDE_QUOTE": {
+      "description": "Include quotes?\nExample: `False`\nThis requires INCLUDE_RETWEET True. Shows the original tweet as an additional field in the embed.",
+      "value": "true"
+    },
+    "CREATE_EMBED": {
+      "description": "Recommended set to true, unless you don't want to see the custom embed. Definitely turn it off if you are relying on Discord's autoembed feature.",
+      "value": "true"
     },
     "CUSTOM_MESSAGE": {
-      "description": "OPTIONAL: Custom message. Useful for pinging @everyone, a role or individual discord members.\nExample: `A new tweet arived pinging role <@&123456> and user <@123456>`\nWith 123456 being the role or user id. You can get them by e.g. typing `\\@Linley#8686` the backslash \\ is important!",
+      "description": "OPTIONAL: Custom message. Useful if you want to create your own text, ping @everyone or certain roles or rely on Discord's autoembed. Available placeholders are: `url`, `user`, `text`.\nExample: `Hey @everyone, {user} just tweeted {text}. Click on the tweet here {url}`",
       "required": false
     },
     "KEYWORDS": {

@@ -93,6 +93,15 @@
           },
           "IncludeUserReply": {
             "type": "boolean"
+          },
+          "IncludeAttachment": {
+            "type": "boolean"
+          },
+          "IncludeQuote": {
+            "type": "boolean"
+          },
+          "CreateEmbed": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false,

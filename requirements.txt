@@ -1,8 +1,8 @@
 black==18.9b0
-discord.py==1.2.3
-jsonschema==3.0.2
-python-dotenv==0.10.3
+discord.py==1.5.1
+jsonschema==3.2.0
+python-dotenv==0.15.0
 PyYAML==5.3.1
-tox==3.14.0
-tweepy==3.8.0
-virtualenv==16.7.5
+tox==3.20.1
+tweepy==3.9.0
+virtualenv==20.1.0

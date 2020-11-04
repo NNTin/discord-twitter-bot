@@ -1,4 +1,4 @@
-#!/usr/local/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from tweepy.streaming import StreamListener
 from tweepy import Stream
@@ -35,7 +35,6 @@ class StdOutListener(StreamListener):
 
         for data_discord in self.config_discord:
             p = Processor(status_tweet=data, discord_config=data_discord)
-            p.get_text()
 
             if (
                 not p.worth_posting_follow()
@@ -52,6 +51,7 @@ class StdOutListener(StreamListener):
 
             for wh_url in data_discord.get("webhook_urls", []):
                 p.create_embed()
+                p.attach_field()
                 p.attach_media()
 
                 p.send_message(wh_url)
@@ -71,8 +71,9 @@ class StdOutListener(StreamListener):
                 f"---------Error---------\n"
                 f"unknown error\n"
                 f"You've found an error. Please contact the owner (https://discord.gg/JV5eUB) "
-                f"and send him what follows below:\n"
+                f"and send him what follows below in a pastebin (no picture!):\n"
                 f"{error}\n"
+                f"{self.config_discord}\n"
                 f"{status}"
                 f"-----------------------"
             )
@@ -123,7 +124,7 @@ if __name__ == "__main__":
                 f"---------Error---------\n"
                 f"unknown error\n"
                 f"You've found an error. Please contact the owner (https://discord.gg/JV5eUB) "
-                f"and send him what follows below:\n"
+                f"and send him what follows below in a pastebin (no picture!):\n"
                 f"{error}\n"
                 f"{config}\n"
                 f"Sleeping for 5 minute then continuing.\n"

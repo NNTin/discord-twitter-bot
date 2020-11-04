@@ -130,7 +130,10 @@ class Processor:
         self.status_tweet = status_tweet
         self.discord_config = discord_config
         self.text = ""
+        self.url = ""
+        self.user = ""
         self.embed = None
+        self.initialize()
 
     def worth_posting_location(self):
         if (
@@ -194,7 +197,7 @@ class Processor:
             include_retweet=self.discord_config.get("IncludeRetweet", True),
         )
 
-    def get_text(self):
+    def initialize(self):
         if "retweeted_status" in self.status_tweet:
             if "extended_tweet" in self.status_tweet["retweeted_status"]:
                 self.text = self.status_tweet["retweeted_status"]["extended_tweet"]["full_text"]
@@ -209,14 +212,14 @@ class Processor:
         else:
             self.text = self.status_tweet["text"]
 
-        for url in self.status_tweet["entities"]["urls"]:
+        for url in self.status_tweet["entities"].get("urls", []):
             if url["expanded_url"] is None:
                 continue
             self.text = self.text.replace(
                 url["url"], "[%s](%s)" % (url["display_url"], url["expanded_url"])
             )
 
-        for userMention in self.status_tweet["entities"]["user_mentions"]:
+        for userMention in self.status_tweet["entities"].get("user_mentions", []):
             self.text = self.text.replace(
                 "@%s" % userMention["screen_name"],
                 "[@%s](https://twitter.com/%s)"
@@ -225,7 +228,7 @@ class Processor:
 
         if "extended_tweet" in self.status_tweet:
             for hashtag in sorted(
-                self.status_tweet["extended_tweet"]["entities"]["hashtags"],
+                self.status_tweet["extended_tweet"]["entities"].get("hashtags", []),
                 key=lambda k: k["text"],
                 reverse=True,
             ):
@@ -235,14 +238,19 @@ class Processor:
                 )
 
         for hashtag in sorted(
-            self.status_tweet["entities"]["hashtags"], key=lambda k: k["text"], reverse=True
+            self.status_tweet["entities"].get("hashtags", []),
+            key=lambda k: k["text"],
+            reverse=True,
         ):
             self.text = self.text.replace(
                 "#%s" % hashtag["text"],
                 "[#%s](https://twitter.com/hashtag/%s)" % (hashtag["text"], hashtag["text"]),
             )
         self.text = unescape(self.text)
-        return self.text
+        self.url = "https://twitter.com/{}/status/{}".format(
+            self.status_tweet["user"]["screen_name"], self.status_tweet["id_str"]
+        )
+        self.user = self.status_tweet["user"]["name"]
 
     def keyword_set_present(self):
         return keyword_set_present(self.discord_config.get("keyword_sets", [[""]]), self.text)
@@ -250,8 +258,47 @@ class Processor:
     def blackword_set_present(self):
         return blackword_set_present(self.discord_config.get("blackword_sets", [[""]]), self.text)
 
+    def attach_field(self):
+        if self.discord_config.get("IncludeQuote", True) and "quoted_status" in self.status_tweet:
+            if self.status_tweet["quoted_status"].get("text"):
+                text = self.status_tweet["quoted_status"]["text"]
+                for url in self.status_tweet["quoted_status"]["entities"].get("urls", []):
+                    if url["expanded_url"] is None:
+                        continue
+                    text = text.replace(
+                        url["url"], "[%s](%s)" % (url["display_url"], url["expanded_url"])
+                    )
+
+                for userMention in self.status_tweet["quoted_status"]["entities"].get(
+                    "user_mentions", []
+                ):
+                    text = text.replace(
+                        "@%s" % userMention["screen_name"],
+                        "[@%s](https://twitter.com/%s)"
+                        % (userMention["screen_name"], userMention["screen_name"]),
+                    )
+
+                for hashtag in sorted(
+                    self.status_tweet["quoted_status"]["entities"].get("hashtags", []),
+                    key=lambda k: k["text"],
+                    reverse=True,
+                ):
+                    text = text.replace(
+                        "#%s" % hashtag["text"],
+                        "[#%s](https://twitter.com/hashtag/%s)"
+                        % (hashtag["text"], hashtag["text"]),
+                    )
+
+                text = unescape(text)
+                self.embed.add_field(
+                    name=self.status_tweet["quoted_status"]["user"]["screen_name"], value=text
+                )
+
     def attach_media(self):
-        if "retweeted_status" in self.status_tweet:
+        if (
+            self.discord_config.get("IncludeAttachment", True)
+            and "retweeted_status" in self.status_tweet
+        ):
             if (
                 "extended_tweet" in self.status_tweet["retweeted_status"]
                 and "media" in self.status_tweet["retweeted_status"]["extended_tweet"]["entities"]
@@ -351,9 +398,19 @@ class Processor:
                 int(match.group("id")), match.group("token"), adapter=RequestsWebhookAdapter()
             )
             try:
-                webhook.send(
-                    embed=self.embed, content=self.discord_config.get("custom_message", None)
-                )
+                if self.discord_config.get("CreateEmbed", True):
+                    webhook.send(
+                        embed=self.embed,
+                        content=self.discord_config.get("custom_message", "").format(
+                            user=self.user, text=self.text, url=self.url
+                        ),
+                    )
+                else:
+                    webhook.send(
+                        content=self.discord_config.get("custom_message", "").format(
+                            user=self.user, text=self.text, url=self.url
+                        )
+                    )
             except discord.errors.NotFound as error:
                 print(
                     f"---------Error---------\n"
