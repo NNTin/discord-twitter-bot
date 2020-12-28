@@ -104,10 +104,10 @@ if __name__ == "__main__":
                 f"---------Error---------\n"
                 f"Known error. Ignore. Nothing you can do.\n"
                 f"{_error}\n"
-                f"Sleeping for 1 minute then continuing.\n"
+                f"Sleeping for 2 minutes then continuing.\n"
                 f"-----------------------"
             )
-            sleep(600)
+            sleep(120)
 
         try:
             stream.filter(follow=follow, track=track, locations=location)
@@ -131,4 +131,4 @@ if __name__ == "__main__":
                 f"Twitter streaming continues.\n"
                 f"-----------------------"
             )
-            sleep(3000)
+            sleep(300)
