@@ -42,5 +42,5 @@ RUN \
   /tmp/* \
   /var/cache/apk/*
 
-CMD ["python", "bot/main.py"]
+CMD ["python", "-u", "bot/main.py"]
 
