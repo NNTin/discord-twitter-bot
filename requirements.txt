@@ -3,6 +3,6 @@ discord.py==1.5.1
 jsonschema==3.2.0
 python-dotenv==0.15.0
 PyYAML==5.3.1
-tox==3.20.1
+tox==3.22.0
 tweepy==3.9.0
 virtualenv==20.1.0
