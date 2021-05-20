@@ -66,11 +66,11 @@ class Converter:
 
     def twitter_list_to_id(self, twitter_list_url: str) -> list:
         twitter_ids = []
-        pattern = "(https?:\/\/(?:www\.)?)?twitter\.com\/(?P<twittername>[a-zA-Z0-9]+)\/lists\/(?P<listname>[a-zA-Z0-9-]+)"
+        pattern = "(https?:\/\/(?:www\.)?)?twitter\.com\/(i\/lists\/(?P<list_id>[a-zA-Z0-9-]+)|(?P<owner_screen_name>[a-zA-Z0-9]+)\/lists\/(?P<slug>[a-zA-Z0-9-]+))"
         for m in re.finditer(pattern, twitter_list_url, re.I):
             try:
                 for member in Cursor(
-                    self.client.list_members, m.group("twittername"), m.group("listname")
+                    self.client.list_members, list_id=m.group("list_id"), owner_screen_name=m.group("owner_screen_name"), slug=m.group("slug")
                 ).items():
                     twitter_id = member._json["id_str"]
                     if twitter_id not in twitter_ids:
