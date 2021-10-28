@@ -1,5 +1,5 @@
 from tweepy import API, Cursor
-from tweepy.error import TweepError
+from tweepy.errors import TweepyException
 import re
 
 
@@ -75,7 +75,7 @@ class Converter:
                     twitter_id = member._json["id_str"]
                     if twitter_id not in twitter_ids:
                         twitter_ids.append(twitter_id)
-            except TweepError as e:
+            except TweepyException as e:
                 print(e)
         return twitter_ids
 
@@ -89,7 +89,7 @@ class Converter:
                         screen_names=twitter_handles[i * 100 : min((i + 1) * 100, user_count)]
                     )
                 )
-            except TweepError as e:
+            except TweepyException as e:
                 print(e)
         return [user.id_str for user in full_users]
 

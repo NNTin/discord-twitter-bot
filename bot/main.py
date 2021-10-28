@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from tweepy.streaming import StreamListener
 from tweepy import Stream
 from time import gmtime, strftime
 from time import sleep
@@ -25,15 +24,12 @@ except ModuleNotFoundError:
     from bot.utils.startup import pprint
 
 
-class StdOutListener(StreamListener):
-    def __init__(self, api=None):
-        super().__init__(api)
-        self.config_discord = config["Discord"]
+class StdOutListener(Stream):
 
     def _on_status(self, status):
         data = status._json
 
-        for data_discord in self.config_discord:
+        for data_discord in config["Discord"]:
             p = Processor(status_tweet=data, discord_config=data_discord)
 
             if (
@@ -93,8 +89,7 @@ if __name__ == "__main__":
 
     pprint(config)
 
-    l = StdOutListener()
-    stream = Stream(auth, l)
+    stream = StdOutListener(config["Twitter"]["consumer_key"], config["Twitter"]["consumer_secret"], config["Twitter"]["access_token"], config["Twitter"]["access_token_secret"])
 
     print("Twitter stream started.")
     while True:
