@@ -66,10 +66,10 @@ jobs:
         PYTHON_VERSION: '3.6'
         IMAGE_NAME: 'ubuntu-latest'
         TOXENV: 'extended'
-      Python36-MacOSX:
-        PYTHON_VERSION: '3.6'
-        IMAGE_NAME: 'macOS-latest'
-        TOXENV: 'extended'
+#      Python36-MacOSX:
+#        PYTHON_VERSION: '3.6'
+#        IMAGE_NAME: 'macOS-latest'
+#        TOXENV: 'extended'
   pool:
     vmImage: '$(IMAGE_NAME)'
 
