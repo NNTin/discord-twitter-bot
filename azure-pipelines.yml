@@ -103,7 +103,7 @@ jobs:
   variables:
   - group: docker-variables
   pool:
-    vmImage: 'Ubuntu-16.04'
+    vmImage: 'ubuntu-latest'
 
   steps:
   - script: docker run --rm --privileged multiarch/qemu-user-static:register
