@@ -165,6 +165,8 @@ jobs:
   dependsOn: 'DockerBuild'
   variables:
   - group: docker-variables
+  pool:
+    vmImage: 'ubuntu-latest'
   steps:
 
   - script: |
