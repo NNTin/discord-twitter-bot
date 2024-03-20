@@ -1,4 +1,4 @@
-black==18.9b0
+black==24.3.0
 discord.py==1.5.1
 jsonschema==3.2.0
 python-dotenv==0.15.0
